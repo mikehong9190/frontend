@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
-  print (SvgPicture.asset("assets/svg/idea.svg"));
+  print(SvgPicture.asset("assets/svg/idea.svg"));
   runApp(const MyApp());
 }
 
@@ -11,7 +11,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return MaterialApp(title: 'Swirl.io', home: MyStateFulWidget(),);
+    return MaterialApp(
+      title: 'Swirl.io',
+      home: MyStateFulWidget(),
+    );
   }
 }
 
@@ -27,17 +30,21 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
 
   static const _body = ["HOME", "NAVIGATION", "FAQ", "ACCOUNT"];
   static const _TopBar = ["HOME", "NAVIGATION", "FAQ", "ACCOUNT"];
-  static const _bottomNavigationBar = <BottomNavigationBarItem>[
+  static final _bottomNavigationBar = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
       icon: Icon(Icons.home),
       label: 'Home',
     ),
     BottomNavigationBarItem(
-      icon: const SvgPicture.asset("assets/svg/idea.srg"),
+      icon: SvgPicture.asset("assets/svg/idea.svg"),
+      label: 'Initiative',
+    ),
+    BottomNavigationBarItem(
+      icon: SvgPicture.asset("assets/svg/Vector.svg"),
       label: 'Faq',
     ),
     BottomNavigationBarItem(
-      icon: Icon(IconData(0xee34, fontFamily: 'MaterialIcons')),
+      icon: SvgPicture.asset("assets/svg/iconUser.svg"),
       label: 'Account',
     ),
   ];
@@ -52,11 +59,15 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   Widget build(context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: const Text("Frequently Asked Questions")
-          ),
+            leading: GestureDetector(
+                onTap: () {}, child: SvgPicture.asset("assets/svg/backButton.svg")),
+            backgroundColor: Colors.white,
+            title: const Text("Frequently Asked Questions",style: TextStyle(color: Colors.black87,
+
+  ))),
         body: const FaqWidget(),
         bottomNavigationBar: BottomNavigationBar(
+            iconSize: 20.0,
             type: BottomNavigationBarType.fixed,
             items: _bottomNavigationBar,
             currentIndex: _currentIndex,
@@ -80,7 +91,7 @@ class _FaqWidgetState extends State<FaqWidget> {
     return Column(
       children: <Widget>[
         ExpansionTile(
-          title: Text('This example shows a BottomNavigationBar as it is used within a Scaffold widget. The BottomNavigationBar has four BottomNavigationBarItem widgets, which means it defaults to BottomNavigationBarType.shifting, and the currentIndex is set to index 0. The s'),
+          title: Text('Question 1'),
           subtitle: Text('Answer 1'),
           children: <Widget>[
             ListTile(title: Text('This is Answer 1')),
