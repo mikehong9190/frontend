@@ -29,8 +29,20 @@ class MyStateFulWidget extends StatefulWidget {
 class _MyStateWidgetState extends State<MyStateFulWidget> {
   int _currentIndex = 0;
 
-  static final _body = [HomeWidget(), InitiativeWidget(), FaqWidget(), AccountWidget()];
-  static final _TopBar = ["HOME", "NAVIGATION", "Frequently Asked Questions", "ACCOUNT"];
+  static final _body = [
+    HomeWidget(),
+    InitiativeWidget(),
+    const FaqWidget(),
+    AccountWidget()
+  ];
+
+  static final _TopBar = [
+    "Home",
+    "Initiative",
+    "Frequently Asked Questions",
+    "Account"
+  ];
+
   static final _bottomNavigationBar = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
       icon: SvgPicture.asset("assets/svg/Home.svg"),
@@ -60,12 +72,10 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   Widget build(context) {
     return Scaffold(
         appBar: AppBar(
+            centerTitle: true,
             elevation: 0,
-            leading: GestureDetector(
-                onTap: () {}, child: SvgPicture.asset("assets/svg/Vector.svg")),
-            leadingWidth: 10,
+            leading: IconButton(onPressed: () {print ("Will navigate to original position ");}, icon: SvgPicture.asset("assets/svg/Vector.svg")),
             backgroundColor: Colors.white,
-            titleSpacing: 50,
             title: Text(_TopBar[_currentIndex],
                 style: TextStyle(
                   color: Colors.black87,
@@ -80,55 +90,59 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
             onTap: changeIndex));
   }
 }
+
 //HOME WIDGET
 class HomeWidget extends StatefulWidget {
-  HomeWidget ({super.key});
+  HomeWidget({super.key});
 
   @override
-  State<HomeWidget> createState () => _HomeWidgetState ();
+  State<HomeWidget> createState() => _HomeWidgetState();
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
   int dummyState = 4;
 
-  @override 
-  Widget build (context) {
+  @override
+  Widget build(context) {
     return const Text("Home");
   }
 }
+
 //ACCOUNT WIDGET
 class AccountWidget extends StatefulWidget {
-  AccountWidget ({super.key});
+  AccountWidget({super.key});
 
   @override
-  State<AccountWidget> createState () => _AccountWidgetState ();
+  State<AccountWidget> createState() => _AccountWidgetState();
 }
 
 class _AccountWidgetState extends State<AccountWidget> {
   int dummyState = 4;
 
-  @override 
-  Widget build (context) {
+  @override
+  Widget build(context) {
     return const Text("Account");
   }
 }
+
 // INTIATIVE WIDGET
 class InitiativeWidget extends StatefulWidget {
-  InitiativeWidget ({super.key});
+  InitiativeWidget({super.key});
 
   @override
-  State<InitiativeWidget> createState () => _InitiativeWidgetState ();
+  State<InitiativeWidget> createState() => _InitiativeWidgetState();
 }
 
 class _InitiativeWidgetState extends State<InitiativeWidget> {
   int dummyState = 4;
 
-  @override 
-  Widget build (context) {
+  @override
+  Widget build(context) {
     return const Text("Initiative");
   }
 }
 
+// FAQ WIDGET
 class FaqWidget extends StatefulWidget {
   const FaqWidget({super.key});
 
@@ -141,14 +155,17 @@ class _FaqWidgetState extends State<FaqWidget> {
   // static final _questions =[{_question : "Questions"}];
   @override
   Widget build(context) {
-    return Column(
-      children: <Widget>[
-        Padding(padding: EdgeInsets.all(16.0),child : Text ("The code word is ‘Rochambeau,’ dig me?",style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 2.0))),
-        Text ("The code word is ‘Rochambeau,’ dig me?"),
-        Text ("The code word is ‘Rochambeau,’ dig me?"),
-        Text ("The code word is ‘Rochambeau,’ dig me?"),
-      ]
-    );
+    return Column(children: <Widget>[
+      Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text("The code word is ‘Rochambeau,’ dig me?",
+              style: DefaultTextStyle.of(context)
+                  .style
+                  .apply(fontSizeFactor: 2.0))),
+      Text("The code word is ‘Rochambeau,’ dig me?"),
+      Text("The code word is ‘Rochambeau,’ dig me?"),
+      Text("The code word is ‘Rochambeau,’ dig me?"),
+    ]);
   }
 }
 
