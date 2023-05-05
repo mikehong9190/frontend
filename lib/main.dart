@@ -32,7 +32,19 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   static final _body = [
     HomeWidget(),
     InitiativeWidget(),
-    const FaqWidget(),
+    const FAQWidget(
+      questions: [
+        QuestionWidget(
+            question: "This is FIRST QUESTION",
+            answers: ["Answer 1 ", "Answer 2"]),
+        QuestionWidget(
+            question: "This is SECOND QUESTION",
+            answers: ["Answer 1 ", "Answer 2"]),
+        QuestionWidget(
+            question: "This is THIRD QUESTION",
+            answers: ["Answer 1 ", "Answer 2"]),
+      ],
+    ),
     AccountWidget()
   ];
 
@@ -70,11 +82,17 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
 
   @override
   Widget build(context) {
+    // return GettingStartedWidget();
+    // return WelcomeWidget();
     return Scaffold(
         appBar: AppBar(
             centerTitle: true,
             elevation: 0,
-            leading: IconButton(onPressed: () {print ("Will navigate to original position ");}, icon: SvgPicture.asset("assets/svg/Vector.svg")),
+            leading: IconButton(
+                onPressed: () {
+                  print("Will navigate to original position ");
+                },
+                icon: SvgPicture.asset("assets/svg/Vector.svg")),
             backgroundColor: Colors.white,
             title: Text(_TopBar[_currentIndex],
                 style: TextStyle(
@@ -143,31 +161,31 @@ class _InitiativeWidgetState extends State<InitiativeWidget> {
 }
 
 // FAQ WIDGET
-class FaqWidget extends StatefulWidget {
-  const FaqWidget({super.key});
+// class FaqWidget extends StatefulWidget {
+//   const FaqWidget({super.key});
 
-  @override
-  State<FaqWidget> createState() => _FaqWidgetState();
-}
+//   @override
+//   State<FaqWidget> createState() => _FaqWidgetState();
+// }
 
-class _FaqWidgetState extends State<FaqWidget> {
-  bool _isTileExpanded = false;
-  // static final _questions =[{_question : "Questions"}];
-  @override
-  Widget build(context) {
-    return Column(children: <Widget>[
-      Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Text("The code word is ‘Rochambeau,’ dig me?",
-              style: DefaultTextStyle.of(context)
-                  .style
-                  .apply(fontSizeFactor: 2.0))),
-      Text("The code word is ‘Rochambeau,’ dig me?"),
-      Text("The code word is ‘Rochambeau,’ dig me?"),
-      Text("The code word is ‘Rochambeau,’ dig me?"),
-    ]);
-  }
-}
+// class _FaqWidgetState extends State<FaqWidget> {
+//   bool _isTileExpanded = false;
+//   // static final _questions =[{_question : "Questions"}];
+//   @override
+//   Widget build(context) {
+//     return Column(children: <Widget>[
+//       Padding(
+//           padding: EdgeInsets.all(16.0),
+//           child: Text("The code word is ‘Rochambeau,’ dig me?",
+//               style: DefaultTextStyle.of(context)
+//                   .style
+//                   .apply(fontSizeFactor: 2.0))),
+//       Text("The code word is ‘Rochambeau,’ dig me?"),
+//       Text("The code word is ‘Rochambeau,’ dig me?"),
+//       Text("The code word is ‘Rochambeau,’ dig me?"),
+//     ]);
+//   }
+// }
 
 // class QuestionBoxWidget extends StatelessWidget {
 //   const QuestionBoxWidget ({
@@ -187,3 +205,122 @@ class _FaqWidgetState extends State<FaqWidget> {
 
 //   }
 // }
+
+class WelcomeWidget extends StatelessWidget {
+  @override
+  Widget build(context) {
+    return Scaffold(
+        body: Container(
+            color: Colors.black,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                    child: Opacity(
+                        opacity: 1,
+                        child: Image.asset("assets/images/cover.png",
+                            fit: BoxFit.cover))),
+                Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 300,
+                        ),
+                        Image.asset("assets/images/swiirl.png"),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        SvgPicture.asset("assets/svg/Button.svg"),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Text('Artfully Funding the Future',
+                            style: TextStyle(color: Colors.white)),
+                      ]),
+                )
+              ],
+            )));
+  }
+}
+
+class GettingStartedWidget extends StatelessWidget {
+  @override
+  Widget build(context) {
+    return Scaffold(
+        body: Container(
+            child: Stack(children: [
+      Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          Image.asset("assets/images/Mockup.jpg"),
+          SizedBox(
+            height: 50,
+          ),
+          Text(
+            "Take a picture and rewrite the story",
+            style: TextStyle(fontSize: 24, fontFamily: "Bold/Type@24"),
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          Text(
+            "Art to Digital Collectibles in a single click",
+            style: TextStyle(fontSize: 16),
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          ClipOval(
+              child: Container(
+                  width: 100,
+                  height: 100,
+                  color: Color.fromRGBO(54, 189, 151, 1),
+                  child: Text('Start'),
+                  alignment: Alignment.center))
+        ],
+      ))
+    ])));
+  }
+}
+
+class QuestionWidget extends StatelessWidget {
+  final String question;
+  final List<String> answers;
+  const QuestionWidget(
+      {super.key, required this.question, required this.answers});
+
+  @override
+  Widget build(context) {
+    return Column(
+        children: [
+          SizedBox(height: 50),
+          Text(question,
+              style: TextStyle(fontFamily: 'Urbanist', fontSize: 24)),
+          SizedBox(height: 30),
+          ...answers.map((e) => Text(e),).toList()
+        ]);
+  }
+}
+
+class FAQWidget extends StatelessWidget {
+  final List<QuestionWidget> questions;
+  const FAQWidget({super.key, required this.questions});
+
+  @override
+  Widget build(context) {
+    return Column(
+        // mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: questions
+            .map(
+              (e) => e,
+            )
+            .toList());
+  }
+}
