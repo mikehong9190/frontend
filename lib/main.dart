@@ -41,7 +41,13 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       questions: [
         QuestionWidget(
             question: "This is FIRST QUESTION",
-            answers: ["Answer 1 ", "Answer 2"]),
+            answers: ["To bid in this auction, find your desired lot and choose “Place Bid”.", "Select your bid amount. You may either place a bid at the “Next Bid'' option or choose a Maximum Bid amount that the Boundless Giving system will execute on your behalf when competing bids are placed.","You will then be asked to enter your payment information. Your card will not be charged unless you win the item at the end of the auction."]),
+        QuestionWidget(
+            question: "This is FIRST QUESTION",
+            answers: ["To bid in this auction, find your desired lot and choose “Place Bid”.", "Select your bid amount. You may either place a bid at the “Next Bid'' option or choose a Maximum Bid amount that the Boundless Giving system will execute on your behalf when competing bids are placed.","You will then be asked to enter your payment information. Your card will not be charged unless you win the item at the end of the auction."]),
+        QuestionWidget(
+            question: "This is FIRST QUESTION",
+            answers: ["To bid in this auction, find your desired lot and choose “Place Bid”.", "Select your bid amount. You may either place a bid at the “Next Bid'' option or choose a Maximum Bid amount that the Boundless Giving system will execute on your behalf when competing bids are placed.","You will then be asked to enter your payment information. Your card will not be charged unless you win the item at the end of the auction."]),
         QuestionWidget(
             question: "This is SECOND QUESTION",
             answers: ["Answer 1 ", "Answer 2"]),
@@ -88,32 +94,32 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   @override
   Widget build(context) {
     // return LoginWidget();
-    return RegistrationWidget();
+    // return RegistrationWidget();
     // return FirstPageWidget();
     // return GettingStartedWidget();
     // return WelcomeWidget();
-    // return Scaffold(
-    //     appBar: AppBar(
-    //         centerTitle: true,
-    //         elevation: 0,
-    //         leading: IconButton(
-    //             onPressed: () {
-    //               print("Will navigate to original position ");
-    //             },
-    //             icon: SvgPicture.asset("assets/svg/Vector.svg")),
-    //         backgroundColor: Colors.white,
-    //         title: Text(_TopBar[_currentIndex],
-    //             style: TextStyle(
-    //               color: Colors.black87,
-    //             ))),
-    //     body: _body[_currentIndex],
-    //     bottomNavigationBar: BottomNavigationBar(
-    //         iconSize: 20.0,
-    //         type: BottomNavigationBarType.fixed,
-    //         items: _bottomNavigationBar,
-    //         currentIndex: _currentIndex,
-    //         selectedItemColor: Color.fromRGBO(116, 231, 199, 1),
-    //         onTap: changeIndex));
+    return Scaffold(
+        appBar: AppBar(
+            centerTitle: true,
+            elevation: 0,
+            leading: IconButton(
+                onPressed: () {
+                  print("Will navigate to original position ");
+                },
+                icon: SvgPicture.asset("assets/svg/Vector.svg")),
+            backgroundColor: Colors.white,
+            title: Text(_TopBar[_currentIndex],
+                style: TextStyle(
+                  color: Colors.black87,
+                ))),
+        body: _body[_currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+            iconSize: 20.0,
+            type: BottomNavigationBarType.fixed,
+            items: _bottomNavigationBar,
+            currentIndex: _currentIndex,
+            selectedItemColor: Color.fromRGBO(116, 231, 199, 1),
+            onTap: changeIndex));
   }
 }
 
@@ -307,11 +313,13 @@ class QuestionWidget extends StatelessWidget {
   Widget build(context) {
     return Column(children: [
       SizedBox(height: 50),
-      Text(question, style: TextStyle(fontFamily: 'Urbanist', fontSize: 24)),
+      Align(alignment: Alignment.center,child:
+      Text(question, style: TextStyle(fontFamily: 'Urbanist', fontSize: 24))
+      ,),
       SizedBox(height: 30),
       ...answers
           .map(
-            (e) => Text(e),
+            (e) => Align(alignment: Alignment.topLeft,child :Padding (padding: EdgeInsets.only(bottom: 10,left : 50),child: Text(e),)),
           )
           .toList()
     ]);

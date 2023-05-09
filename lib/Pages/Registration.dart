@@ -36,6 +36,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   final nameController = TextEditingController();
   final schoolNameController = TextEditingController();
   final schoolDistrictController = TextEditingController();
+  late var message = '';
   SingingCharacter? _character = SingingCharacter.jefferson;
 
   void checkEmail() async {
@@ -48,7 +49,9 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       if (jsonData.message == "") setState(() {
         currentStep += 1;
       });
-      else Fluttertoast.showToast(msg: "Email Already Exists");
+      else setState(() {
+        message = "Email Already Exists";
+      });
     } catch (err) {
       print(err);
     }
@@ -62,7 +65,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     setState(() {
       currentStep += 1;
     });
-    print(passwordController.text == confirmPasswordController.text);
+    
   }
 
   void checkEmptyAndChangeStep() {
@@ -74,7 +77,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   List<Step> getSteps() => [
         Step(
             title: Text(''),
-            content: FirstPageWidget(emailController, checkEmailAndChangeStep),
+            content: FirstPageWidget(emailController, checkEmailAndChangeStep,message),
             isActive: currentStep >= 0),
         Step(
             title: Text(''),
@@ -106,6 +109,9 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                 primarySwatch: Colors.blue,
                 colorScheme: ColorScheme.light(primary: Colors.black)),
             child: Stepper(
+              controlsBuilder: (context,details) {
+                return Container();
+              },
               type: StepperType.horizontal,
               steps: getSteps(),
               currentStep: currentStep,
