@@ -4,7 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../components/TextField.dart';
 import '../components/Button.dart';
 
-Widget FirstPageWidget(controller, onNext,message) {
+Widget FirstPageWidget(
+    controller, onNext, message, statusCode, otpController, isLoading) {
   return Center(
       child: Column(children: [
     Align(
@@ -30,7 +31,21 @@ Widget FirstPageWidget(controller, onNext,message) {
     SizedBox(
       height: 20,
     ),
-    SizedBox(height: 30,child : Text (message,style: TextStyle(color: Colors.red),)),
+    if (statusCode == 200) TextFieldWidget("OTP", otpController, false),
+    SizedBox(
+      height: 10,
+    ),
+    if (statusCode == 200 || statusCode == 400)
+      SizedBox(
+          height: 20,
+          child: Text(
+            message,
+            style:
+                TextStyle(color: statusCode == 200 ? Colors.green : Colors.red),
+          )),
+    SizedBox(
+      height: 20,
+    ),
     Align(
       alignment: Alignment.bottomCenter,
       child: ButtonTheme(
@@ -38,7 +53,15 @@ Widget FirstPageWidget(controller, onNext,message) {
             height: 50,
             width: 350,
             child: ElevatedButton(
-              child: Text("Next"),
+              child: !isLoading
+                  ? Text("Next")
+                  : Container(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    ),
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
                       Color.fromRGBO(54, 189, 151, 1)),
@@ -76,26 +99,40 @@ Widget FirstPageWidget(controller, onNext,message) {
   ]));
 }
 
-Widget SecondPageWidget(controller1, controller2, onNext) {
+Widget SecondPageWidget(controller1, controller2, onNext,message) {
+  print ("MESSAGE ::::: " + message);
   return Center(
     child: Column(
       children: [
-        Text(
-          "Create Your Password",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-        ),
+        Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              "Create Your Password",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+            )),
         SizedBox(
           height: 20,
         ),
-        Text("Must be 8 character or longer",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text("Must be 8 character or longer",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+        ),
         TextFieldWidget("Password", controller1, true),
         SizedBox(
           height: 10,
         ),
         TextFieldWidget("Confirm New Password", controller2, true),
+        SizedBox (height: 10,),
+      SizedBox(
+          height: 20,
+          child: Text(
+            message,
+            style:
+                TextStyle(color:Colors.red),
+          )),
         SizedBox(
-          height: 30,
+          height: 20,
         ),
         ButtonTheme(
           child: SizedBox(
@@ -120,7 +157,7 @@ Widget SecondPageWidget(controller1, controller2, onNext) {
           height: 20,
         ),
         SizedBox(
-          width: 30,
+          height: 30,
           child:
               Text("Please agree to swiirl’s Term of Use and Privacy Policy,"),
         )
@@ -134,16 +171,21 @@ Widget ThirdPageWidget(
   return Center(
     child: Column(
       children: [
-        Text(
-          "Resgistration Details",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-        ),
+        Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              "Registration Details",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+            )),
         SizedBox(
-          height: 10,
+          height: 20,
         ),
-        Text("This is used to build your profile on swiirl",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-        SizedBox(height: 30),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text("This is used to build your profile on swiirl",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+        ),
+        SizedBox(height: 10,),
         TextFieldWidget("Full Name", nameController, false),
         TextFieldWidget("School District", schoolDistrictController, false),
         TextFieldWidget("School Name", schoolNameController, false),

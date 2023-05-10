@@ -34,7 +34,7 @@ Widget TextFieldWidget(label, controller, isPassword) {
                       width: 0,
                     ),
               border: OutlineInputBorder(borderRadius: BorderRadius.zero),
-              hintText: !isPassword ? 'youremail@email.xyz' : "**********",
+              hintText: !isPassword ? label : "**********",
             ),
           )),
     ],

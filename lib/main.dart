@@ -94,32 +94,32 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   @override
   Widget build(context) {
     // return LoginWidget();
-    // return RegistrationWidget();
+    return RegistrationWidget();
     // return FirstPageWidget();
     // return GettingStartedWidget();
     // return WelcomeWidget();
-    return Scaffold(
-        appBar: AppBar(
-            centerTitle: true,
-            elevation: 0,
-            leading: IconButton(
-                onPressed: () {
-                  print("Will navigate to original position ");
-                },
-                icon: SvgPicture.asset("assets/svg/Vector.svg")),
-            backgroundColor: Colors.white,
-            title: Text(_TopBar[_currentIndex],
-                style: TextStyle(
-                  color: Colors.black87,
-                ))),
-        body: _body[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-            iconSize: 20.0,
-            type: BottomNavigationBarType.fixed,
-            items: _bottomNavigationBar,
-            currentIndex: _currentIndex,
-            selectedItemColor: Color.fromRGBO(116, 231, 199, 1),
-            onTap: changeIndex));
+    // return Scaffold(
+    //     appBar: AppBar(
+    //         centerTitle: true,
+    //         elevation: 0,
+    //         leading: IconButton(
+    //             onPressed: () {
+    //               print("Will navigate to original position ");
+    //             },
+    //             icon: SvgPicture.asset("assets/svg/Vector.svg")),
+    //         backgroundColor: Colors.white,
+    //         title: Text(_TopBar[_currentIndex],
+    //             style: TextStyle(
+    //               color: Colors.black87,
+    //             ))),
+    //     body: _body[_currentIndex],
+    //     bottomNavigationBar: BottomNavigationBar(
+    //         iconSize: 20.0,
+    //         type: BottomNavigationBarType.fixed,
+    //         items: _bottomNavigationBar,
+    //         currentIndex: _currentIndex,
+    //         selectedItemColor: Color.fromRGBO(116, 231, 199, 1),
+    //         onTap: changeIndex));
   }
 }
 
