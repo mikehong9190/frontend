@@ -40,6 +40,7 @@ dependencies:
   im_stepper: ^1.0.1+1
   http: ^0.13.6
   fluttertoast: ^8.2.1
+  textfield_search: ^0.10.0
 
 dev_dependencies:
   flutter_test:

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:textfield_search/textfield_search.dart';
+
 import '../components/TextField.dart';
 import '../components/Button.dart';
 
-Widget FirstPageWidget(
-    controller, onNext, message, statusCode, otpController, isLoading) {
+Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
+    isLoading, isOtpSend) {
   return Center(
       child: Column(children: [
     Align(
@@ -27,11 +29,11 @@ Widget FirstPageWidget(
     SizedBox(
       height: 10,
     ),
-    TextFieldWidget("Your Email", controller, false),
+    TextFieldWidget("Your Email", controller, false, null),
     SizedBox(
-      height: 20,
+      height: 10,
     ),
-    if (statusCode == 200) TextFieldWidget("OTP", otpController, false),
+    if (isOtpSend) TextFieldWidget("OTP", otpController, false, null),
     SizedBox(
       height: 10,
     ),
@@ -78,11 +80,13 @@ Widget FirstPageWidget(
       width: 50,
       height: 30,
     ),
-    SizedBox(
-      width: 50,
-      height: 30,
-      child: Text('OR'),
-    ),
+    Align(
+        alignment: Alignment.topCenter,
+        child: SizedBox(
+          width: 50,
+          height: 30,
+          child: Text('OR'),
+        )),
     OAuthButtonWidget("Continue with Google", "Google"),
     OAuthButtonWidget("Continue with Facebook", "Facebook"),
     OAuthButtonWidget("Continue with Apple", "Apple"),
@@ -99,8 +103,9 @@ Widget FirstPageWidget(
   ]));
 }
 
-Widget SecondPageWidget(controller1, controller2, onNext,message) {
-  print ("MESSAGE ::::: " + message);
+Widget SecondPageWidget(controller1, controller2, onNext, message,
+    isPasswordValid, arePasswordsEqual) {
+  print("MESSAGE ::::: " + message);
   return Center(
     child: Column(
       children: [
@@ -118,19 +123,21 @@ Widget SecondPageWidget(controller1, controller2, onNext,message) {
           child: Text("Must be 8 character or longer",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
         ),
-        TextFieldWidget("Password", controller1, true),
+        TextFieldWidget("Password", controller1, true, isPasswordValid),
         SizedBox(
           height: 10,
         ),
-        TextFieldWidget("Confirm New Password", controller2, true),
-        SizedBox (height: 10,),
-      SizedBox(
-          height: 20,
-          child: Text(
-            message,
-            style:
-                TextStyle(color:Colors.red),
-          )),
+        TextFieldWidget(
+            "Confirm New Password", controller2, true, arePasswordsEqual),
+        SizedBox(
+          height: 10,
+        ),
+        SizedBox(
+            height: 20,
+            child: Text(
+              message,
+              style: TextStyle(color: Colors.red),
+            )),
         SizedBox(
           height: 20,
         ),
@@ -166,8 +173,8 @@ Widget SecondPageWidget(controller1, controller2, onNext,message) {
   );
 }
 
-Widget ThirdPageWidget(
-    nameController, schoolDistrictController, schoolNameController, onNext) {
+Widget ThirdPageWidget(nameController, schoolDistrictController,
+    schoolNameController, onNext, isLoading,getDistricts) {
   return Center(
     child: Column(
       children: [
@@ -185,10 +192,15 @@ Widget ThirdPageWidget(
           child: Text("This is used to build your profile on swiirl",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
         ),
-        SizedBox(height: 10,),
-        TextFieldWidget("Full Name", nameController, false),
-        TextFieldWidget("School District", schoolDistrictController, false),
-        TextFieldWidget("School Name", schoolNameController, false),
+        SizedBox(
+          height: 10,
+        ),
+        TextFieldWidget("Full Name", nameController, false, null),
+        SearchTextFieldWidget("School District", schoolDistrictController
+        , false, null, getDistricts),
+        TextFieldWidget(
+            "School District", schoolDistrictController, false, null),
+        TextFieldWidget("School Name", schoolNameController, false, null),
         SizedBox(
           height: 60,
         ),
@@ -197,7 +209,15 @@ Widget ThirdPageWidget(
               height: 50,
               width: 350,
               child: ElevatedButton(
-                child: Text("Next"),
+                child: isLoading
+                    ? Container(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      )
+                    : Text("Next"),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                         Color.fromRGBO(54, 189, 151, 1)),

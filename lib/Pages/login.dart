@@ -91,8 +91,8 @@ class _LoginWidgetState extends State<LoginWidget> {
           Text("Login",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
           SizedBox(height: 30),
-          TextFieldWidget("email", emailController, false),
-          TextFieldWidget("password", passwordController, false),
+          TextFieldWidget("email", emailController, false,null),
+          TextFieldWidget("password", passwordController, false,null),
           SizedBox(
             height: 60,
           ),
