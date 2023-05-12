@@ -6,51 +6,80 @@ class GettingStartedWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return Scaffold(
-        body: Container(
-            child: Stack(children: [
-      Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 50,
-          ),
-          Image.asset("assets/images/Mockup.jpg"),
-          SizedBox(
-            height: 50,
-          ),
-          Text(
-            "Take a picture and rewrite the story",
-            style: TextStyle(fontSize: 24, fontFamily: "Bold/Type@24"),
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          Text(
-            "Art to Digital Collectibles in a single click",
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          SizedBox(
-            height: 100,
-            width: 100,
-            child: IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/registration');
-                },
-                icon: ClipOval(
-                    child: Container(
-                        width: 100,
-                        height: 100,
-                        color: Color.fromRGBO(54, 189, 151, 1),
-                        child: Text('Start'),
-                        alignment: Alignment.center))),
-          )
-        ],
-      ))
-    ])));
+        body: FractionallySizedBox(
+            alignment: Alignment.topCenter,
+            child: Container(
+                child: Stack(children: [
+              Center(
+                  child: Column(
+                // mainAxisAlignment: MainAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 90,
+                  ),
+                  Image.asset(
+                    "assets/images/Mockup.jpg",
+                    alignment: Alignment.center,
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                        child: Text(
+                      "Take a picture and",
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                    )),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                        child: Text(
+                      "rewrite the story",
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                    )),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Art to Digital Collectibles in a single click",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    height: 120,
+                    width: 120,
+                    child: IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/registration');
+                        },
+                        icon: Container(
+                          // decoration: BoxDecoration(boxShadow: [
+                          //   BoxShadow(
+                          //       blurRadius: 40,
+                          //       offset: Offset(0, 10),
+                          //       color: Colors.black)
+                          // ]),
+                          child: ClipOval(
+                              child: Container(
+                                  width: 150,
+                                  height: 150,
+                                  color: Color.fromRGBO(116, 231, 199, 1),
+                                  child: Text(
+                                    'Start',
+                                  ),
+                                  alignment: Alignment.center)),
+                        )),
+                  )
+                ],
+              ))
+            ]))));
   }
 }

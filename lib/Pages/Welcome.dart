@@ -38,14 +38,16 @@ class WelcomeWidget extends StatelessWidget {
                                 height: 100,
                                 width: 100,
                                 child:
-                                    SvgPicture.asset("assets/svg/Button.svg"),
+                                    SvgPicture.asset("assets/svg/Next.svg"),
                               )),
                         ),
                         SizedBox(
-                          height: 30,
+                          height: 80,
                         ),
+                        Align(alignment: Alignment.bottomCenter,child:
                         Text('Artfully Funding the Future',
                             style: TextStyle(color: Colors.white)),
+),
                       ]),
                 )
               ],

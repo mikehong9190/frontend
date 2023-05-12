@@ -5,11 +5,15 @@ import 'package:textfield_search/textfield_search.dart';
 
 import '../components/TextField.dart';
 import '../components/Button.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
+import '../model/responses.dart';
 
 Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
     isLoading, isOtpSend) {
   return Center(
-      child: Column(children: [
+      child:
+          Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
     Align(
       alignment: Alignment.topLeft,
       child: Text(
@@ -29,11 +33,11 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
     SizedBox(
       height: 10,
     ),
-    TextFieldWidget("Your Email", controller, false, null),
+    TextFieldWidget("Your Email", controller, false, null, !isOtpSend),
     SizedBox(
       height: 10,
     ),
-    if (isOtpSend) TextFieldWidget("OTP", otpController, false, null),
+    if (isOtpSend) TextFieldWidget("OTP", otpController, false, null, true),
     SizedBox(
       height: 10,
     ),
@@ -49,7 +53,7 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
       height: 20,
     ),
     Align(
-      alignment: Alignment.bottomCenter,
+      alignment: Alignment.center,
       child: ButtonTheme(
         child: SizedBox(
             height: 50,
@@ -70,28 +74,29 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50.0)))),
-              onPressed: () {
-                onNext();
-              },
+              onPressed: controller.text.contains("@")
+                  ? () {
+                      onNext();
+                    }
+                  : null,
             )),
       ),
     ),
     SizedBox(
-      width: 50,
-      height: 30,
+      height: 10,
     ),
     Align(
         alignment: Alignment.topCenter,
         child: SizedBox(
-          width: 50,
           height: 30,
           child: Text('OR'),
         )),
     OAuthButtonWidget("Continue with Google", "Google"),
-    OAuthButtonWidget("Continue with Facebook", "Facebook"),
-    OAuthButtonWidget("Continue with Apple", "Apple"),
+    // OAuthButtonWidget("Continue with Facebook", "Facebook"),
+    // OAuthButtonWidget("Continue with Apple", "Apple"),
+
     SizedBox(
-      height: 30,
+      height: 180,
     ),
     SizedBox(
       width: 350,
@@ -105,7 +110,6 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
 
 Widget SecondPageWidget(controller1, controller2, onNext, message,
     isPasswordValid, arePasswordsEqual) {
-  print("MESSAGE ::::: " + message);
   return Center(
     child: Column(
       children: [
@@ -123,12 +127,12 @@ Widget SecondPageWidget(controller1, controller2, onNext, message,
           child: Text("Must be 8 character or longer",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
         ),
-        TextFieldWidget("Password", controller1, true, isPasswordValid),
+        TextFieldWidget("Password", controller1, true, isPasswordValid, true),
         SizedBox(
           height: 10,
         ),
         TextFieldWidget(
-            "Confirm New Password", controller2, true, arePasswordsEqual),
+            "Confirm New Password", controller2, true, arePasswordsEqual, true),
         SizedBox(
           height: 10,
         ),
@@ -141,6 +145,11 @@ Widget SecondPageWidget(controller1, controller2, onNext, message,
         SizedBox(
           height: 20,
         ),
+        SizedBox(
+          height: 30,
+          child:
+              Text("Please agree to swiirl’s Term of Use and Privacy Policy,"),
+        ),
         ButtonTheme(
           child: SizedBox(
               height: 50,
@@ -152,7 +161,7 @@ Widget SecondPageWidget(controller1, controller2, onNext, message,
                         Color.fromRGBO(54, 189, 151, 1)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0)))),
+                            borderRadius: BorderRadius.circular(30.0)))),
                 onPressed: () {
                   onNext();
                   print(controller1.text);
@@ -164,17 +173,32 @@ Widget SecondPageWidget(controller1, controller2, onNext, message,
           height: 20,
         ),
         SizedBox(
-          height: 30,
-          child:
-              Text("Please agree to swiirl’s Term of Use and Privacy Policy,"),
+          height: 180,
+        ),
+        SizedBox(
+          width: 350,
+          child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Image.asset("assets/images/swiirl-S-Mark-Aqua-Dot 4.png"),
+          ),
         )
       ],
     ),
   );
 }
 
-Widget ThirdPageWidget(nameController, schoolDistrictController,
-    schoolNameController, onNext, isLoading,getDistricts) {
+Widget ThirdPageWidget(
+    firstNameController,
+    lastNameController,
+    schoolDistrictController,
+    schoolNameController,
+    onNext,
+    isLoading,
+    getDistricts,
+    getSchools,
+    clickOnSuggestion,
+    clickOnSchool) {
+  print(getSchools);
   return Center(
     child: Column(
       children: [
@@ -195,12 +219,15 @@ Widget ThirdPageWidget(nameController, schoolDistrictController,
         SizedBox(
           height: 10,
         ),
-        TextFieldWidget("Full Name", nameController, false, null),
-        SearchTextFieldWidget("School District", schoolDistrictController
-        , false, null, getDistricts),
-        TextFieldWidget(
-            "School District", schoolDistrictController, false, null),
-        TextFieldWidget("School Name", schoolNameController, false, null),
+        TextFieldWidget("First Name", firstNameController, false, null, true),
+        TextFieldWidget("Last Name", lastNameController, false, null, true),
+        SearchTextFieldWidget("School District", schoolDistrictController,
+            false, null, getDistricts, clickOnSuggestion),
+        SchoolSearchFieldWidget("School Name", schoolNameController, false,
+            null, getSchools, clickOnSchool),
+        // TextFieldWidget(
+        //     "School District", schoolDistrictController, false, null, true),
+        // TextFieldWidget("School Name", schoolNameController, false, null, true),
         SizedBox(
           height: 60,
         ),
@@ -223,7 +250,7 @@ Widget ThirdPageWidget(nameController, schoolDistrictController,
                         Color.fromRGBO(54, 189, 151, 1)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0)))),
+                            borderRadius: BorderRadius.circular(30.0)))),
                 onPressed: () {
                   onNext();
                 },
@@ -232,4 +259,126 @@ Widget ThirdPageWidget(nameController, schoolDistrictController,
       ],
     ),
   );
+}
+
+class GoogleAuthWidget extends StatefulWidget {
+  const GoogleAuthWidget({super.key});
+
+  @override
+  State<GoogleAuthWidget> createState() => _GoogleAuthWidgetState();
+}
+
+class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
+  final schoolNameController = TextEditingController();
+  final schoolDistrictController = TextEditingController();
+  late var schoolId = '';
+  bool isLoading = false;
+
+  Future<List<SingleDistrictResponse>> getDistricts(String query) async {
+    try {
+      final response = await get(
+        Uri.parse(
+            'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/school/search?text=$query'),
+      );
+      if (response.statusCode == 200) {
+        final jsonData = DistrictResponse.fromJson(jsonDecode(response.body));
+        return jsonData.data;
+      } else
+        return [];
+    } catch (error) {
+      print(error);
+      return [];
+    }
+  }
+
+  Future<List<School>> getSchools(String query) async {
+    try {
+      final response = await get(Uri.parse(
+          'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/school/search?text=&district=${schoolDistrictController.text}'));
+      if (response.statusCode == 200) {
+        final jsonData = SchoolList.fromJson(jsonDecode(response.body));
+        return jsonData.data;
+      } else
+        return [];
+    } catch (error) {
+      print(error);
+      return [];
+    }
+  }
+
+  void clickOnSuggestion(value, controller) {
+    setState(() {
+      controller.text = value;
+    });
+  }
+
+  void clickOnSchool(id, name, controller) {
+    print(id);
+    setState(() {
+      controller.text = name;
+      schoolId = id;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+
+    return Center(
+      child: Column(
+        children: [
+          Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Registration Details",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+              )),
+          SizedBox(
+            height: 20,
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text("This is used to build your profile on swiirl",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          SearchTextFieldWidget("School District", schoolDistrictController,
+              false, null, getDistricts, clickOnSuggestion),
+          SchoolSearchFieldWidget("School Name", schoolNameController, false,
+              null, getSchools, clickOnSchool),
+          // TextFieldWidget(
+          //     "School District", schoolDistrictController, false, null, true),
+          // TextFieldWidget("School Name", schoolNameController, false, null, true),
+          SizedBox(
+            height: 60,
+          ),
+          ButtonTheme(
+            child: SizedBox(
+                height: 50,
+                width: 350,
+                child: ElevatedButton(
+                  child: isLoading
+                      ? Container(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        )
+                      : Text("Next"),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Color.fromRGBO(54, 189, 151, 1)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)))),
+                  onPressed: () {},
+                )),
+          ),
+        ],
+      ),
+    );
+  }
 }

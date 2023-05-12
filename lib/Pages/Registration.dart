@@ -1,3 +1,5 @@
+import 'package:google_sign_in/google_sign_in.dart';
+
 import '../model/responses.dart';
 
 import 'dart:convert';
@@ -23,14 +25,15 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   late var currentStep = 0;
   late var statusCode = 0;
   late var isOtpSend = false;
-  late var districts = [];
-  final currentStage = "firstPage";
+  late var schoolId = '';
   late var isLoading = false;
+  late var isAgreed = false;
   final otpController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final emailController = TextEditingController();
-  final nameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final schoolNameController = TextEditingController();
   final schoolDistrictController = TextEditingController();
   late var isPasswordValid = false;
@@ -39,20 +42,35 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
   SingingCharacter? _character = SingingCharacter.jefferson;
 
-  getDistrict() async {
+  Future<List<SingleDistrictResponse>> getDistrict(String query) async {
     try {
       final response = await get(
         Uri.parse(
-            'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/school/search?text='),
+            'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/school/search?text=$query'),
       );
-      final jsonData = DistrictResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
-        setState(() {
-          districts = jsonData.data;
-        });
-      }
+        final jsonData = DistrictResponse.fromJson(jsonDecode(response.body));
+        return jsonData.data;
+      } else
+        return [];
     } catch (error) {
       print(error);
+      return [];
+    }
+  }
+
+  Future<List<School>> getSchools(String query) async {
+    try {
+      final response = await get(Uri.parse(
+          'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/school/search?text=&district=${schoolDistrictController.text}'));
+      if (response.statusCode == 200) {
+        final jsonData = SchoolList.fromJson(jsonDecode(response.body));
+        return jsonData.data;
+      } else
+        return [];
+    } catch (error) {
+      print(error);
+      return [];
     }
   }
 
@@ -86,6 +104,20 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         isLoading = false;
       });
     }
+  }
+
+  void clickOnSuggestion(value, controller) {
+    setState(() {
+      controller.text = value;
+    });
+  }
+
+  void clickOnSchool(id, name, controller) {
+    print(id);
+    setState(() {
+      controller.text = name;
+      schoolId = id;
+    });
   }
 
   void verifyOtp() async {
@@ -137,32 +169,71 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     });
   }
 
+  googleLogin() async {
+    print("googleLogin method Called");
+    final _googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "openid"
+      ],
+    );
+    try {
+      final result = await _googleSignIn.signIn();
+      final ggAuth = await result?.authentication;
+      print('ID TOKEN');
+      var token = ggAuth?.idToken;
+      // print(ggAuth?.idToken);
+      // print(ggAuth?.accessToken);
+      while (token!.isNotEmpty) {
+        int initLength = (token.length >= 500 ? 500 : token.length);
+        print(token.substring(0, initLength));
+        int endLength = token.length;
+        token = token.substring(initLength, endLength);
+      }
+    } catch (error) {
+      print(error);
+    }
+  }
+
   void registerUser() async {
     try {
       print("Hello");
       setState(() {
         isLoading = true;
       });
-      final body = jsonEncode({
-        "firstname": nameController.text.split(' ')[0],
-        "lastname": nameController.text.split(' ')[1],
-        "password": passwordController.text,
+      late var payload = {
+        "firstname": firstNameController.text,
+        "lastname": lastNameController.text,
         "emailId": emailController.text,
-        "districtName": schoolDistrictController.text,
-        "schoolName": schoolNameController.text,
-        "createSchool": true,
-      });
+        "password": passwordController.text,
+        "createSchool": schoolId.isEmpty ? "true" : "false"
+      };
 
+      if (schoolId.isEmpty) {
+        payload["schoolName"] = schoolNameController.text;
+        payload["districtName"] = schoolDistrictController.text;
+      } else {
+        payload["schoolId"] = schoolId;
+      }
+      print(payload);
+      print("asdasd");
       final response = await post(
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/signup'),
-          body: body);
-      if (response.statusCode == 200) Navigator.pushNamed(context, '/app');
+          body: jsonEncode(payload));
+      print(response.body);
+      final jsonData =
+          RegisteredUserResponse.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 200)
+        Navigator.pushNamed(context, '/app',
+            arguments: {"UserId": jsonData.data.id});
       print(jsonDecode(response.body));
     } catch (error) {
       print(error);
     } finally {
       setState(() {
+        schoolId = '';
         isLoading = false;
       });
     }
@@ -192,14 +263,22 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
             isActive: currentStep >= 1),
         Step(
             title: Text(''),
-            content: ThirdPageWidget(nameController, schoolDistrictController,
-                schoolNameController, registerUser, isLoading, getDistrict),
+            content: ThirdPageWidget(
+                firstNameController,
+                lastNameController,
+                schoolDistrictController,
+                schoolNameController,
+                registerUser,
+                isLoading,
+                getDistrict,
+                getSchools,
+                clickOnSuggestion,
+                clickOnSchool),
             isActive: currentStep >= 2),
       ];
 
   @override
   void initState() {
-    getDistrict();
     super.initState();
     emailController.addListener(() {
       setState(
@@ -207,8 +286,6 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       );
     });
     passwordController.addListener(() {
-      print(RegExp(r'(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)')
-          .hasMatch(passwordController.text));
       setState(
         () {
           if (passwordController.text.length > 8 &&

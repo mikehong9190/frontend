@@ -8,6 +8,7 @@ import 'Pages/getStarted.dart';
 import 'components/TextField.dart';
 import 'Pages/Registration.dart';
 import 'Pages/login.dart';
+import 'Pages/UpdateProfile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,11 +30,11 @@ class MyApp extends StatelessWidget {
           '/': (context) => WelcomeWidget(),
           '/getStarted': (context) => GettingStartedWidget(),
           '/registration': (context) => const RegistrationWidget(),
-          '/app' : (context) => const MyStateFulWidget()
+          '/app': (context) => const MyStateFulWidget(),
+          '/update-profile': (context) => UpdateProfileWidget(),
         });
   }
 }
-
 
 Widget SetupInitiativeWidget(value12) {
   return Center(

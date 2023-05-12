@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:http/http.dart';
+
+import '../model/responses.dart';
 
 class MyStateFulWidget extends StatefulWidget {
   const MyStateFulWidget({super.key});
@@ -12,42 +18,11 @@ class MyStateFulWidget extends StatefulWidget {
 class _MyStateWidgetState extends State<MyStateFulWidget> {
   int _currentIndex = 0;
 
-  static final _body = [
-    HomeWidget(),
-    InitiativeWidget(),
-    const FAQWidget(
-      questions: [
-        QuestionWidget(question: "This is FIRST QUESTION", answers: [
-          "To bid in this auction, find your desired lot and choose “Place Bid”.",
-          "Select your bid amount. You may either place a bid at the “Next Bid'' option or choose a Maximum Bid amount that the Boundless Giving system will execute on your behalf when competing bids are placed.",
-          "You will then be asked to enter your payment information. Your card will not be charged unless you win the item at the end of the auction."
-        ]),
-        QuestionWidget(question: "This is FIRST QUESTION", answers: [
-          "To bid in this auction, find your desired lot and choose “Place Bid”.",
-          "Select your bid amount. You may either place a bid at the “Next Bid'' option or choose a Maximum Bid amount that the Boundless Giving system will execute on your behalf when competing bids are placed.",
-          "You will then be asked to enter your payment information. Your card will not be charged unless you win the item at the end of the auction."
-        ]),
-        QuestionWidget(question: "This is FIRST QUESTION", answers: [
-          "To bid in this auction, find your desired lot and choose “Place Bid”.",
-          "Select your bid amount. You may either place a bid at the “Next Bid'' option or choose a Maximum Bid amount that the Boundless Giving system will execute on your behalf when competing bids are placed.",
-          "You will then be asked to enter your payment information. Your card will not be charged unless you win the item at the end of the auction."
-        ]),
-        QuestionWidget(
-            question: "This is SECOND QUESTION",
-            answers: ["Answer 1 ", "Answer 2"]),
-        QuestionWidget(
-            question: "This is THIRD QUESTION",
-            answers: ["Answer 1 ", "Answer 2"]),
-      ],
-    ),
-    AccountWidget()
-  ];
-
   static final _TopBar = [
     "Home",
     "Initiative",
     "Frequently Asked Questions",
-    "Account"
+    "My Profile"
   ];
 
   static final _bottomNavigationBar = <BottomNavigationBarItem>[
@@ -77,17 +52,61 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
 
   @override
   Widget build(context) {
-    // return LoginWidget();
-    // return RegistrationWidget();
-    // return FirstPageWidget();
-    // return GettingStartedWidget();
+    final UserId = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    final _body = [
+      HomeWidget(),
+      InitiativeWidget(),
+      const FAQWidget(
+        questions: [
+          QuestionWidget(question: "This is FIRST QUESTION", answers: [
+            "To bid in this auction, find your desired lot and choose “Place Bid”.",
+            "Select your bid amount. You may either place a bid at the “Next Bid'' option or choose a Maximum Bid amount that the Boundless Giving system will execute on your behalf when competing bids are placed.",
+            "You will then be asked to enter your payment information. Your card will not be charged unless you win the item at the end of the auction."
+          ]),
+          QuestionWidget(question: "This is FIRST QUESTION", answers: [
+            "To bid in this auction, find your desired lot and choose “Place Bid”.",
+            "Select your bid amount. You may either place a bid at the “Next Bid'' option or choose a Maximum Bid amount that the Boundless Giving system will execute on your behalf when competing bids are placed.",
+            "You will then be asked to enter your payment information. Your card will not be charged unless you win the item at the end of the auction."
+          ]),
+          QuestionWidget(question: "This is FIRST QUESTION", answers: [
+            "To bid in this auction, find your desired lot and choose “Place Bid”.",
+            "Select your bid amount. You may either place a bid at the “Next Bid'' option or choose a Maximum Bid amount that the Boundless Giving system will execute on your behalf when competing bids are placed.",
+            "You will then be asked to enter your payment information. Your card will not be charged unless you win the item at the end of the auction."
+          ]),
+          QuestionWidget(
+              question: "This is SECOND QUESTION",
+              answers: ["Answer 1 ", "Answer 2"]),
+          QuestionWidget(
+              question: "This is THIRD QUESTION",
+              answers: ["Answer 1 ", "Answer 2"]),
+        ],
+      ),
+      AccountWidget(
+        UserId: UserId["UserId"],
+      )
+    ];
     return Scaffold(
         appBar: AppBar(
             centerTitle: true,
             elevation: 0,
+            actions: [
+              _currentIndex == 3
+                  ? IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/update-profile',arguments: {"UserId" : UserId["UserId"]});
+                      },
+                      icon: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: SvgPicture.asset("assets/svg/settings.svg"),
+                      ))
+                  : Container()
+            ],
             leading: IconButton(
                 onPressed: () {
-                  print("Will navigate to original position ");
+                  print ("aaaaaaa");
+                  Navigator.pushNamed(context, "/app", arguments: {"UserId": UserId["UserId"]});
                 },
                 icon: SvgPicture.asset("assets/svg/Vector.svg")),
             backgroundColor: Colors.white,
@@ -125,18 +144,136 @@ class _HomeWidgetState extends State<HomeWidget> {
 
 //ACCOUNT WIDGET
 class AccountWidget extends StatefulWidget {
-  AccountWidget({super.key});
+  final String UserId;
+  const AccountWidget({super.key, required this.UserId});
 
   @override
   State<AccountWidget> createState() => _AccountWidgetState();
 }
 
 class _AccountWidgetState extends State<AccountWidget> {
-  int dummyState = 4;
+  bool isLoading = false;
+  late String name ;
+  late String location;
+  late String bio;
+
+  @override
+  void initState() {
+    print("sdkajdad");
+    super.initState();
+    getUserDetails(widget.UserId);
+  }
+
+  void getUserDetails(id) async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      final response = await get(Uri.parse(
+          'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/users?id=$id'));
+      if (response.statusCode == 200) {
+        final jsonData =
+            (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
+        print(response.body);
+        setState(() {
+          name = '${jsonData.firstName} ${jsonData.lastName}';
+          location = jsonData.schoolDistrict;
+          isLoading = false;
+          bio = jsonData.bio == null ? '' : jsonData.bio;
+        });
+      }
+    } catch (error) {
+      print(error);
+    }
+  }
 
   @override
   Widget build(context) {
-    return const Text("Account");
+    return isLoading
+        ? Align(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(
+              color: Color.fromRGBO(54, 189, 151, 1),
+            ))
+        : FractionallySizedBox(
+            alignment: Alignment.topCenter,
+            heightFactor: .3,
+            child: Container(
+              padding: EdgeInsets.only(left: 40, right: 40, top: 30),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.amber,
+                          radius: 30,
+                        ),
+                        Column(
+                          children: [
+                            Text("123",
+                                style: TextStyle(fontWeight: FontWeight.w300)),
+                            Text(
+                              'Goals Met',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color.fromRGBO(183, 183, 183, 1)),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              "123",
+                              style: TextStyle(fontWeight: FontWeight.w300),
+                            ),
+                            Text(
+                              'Money Raised',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color.fromRGBO(183, 183, 183, 1)),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text("123",
+                                style: TextStyle(fontWeight: FontWeight.w300)),
+                            Text('collectiables',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color.fromRGBO(183, 183, 183, 1)))
+                          ],
+                        ),
+                      ],
+                    ),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        name,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 18),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Row(children: [
+                        SvgPicture.asset("assets/svg/location.svg"),
+                        Text(
+                          location,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 14),
+                        )
+                      ]),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(bio),
+                    ),
+                  ]),
+            ));
   }
 }
 

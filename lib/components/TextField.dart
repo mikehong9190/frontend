@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:textfield_search/textfield_search.dart';
+import '../model/responses.dart';
 
-Widget TextFieldWidget(label, controller, isPassword,isValid) {
+Widget TextFieldWidget(label, controller, isPassword, isValid, isEnabled) {
   // final String label;
   // TextFieldWidget ({super.key,required this.label,});
   return Column(
@@ -24,6 +26,7 @@ Widget TextFieldWidget(label, controller, isPassword,isValid) {
           height: 50,
           width: 350,
           child: TextField(
+            enabled: isEnabled,
             controller: controller,
             obscureText: isPassword,
             decoration: InputDecoration(
@@ -33,16 +36,12 @@ Widget TextFieldWidget(label, controller, isPassword,isValid) {
                           MainAxisAlignment.spaceBetween, // added line
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                          ClipOval(
-                              child: Container(
-                                  width: 20,
-                                  height: 20,
-                                  color: isValid ? Color.fromRGBO(116, 231, 199, 1) : Colors.red,
-                                  // child:,
-                                  alignment: Alignment.center)),
+                          isValid
+                              ? SvgPicture.asset("assets/svg/check.svg")
+                              : Container(),
                           IconButton(
                               onPressed: () {},
-                              icon: SvgPicture.asset("assets/svg/Eye.svg"))
+                              icon: SvgPicture.asset("assets/svg/eye.svg"))
                         ])
                   : Container(
                       width: 0,
@@ -55,8 +54,8 @@ Widget TextFieldWidget(label, controller, isPassword,isValid) {
   );
 }
 
-
-Widget SearchTextFieldWidget(label, controller, isPassword,isValid,getDistricts) {
+Widget SearchTextFieldWidget(
+    label, controller, isPassword, isValid, getDistricts, clickOnSuggestion) {
   // final String label;
   // TextFieldWidget ({super.key,required this.label,});
   return Column(
@@ -76,37 +75,85 @@ Widget SearchTextFieldWidget(label, controller, isPassword,isValid,getDistricts)
       SizedBox(
           height: 50,
           width: 350,
-          child: TextFieldSearch(
-            label: 'abcd',
-            future: () {
-              return getDistricts();
-            },
-            controller: controller,
-            decoration: InputDecoration(
-              suffixIcon: isPassword
-                  ? Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween, // added line
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                          ClipOval(
-                              child: Container(
-                                  width: 20,
-                                  height: 20,
-                                  color: isValid ? Color.fromRGBO(116, 231, 199, 1) : Colors.red,
-                                  // child:,
-                                  alignment: Alignment.center)),
-                          IconButton(
-                              onPressed: () {},
-                              icon: SvgPicture.asset("assets/svg/Eye.svg"))
-                        ])
-                  : Container(
-                      width: 0,
-                    ),
-              border: OutlineInputBorder(borderRadius: BorderRadius.zero),
-              hintText: !isPassword ? label : "**********",
-            ),
-          )),
+          child: TypeAheadField(
+              textFieldConfiguration: TextFieldConfiguration(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  // hintText: 'Enter a search term',
+                ),
+                controller: controller,
+              ),
+              suggestionsCallback: getDistricts,
+              itemBuilder: (context, SingleDistrictResponse? suggestion) {
+                final district = suggestion!;
+                print('DISTRICT ::::: ${district.district}');
+                return ListTile(
+                  title: Text(
+                    district.district,
+                  ),
+                );
+              },
+              noItemsFoundBuilder: (context) => Container(
+                  height: 100,
+                  child: Center(
+                    child: Text('No district Found'),
+                  )),
+              onSuggestionSelected: (suggestion) {
+                final district = suggestion!;
+                clickOnSuggestion(district.district, controller);
+              })),
+    ],
+  );
+}
+
+Widget SchoolSearchFieldWidget(
+    label, controller, isPassword, isValid, getSchools, clickOnSchool) {
+  // final String label;
+  // TextFieldWidget ({super.key,required this.label,});
+  return Column(
+    children: [
+      SizedBox(
+        height: 30,
+        width: 350,
+        child: Align(
+            alignment: AlignmentDirectional.bottomStart,
+            child: Text(label,
+                textAlign: TextAlign.left,
+                style: TextStyle(fontWeight: FontWeight.w500))),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      SizedBox(
+          height: 50,
+          width: 350,
+          child: TypeAheadField(
+              textFieldConfiguration: TextFieldConfiguration(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  // hintText: 'Enter a search term',
+                ),
+                controller: controller,
+              ),
+              suggestionsCallback: getSchools,
+              itemBuilder: (context, School? school) {
+                final schoolData = school!;
+                // print('DISTRICT ::::: ${district.district}');
+                return ListTile(
+                  title: Text(
+                    schoolData.name,
+                  ),
+                );
+              },
+              noItemsFoundBuilder: (context) => Container(
+                  height: 100,
+                  child: Center(
+                    child: Text('No School Found'),
+                  )),
+              onSuggestionSelected: (school) {
+                final schoolData = school!;
+                clickOnSchool(schoolData.id,schoolData.name, controller);
+              })),
     ],
   );
 }
