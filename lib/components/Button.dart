@@ -4,73 +4,124 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
-Widget OAuthButtonWidget(content, iconUrl) {
-  googleLogin() async {
+import '../model/responses.dart';
+import 'dart:io' show Platform;
+
+class OAuthButtonWidget extends StatelessWidget {
+  final String content;
+  final String iconUrl;
+
+  const OAuthButtonWidget(
+      {super.key, required this.content, required this.iconUrl});
+
+  googleLogin(context) async {
     print("googleLogin method Called");
-    final _googleSignIn = GoogleSignIn(
-      scopes: [
-        'email',
-        "https://www.googleapis.com/auth/userinfo.profile",
-        "openid"
-      ],
-    );
-    try {
-      final result = await _googleSignIn.signIn();
-      final ggAuth = await result?.authentication;
-      print('ID TOKEN');
-      var token = ggAuth?.idToken;
-      while (token!.isNotEmpty) {
-        int initLength = (token.length >= 500 ? 500 : token.length);
-        print(token.substring(0, initLength));
-        int endLength = token.length;
-        token = token.substring(initLength, endLength);
+    if (Platform.isAndroid) {
+      final _googleSignIn = GoogleSignIn(
+        scopes: [
+          'email',
+          "https://www.googleapis.com/auth/userinfo.profile",
+          "openid"
+        ],
+      );
+      try {
+        final result = await _googleSignIn.signIn();
+        final ggAuth = await result?.authentication;
+        print('ID TOKEN');
+        var token = ggAuth?.idToken;
+        // while (token!.isNotEmpty) {
+        //   int initLength = (token.length >= 500 ? 500 : token.length);
+        //   print(token.substring(0, initLength));
+        //   int endLength = token.length;
+        //   token = token.substring(initLength, endLength);
+        // }
+        final response = await post(
+            Uri.parse(
+                'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/signup'),
+            body: jsonEncode({"idToken": token}));
+        final jsonData = Welcome.fromJson(jsonDecode(response.body));
+        // if (response.statusCode ==)
+        print(response.body);
+        if (response.statusCode == 200)
+          Navigator.pushNamed(context, "/google-auth-school",
+              arguments: {"id": jsonData.data.id});
+      } catch (error) {
+        print(error);
       }
-      final response = await post(
-          Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/signup'),
-          body: jsonEncode({
-            "idToken" : token
-          }));
-      print (response.body);
-      // if (response.statusCode == 200) 
-    } catch (error) {
-      print(error);
+    } else if (Platform.isIOS) {
+      final _googleSignIn = GoogleSignIn(
+        clientId: "566550290119-ke7vuiphb33c5jjl3168klvj9jum2sr5.apps.googleusercontent.com",
+        scopes: [
+          'email',
+          "https://www.googleapis.com/auth/userinfo.profile",
+          "openid"
+        ],
+      );
+      try {
+        final result = await _googleSignIn.signIn();
+        final ggAuth = await result?.authentication;
+        print('ID TOKEN');
+        var token = ggAuth?.idToken;
+        // while (token!.isNotEmpty) {
+        //   int initLength = (token.length >= 500 ? 500 : token.length);
+        //   print(token.substring(0, initLength));
+        //   int endLength = token.length;
+        //   token = token.substring(initLength, endLength);
+        // }
+        final response = await post(
+            Uri.parse(
+                'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/signup'),
+            body: jsonEncode({"idToken": token}));
+        final jsonData = Welcome.fromJson(jsonDecode(response.body));
+        // if (response.statusCode ==)
+        print(response.body);
+        if (response.statusCode == 200)
+          Navigator.pushNamed(context, "/google-auth-school",
+              arguments: {"id": jsonData.data.id});
+      } catch (error) {
+        print(error);
+      }
     }
   }
 
-  return Column(
-    children: [
-      SizedBox(
-        height: 10,
-      ),
-      SizedBox(
-        width: 350,
-        height: 50,
-        child: OutlinedButton(
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 50,
-                ),
-                SvgPicture.asset(
-                  "assets/svg/" + iconUrl + ".svg",
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Text(
-                  content,
-                  textAlign: TextAlign.center,
-                )
-              ],
-            )
-            // Text(
-            //   content,
-            //   style: TextStyle(color: Colors.black),
-            // )
-            ,
-            onPressed: googleLogin),
-      )
-    ],
-  );
+  @override
+  build(context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 10,
+        ),
+        SizedBox(
+          width: 350,
+          height: 50,
+          child: OutlinedButton(
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 50,
+                  ),
+                  SvgPicture.asset(
+                    "assets/svg/" + iconUrl + ".svg",
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    content,
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              )
+              // Text(
+              //   content,
+              //   style: TextStyle(color: Colors.black),
+              // )
+              ,
+              onPressed: () {
+                googleLogin(context);
+              }),
+        )
+      ],
+    );
+  }
 }

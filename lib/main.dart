@@ -9,6 +9,7 @@ import 'components/TextField.dart';
 import 'Pages/Registration.dart';
 import 'Pages/login.dart';
 import 'Pages/UpdateProfile.dart';
+import 'Pages/RegistrationPages.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
           '/registration': (context) => const RegistrationWidget(),
           '/app': (context) => const MyStateFulWidget(),
           '/update-profile': (context) => UpdateProfileWidget(),
+          '/google-auth-school': (context) => const GoogleAuthWidget(),
         });
   }
 }

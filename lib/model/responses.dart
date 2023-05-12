@@ -212,3 +212,53 @@ class UserIdData {
         "UserId": userId,
     };
 }
+
+
+
+
+
+
+
+
+
+
+
+class Welcome {
+    String message;
+    Data data;
+
+    Welcome({
+        required this.message,
+        required this.data,
+    });
+
+    factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
+        message: json["message"],
+        data: Data.fromJson(json["data"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "message": message,
+        "data": data.toJson(),
+    };
+}
+
+class Data {
+    String id;
+    String token;
+
+    Data({
+        required this.id,
+        required this.token,
+    });
+
+    factory Data.fromJson(Map<String, dynamic> json) => Data(
+        id: json["id"],
+        token: json["token"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "token": token,
+    };
+}

@@ -16,7 +16,7 @@ class MyStateFulWidget extends StatefulWidget {
 }
 
 class _MyStateWidgetState extends State<MyStateFulWidget> {
-  int _currentIndex = 0;
+  int _currentIndex = 3;
 
   static final _TopBar = [
     "Home",
@@ -159,7 +159,6 @@ class _AccountWidgetState extends State<AccountWidget> {
 
   @override
   void initState() {
-    print("sdkajdad");
     super.initState();
     getUserDetails(widget.UserId);
   }
@@ -213,10 +212,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ),
                         Column(
                           children: [
-                            Text("123",
+                            Text("0",
                                 style: TextStyle(fontWeight: FontWeight.w300)),
                             Text(
-                              'Goals Met',
+                              "0",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: Color.fromRGBO(183, 183, 183, 1)),
@@ -226,7 +225,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                         Column(
                           children: [
                             Text(
-                              "123",
+                              "0",
                               style: TextStyle(fontWeight: FontWeight.w300),
                             ),
                             Text(
@@ -239,7 +238,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ),
                         Column(
                           children: [
-                            Text("123",
+                            Text("0",
                                 style: TextStyle(fontWeight: FontWeight.w300)),
                             Text('collectiables',
                                 style: TextStyle(

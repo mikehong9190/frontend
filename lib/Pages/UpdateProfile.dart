@@ -28,6 +28,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   final lastNameController = TextEditingController();
   final bioController = TextEditingController();
   final otpController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -69,14 +70,15 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         "requestType": "reset-password",
         "otp": otp
       };
-        final response = await post(
+      final response = await post(
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/verify-otp'),
           body: jsonEncode(payload));
-        print (response.body);
-        if (response.statusCode == 200) setState(() {
+      print(response.body);
+      if (response.statusCode == 200)
+        setState(() {
           isOtpVerified = true;
-        }); 
+        });
     } catch (error) {
       print(error);
     }
@@ -124,7 +126,6 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
 
   @override
   Widget build(context) {
-    // getUserDetails(UserId["UserId"]);
     return Scaffold(
         appBar: AppBar(
             centerTitle: true,
@@ -153,30 +154,80 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                   "First Name", firstNameController, false, null, true),
               TextFieldWidget(
                   "Last Name", lastNameController, false, null, true),
-              TextFieldWidget("Bio", bioController, false, null, true),
+              // TextFieldWidget("Bio", bioController, false, null, true),
+              Column(
+                children: [
+                  SizedBox(
+                    height: 30,
+                    width: 350,
+                    child: Align(
+                        alignment: AlignmentDirectional.bottomStart,
+                        child: Text("Your Bio",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(fontWeight: FontWeight.w500))),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                      height: 80,
+                      width: 350,
+                      child: TextField(
+                        enabled: true,
+                        controller: bioController,
+                        obscureText: false,
+                        decoration: InputDecoration(
+                          suffixIcon: false
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween, // added line
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                      false
+                                          ? SvgPicture.asset(
+                                              "assets/svg/check.svg")
+                                          : Container(),
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: SvgPicture.asset(
+                                              "assets/svg/eye.svg"))
+                                    ])
+                              : Container(
+                                  width: 0,
+                                ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.zero),
+                          hintText: !false ? "Bio" : "**********",
+                        ),
+                      )),
+                ],
+              ),
               SizedBox(
                 height: 10,
               ),
-              TextButton(
-                  onPressed: () {
-                    sendOtpForPasswordReset(emailId);
-                  },
-                  child: Text("Reset Password")),
-              if (isOtpSend)
-                TextFieldWidget("OTP", otpController, false, null, true),
-              if (isOtpSend) TextButton(onPressed: () {verifyOtpForPasswordReset (emailId,otpController.text);}, child: Text ("Verify OTP")),
-              if (isOtpVerified) 
-              SizedBox(
-                height: 40,
-              ),
+              // TextButton(
+              //     onPressed: () {
+              //       sendOtpForPasswordReset(emailId);
+              //     },
+              //     child: Text("Reset Password")),
+              // if (isOtpSend)
+              //   TextFieldWidget("OTP", otpController, false, null, true),
+              // if (isOtpSend)
+              //   TextButton(
+              //       onPressed: () {
+              //         verifyOtpForPasswordReset(emailId, otpController.text);
+              //       },
+              //       child: Text("Verify OTP")),
+              // if (isOtpVerified)
+              //   SizedBox(
+              //     height: 40,
+              //   ),
               ButtonTheme(
                 child: SizedBox(
                     height: 50,
                     width: 350,
                     child: ElevatedButton(
                       child: Container(
-                        width: 20,
-                        height: 20,
                         child:
                             // CircularProgressIndicator(
                             //   color: Colors.white,
