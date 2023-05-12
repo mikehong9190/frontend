@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:textfield_search/textfield_search.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:textfield_search/textfield_search.dart';
 import '../model/responses.dart';
 
 Widget TextFieldWidget(label, controller, isPassword, isValid, isEnabled) {
@@ -11,20 +11,19 @@ Widget TextFieldWidget(label, controller, isPassword, isValid, isEnabled) {
   return Column(
     children: [
       SizedBox(
-        height: 30,
-        width: 350,
+        width: double.infinity,
         child: Align(
             alignment: AlignmentDirectional.bottomStart,
             child: Text(label,
                 textAlign: TextAlign.left,
-                style: TextStyle(fontWeight: FontWeight.w500))),
+                style: const TextStyle(fontWeight: FontWeight.w500))),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
       SizedBox(
           height: 50,
-          width: 350,
+          width: double.infinity,
           child: TextField(
             enabled: isEnabled,
             controller: controller,
@@ -46,7 +45,7 @@ Widget TextFieldWidget(label, controller, isPassword, isValid, isEnabled) {
                   : Container(
                       width: 0,
                     ),
-              border: OutlineInputBorder(borderRadius: BorderRadius.zero),
+              border: const OutlineInputBorder(borderRadius: BorderRadius.zero),
               hintText: !isPassword ? label : "**********",
             ),
           )),
@@ -62,22 +61,22 @@ Widget SearchTextFieldWidget(
     children: [
       SizedBox(
         height: 30,
-        width: 350,
+        width: double.infinity,
         child: Align(
             alignment: AlignmentDirectional.bottomStart,
             child: Text(label,
                 textAlign: TextAlign.left,
-                style: TextStyle(fontWeight: FontWeight.w500))),
+                style: const TextStyle(fontWeight: FontWeight.w500))),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
       SizedBox(
           height: 50,
-          width: 350,
+          width: double.infinity,
           child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   // hintText: 'Enter a search term',
                 ),
@@ -93,7 +92,7 @@ Widget SearchTextFieldWidget(
                   ),
                 );
               },
-              noItemsFoundBuilder: (context) => Container(
+              noItemsFoundBuilder: (context) => const SizedBox(
                   height: 100,
                   child: Center(
                     child: Text('No district Found'),
@@ -114,22 +113,22 @@ Widget SchoolSearchFieldWidget(
     children: [
       SizedBox(
         height: 30,
-        width: 350,
+        width: double.infinity,
         child: Align(
             alignment: AlignmentDirectional.bottomStart,
             child: Text(label,
                 textAlign: TextAlign.left,
-                style: TextStyle(fontWeight: FontWeight.w500))),
+                style: const TextStyle(fontWeight: FontWeight.w500))),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
       SizedBox(
           height: 50,
-          width: 350,
+          width: double.infinity,
           child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   // hintText: 'Enter a search term',
                 ),
@@ -145,14 +144,14 @@ Widget SchoolSearchFieldWidget(
                   ),
                 );
               },
-              noItemsFoundBuilder: (context) => Container(
+              noItemsFoundBuilder: (context) => const SizedBox(
                   height: 100,
                   child: Center(
                     child: Text('No School Found'),
                   )),
               onSuggestionSelected: (school) {
                 final schoolData = school!;
-                clickOnSchool(schoolData.id,schoolData.name, controller);
+                clickOnSchool(schoolData.id, schoolData.name, controller);
               })),
     ],
   );
