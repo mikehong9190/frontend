@@ -1,16 +1,18 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../model/responses.dart';
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/Pages/RegistrationPages.dart';
-import 'package:frontend/Pages/login.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:im_stepper/main.dart';
+// import 'package:frontend/Pages/login.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:im_stepper/main.dart';
 import 'package:http/http.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 
 class RegistrationWidget extends StatefulWidget {
   const RegistrationWidget({super.key});
@@ -53,21 +55,23 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       if (response.statusCode == 200) {
         final jsonData = DistrictResponse.fromJson(jsonDecode(response.body));
         return jsonData.data;
-      } else
+      } else {
         return [];
+      }
     } catch (error) {
       print(error);
       return [];
     }
   }
-  void checkPasswordVisiblity () async {
+
+  void checkPasswordVisiblity() async {
     setState(() {
       isPasswordHidden = !isPasswordHidden;
     });
   }
 
-  void checkConfirmPasswordVisibility () async {
-       setState(() {
+  void checkConfirmPasswordVisibility() async {
+    setState(() {
       isConfirmPasswordHidden = !isConfirmPasswordHidden;
     });
   }
@@ -79,8 +83,9 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       if (response.statusCode == 200) {
         final jsonData = SchoolList.fromJson(jsonDecode(response.body));
         return jsonData.data;
-      } else
+      } else {
         return [];
+      }
     } catch (error) {
       print(error);
       return [];
@@ -105,11 +110,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
           statusCode = response.statusCode;
           message = jsonData.message;
         });
-      } else
+      } else {
         setState(() {
           statusCode = response.statusCode;
           message = "Email Already Exists";
         });
+      }
     } catch (err) {
       print(err);
     } finally {
@@ -146,17 +152,18 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
             "requestType": "email",
             "otp": otpController.text
           }));
-      if (response.statusCode == 200)
+      if (response.statusCode == 200) {
         setState(() {
           message = "";
           statusCode = 0;
           currentStep += 1;
         });
-      else
+      } else {
         setState(() {
           message = "Invalid OTP";
           statusCode = response.statusCode;
         });
+      }
       otpController.text = '';
     } catch (error) {
       print(error);
@@ -168,7 +175,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   }
 
   void checkEmailAndChangeStep() {
-    otpController.text.length == 0 ? checkEmail() : verifyOtp();
+    otpController.text.isEmpty ? checkEmail() : verifyOtp();
   }
 
   void checkPasswordAndChangeStep() {
@@ -238,9 +245,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       print(response.body);
       final jsonData =
           RegisteredUserResponse.fromJson(jsonDecode(response.body));
-      if (response.statusCode == 200)
-        Navigator.pushNamed(context, '/app',
-            arguments: {"UserId": jsonData.data.id,"message" : jsonData.message});
+      if (response.statusCode == 200) {
+        Navigator.pushNamed(context, '/app', arguments: {
+          "UserId": jsonData.data.id,
+          "message": jsonData.message
+        });
+      }
       print(jsonDecode(response.body));
     } catch (error) {
       print(error);
@@ -260,12 +270,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
   List<Step> getSteps() => [
         Step(
-            title: Text(''),
+            title: const Text(''),
             content: FirstPageWidget(emailController, checkEmailAndChangeStep,
                 message, statusCode, otpController, isLoading, isOtpSend),
             isActive: currentStep >= 0),
         Step(
-            title: Text(''),
+            title: const Text(''),
             content: SecondPageWidget(
                 passwordController,
                 confirmPasswordController,
@@ -279,7 +289,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                 checkConfirmPasswordVisibility),
             isActive: currentStep >= 1),
         Step(
-            title: Text(''),
+            title: const Text(''),
             content: ThirdPageWidget(
                 firstNameController,
                 lastNameController,
@@ -310,20 +320,22 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
             setState(() {
               isPasswordValid = true;
             });
-          } else
+          } else {
             setState(() {
               isPasswordValid = false;
             });
+          }
 
-          if (passwordController.text.length > 0 &&
+          if (passwordController.text.isNotEmpty &&
               passwordController.text == confirmPasswordController.text) {
             setState(() {
               arePasswordsEqual = true;
             });
-          } else
+          } else {
             setState(() {
               arePasswordsEqual = false;
             });
+          }
         },
       );
     });
@@ -334,10 +346,11 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
             setState(() {
               arePasswordsEqual = true;
             });
-          } else
+          } else {
             setState(() {
               arePasswordsEqual = false;
             });
+          }
         },
       );
     });
@@ -349,9 +362,9 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         body: Theme(
             data: ThemeData(
                 primarySwatch: Colors.blue,
-                colorScheme: ColorScheme.light(primary: Colors.black)),
+                colorScheme: const ColorScheme.light(primary: Colors.black)),
             child: Padding(
-                padding: EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 20),
                 child: Stepper(
                   controlsBuilder: (context, details) {
                     return Container();

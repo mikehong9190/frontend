@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 class QuestionWidget extends StatelessWidget {
   final String question;
@@ -10,15 +10,19 @@ class QuestionWidget extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return Column(children: [
-      SizedBox(height: 50),
-      Text(question, style: TextStyle(fontFamily: 'Urbanist', fontSize: 24)),
-      SizedBox(height: 30),
-      ...answers
-          .map(
-            (e) => Text(e),
-          )
-          .toList()
-    ]);
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          const SizedBox(height: 50),
+          Text(question,
+              style: const TextStyle(fontFamily: 'Urbanist', fontSize: 24)),
+          const SizedBox(height: 30),
+          ...answers
+              .map(
+                (e) => Text(e),
+              )
+              .toList()
+        ]);
   }
 }
