@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
 import '../components/TextField.dart';
-import '../components/Button.dart';
+// import '../components/Button.dart';
 
 class LoginResponse {
   final String message;
   final Object data;
-  const LoginResponse({required this.message,required this.data});
+  const LoginResponse({required this.message, required this.data});
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
-    return LoginResponse(message: json['message'],data : json['data']);
+    return LoginResponse(message: json['message'], data: json['data']);
   }
 }
 
@@ -50,7 +50,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       if (response.statusCode == 200) {
         Fluttertoast.showToast(
           msg: jsonData.message,
-          backgroundColor: Color.fromRGBO(54, 189, 151, 1),
+          backgroundColor: const Color.fromRGBO(54, 189, 151, 1),
         );
       }
     } catch (error) {
@@ -81,19 +81,19 @@ class _LoginWidgetState extends State<LoginWidget> {
         body: Center(
       child: Column(
         children: [
-          Text(
+          const Text(
             "Login",
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          Text("Login",
+          const Text("Login",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-          SizedBox(height: 30),
-          TextFieldWidget("email", emailController, false,null,true),
-          TextFieldWidget("password", passwordController, false,null,true),
-          SizedBox(
+          const SizedBox(height: 30),
+          TextFieldWidget("email", emailController, false, null, true),
+          TextFieldWidget("password", passwordController, false, null, true),
+          const SizedBox(
             height: 60,
           ),
           ButtonTheme(
@@ -101,16 +101,16 @@ class _LoginWidgetState extends State<LoginWidget> {
                 height: 50,
                 width: 350,
                 child: ElevatedButton(
-                  child: Text("Next"),
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                          Color.fromRGBO(54, 189, 151, 1)),
+                          const Color.fromRGBO(54, 189, 151, 1)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0)))),
                   onPressed: () {
                     getLogin();
                   },
+                  child: const Text("Next"),
                 )),
           ),
         ],

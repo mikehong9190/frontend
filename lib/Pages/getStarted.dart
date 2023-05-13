@@ -27,11 +27,8 @@ class GettingStartedWidget extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            FittedBox(
-                              fit: BoxFit.contain,
-                              child: Image.asset(
-                                "./assets/images/swiirl-mockup.png",
-                              ),
+                            Image.asset(
+                              "./assets/images/swiirl-mockup.png",
                             ),
                           ],
                         ),

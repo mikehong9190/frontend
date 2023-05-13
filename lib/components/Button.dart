@@ -15,7 +15,7 @@ class OAuthButtonWidget extends StatelessWidget {
       {super.key, required this.content, required this.iconUrl});
 
   googleLogin(context) async {
-    print("googleLogin method Called");
+    // print("googleLogin method Called");
     if (Platform.isAndroid) {
       final _googleSignIn = GoogleSignIn(
         scopes: [
@@ -41,10 +41,14 @@ class OAuthButtonWidget extends StatelessWidget {
             body: jsonEncode({"idToken": token}));
         final jsonData = Welcome.fromJson(jsonDecode(response.body));
         // if (response.statusCode ==)
-        print(response.body);
-        if (response.statusCode == 200) {
+        // print(response.body);
+        if (response.statusCode == 200 &&
+            jsonData.message == 'Account created successfully!') {
           Navigator.pushNamed(context, "/google-auth-school",
-              arguments: {"id": jsonData.data.id});
+              arguments: {"id": jsonData.data.id, "message": jsonData.message});
+        } else {
+          Navigator.pushNamed(context, "/app",
+              arguments: {"UserId": jsonData.data.id, "message": "Logged in"});
         }
       } catch (error) {
         print(error);
@@ -76,10 +80,14 @@ class OAuthButtonWidget extends StatelessWidget {
             body: jsonEncode({"idToken": token}));
         final jsonData = Welcome.fromJson(jsonDecode(response.body));
         // if (response.statusCode ==)
-        print(response.body);
-        if (response.statusCode == 200) {
+        // print(response.body);
+        if (response.statusCode == 200 &&
+            jsonData.message == 'Account created successfully!') {
           Navigator.pushNamed(context, "/google-auth-school",
-              arguments: {"id": jsonData.data.id});
+              arguments: {"id": jsonData.data.id, "message": jsonData.message});
+        } else {
+          Navigator.pushNamed(context, "/app",
+              arguments: {"UserId": jsonData.data.id, "message": "Logged in"});
         }
       } catch (error) {
         print(error);

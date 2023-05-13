@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:textfield_search/textfield_search.dart';
 import '../model/responses.dart';
@@ -47,7 +46,7 @@ Widget TextFieldWidget(
                               : Container(),
                           IconButton(
                               onPressed: () {},
-                              icon: SvgPicture.asset("assets/svg/eye.svg"))
+                              icon: SvgPicture.asset("assets/svg/Eye.svg"))
                         ])
                   : Container(
                       width: 0,
@@ -55,7 +54,7 @@ Widget TextFieldWidget(
               border: const OutlineInputBorder(
                   borderRadius: BorderRadius.zero,
                   borderSide: BorderSide(color: Colors.black)),
-              enabledBorder: OutlineInputBorder(
+              enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.zero,
                   borderSide: BorderSide(color: Colors.black)),
               hintText: !isPassword ? label : "**********",
@@ -209,7 +208,7 @@ Widget PasswordFieldWidget(
                         onPressed: () {
                           changeVisiblity();
                         },
-                        icon: SvgPicture.asset("assets/svg/eye.svg"))
+                        icon: SvgPicture.asset("assets/svg/Eye.svg"))
                   ]),
               border: const OutlineInputBorder(
                   borderRadius: BorderRadius.zero,

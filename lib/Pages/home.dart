@@ -117,7 +117,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
                 icon: SvgPicture.asset("assets/svg/Vector.svg")),
             backgroundColor: Colors.white,
             title: Text(_TopBar[_currentIndex],
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black87,
                 ))),
         body: _body[_currentIndex],
@@ -126,7 +126,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
             type: BottomNavigationBarType.fixed,
             items: _bottomNavigationBar,
             currentIndex: _currentIndex,
-            selectedItemColor: Color.fromRGBO(116, 231, 199, 1),
+            selectedItemColor: const Color.fromRGBO(116, 231, 199, 1),
             onTap: changeIndex));
   }
 }
@@ -166,6 +166,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   late int goalsMets = 0;
   late int moneyRaised = 0;
   late int collectiables = 0;
+  late String dollar = '\$';
 
   @override
   void initState() {
@@ -183,16 +184,15 @@ class _AccountWidgetState extends State<AccountWidget> {
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
-        print(response.body);
+        // print(response.body);
         setState(() {
-          collectiables =
-              jsonData.collectibles == null ? 0 : jsonData.collectibles;
-          goalsMets = jsonData.goalsMet == null ? 0 : jsonData.goalsMet;
-          moneyRaised = jsonData.moneyRaised == null ? 0 : jsonData.moneyRaised;
+          collectiables = jsonData.collectibles ?? 0;
+          goalsMets = jsonData.goalsMet ?? 0;
+          moneyRaised = jsonData.moneyRaised ?? 0;
           name = '${jsonData.firstName} ${jsonData.lastName}';
           location = jsonData.schoolDistrict;
           isLoading = false;
-          bio = jsonData.bio == null ? '' : jsonData.bio;
+          bio = jsonData.bio ?? '';
         });
       }
     } catch (error) {
@@ -203,7 +203,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   @override
   Widget build(context) {
     return isLoading
-        ? Align(
+        ? const Align(
             alignment: Alignment.center,
             child: CircularProgressIndicator(
               color: Color.fromRGBO(54, 189, 151, 1),
@@ -212,24 +212,24 @@ class _AccountWidgetState extends State<AccountWidget> {
             alignment: Alignment.topCenter,
             heightFactor: .4,
             child: Container(
-              padding: EdgeInsets.only(left: 40, right: 40, top: 30),
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           backgroundColor: Colors.amber,
-                          radius: 30,
+                          radius: 45,
                         ),
                         Column(
                           children: [
                             Text(collectiables.toString(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.w700, fontSize: 18)),
-                            Text(
+                            const Text(
                               "Collectibles",
                               style: TextStyle(
                                   fontSize: 12,
@@ -240,11 +240,11 @@ class _AccountWidgetState extends State<AccountWidget> {
                         Column(
                           children: [
                             Text(
-                              "${moneyRaised}",
-                              style: TextStyle(
+                              "\$ $moneyRaised",
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 18),
                             ),
-                            Text(
+                            const Text(
                               'Money Raised',
                               style: TextStyle(
                                   fontSize: 12,
@@ -255,9 +255,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                         Column(
                           children: [
                             Text(goalsMets.toString(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.w700, fontSize: 18)),
-                            Text('Goals Mets',
+                            const Text('Goals Mets',
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: Color.fromRGBO(183, 183, 183, 1)))
@@ -265,28 +265,31 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ),
                       ],
                     ),
-                    Align(
+                    Container(
+                      margin: const EdgeInsets.only(top: 20),
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         name,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 18),
                       ),
                     ),
-                    Align(
+                    Container(
+                      margin: const EdgeInsets.only(top: 10),
                       alignment: Alignment.bottomLeft,
                       child: Row(children: [
                         SvgPicture.asset("assets/svg/location.svg"),
                         Text(
                           location,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.w500, fontSize: 14),
                         )
                       ]),
                     ),
-                    Align(
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 20),
                       alignment: Alignment.bottomLeft,
-                      child: bio.length == 0
+                      child: bio.isEmpty
                           ? TextButton(
                               onPressed: () {
                                 Navigator.pushNamed(context, '/update-profile',
@@ -295,7 +298,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                                       "message": widget.message
                                     });
                               },
-                              child: Text(
+                              child: const Text(
                                 "Add Bio",
                                 style: TextStyle(color: Colors.black),
                               ))
@@ -332,19 +335,19 @@ class QuestionWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return Column(children: [
-      SizedBox(height: 50),
+      const SizedBox(height: 50),
       Align(
         alignment: Alignment.center,
         child: Text(question,
-            style: TextStyle(fontFamily: 'Urbanist', fontSize: 24)),
+            style: const TextStyle(fontFamily: 'Urbanist', fontSize: 24)),
       ),
-      SizedBox(height: 30),
+      const SizedBox(height: 30),
       ...answers
           .map(
             (e) => Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 10, left: 50),
+                  padding: const EdgeInsets.only(bottom: 10, left: 50),
                   child: Text(e),
                 )),
           )
@@ -360,8 +363,8 @@ class FAQWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        // crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: questions
             .map(
               (e) => e,
