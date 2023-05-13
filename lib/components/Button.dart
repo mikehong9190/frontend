@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -42,15 +42,17 @@ class OAuthButtonWidget extends StatelessWidget {
         final jsonData = Welcome.fromJson(jsonDecode(response.body));
         // if (response.statusCode ==)
         print(response.body);
-        if (response.statusCode == 200)
+        if (response.statusCode == 200) {
           Navigator.pushNamed(context, "/google-auth-school",
               arguments: {"id": jsonData.data.id});
+        }
       } catch (error) {
         print(error);
       }
     } else if (Platform.isIOS) {
       final _googleSignIn = GoogleSignIn(
-        clientId: "566550290119-ke7vuiphb33c5jjl3168klvj9jum2sr5.apps.googleusercontent.com",
+        clientId:
+            "566550290119-ke7vuiphb33c5jjl3168klvj9jum2sr5.apps.googleusercontent.com",
         scopes: [
           'email',
           "https://www.googleapis.com/auth/userinfo.profile",
@@ -75,9 +77,10 @@ class OAuthButtonWidget extends StatelessWidget {
         final jsonData = Welcome.fromJson(jsonDecode(response.body));
         // if (response.statusCode ==)
         print(response.body);
-        if (response.statusCode == 200)
+        if (response.statusCode == 200) {
           Navigator.pushNamed(context, "/google-auth-school",
               arguments: {"id": jsonData.data.id});
+        }
       } catch (error) {
         print(error);
       }
@@ -88,28 +91,27 @@ class OAuthButtonWidget extends StatelessWidget {
   build(context) {
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         SizedBox(
-          width: 350,
+          width: double.infinity,
           height: 50,
           child: OutlinedButton(
               child: Row(
                 children: [
-                  SizedBox(
-                    width: 50,
-                  ),
+                  Expanded(child: Container()),
                   SvgPicture.asset(
-                    "assets/svg/" + iconUrl + ".svg",
+                    "assets/svg/$iconUrl.svg",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   Text(
                     content,
                     textAlign: TextAlign.center,
-                  )
+                  ),
+                  Expanded(child: Container())
                 ],
               )
               // Text(

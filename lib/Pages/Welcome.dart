@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class WelcomeWidget extends StatelessWidget {
+  const WelcomeWidget({super.key});
+
   @override
   Widget build(context) {
     return Scaffold(
@@ -20,16 +21,14 @@ class WelcomeWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          height: 300,
-                        ),
+                        Expanded(child: Container()),
                         Image.asset("assets/images/swiirl.png"),
-                        SizedBox(
+                        const SizedBox(
                           height: 50,
                         ),
                         SizedBox(
-                          height: 100,
-                          width: 100,
+                          height: 120,
+                          width: 120,
                           child: IconButton(
                               onPressed: () {
                                 Navigator.pushNamed(context, "/getStarted");
@@ -37,17 +36,20 @@ class WelcomeWidget extends StatelessWidget {
                               icon: SizedBox(
                                 height: 100,
                                 width: 100,
-                                child:
-                                    SvgPicture.asset("assets/svg/Next.svg"),
+                                child: SvgPicture.asset("assets/svg/Next.svg"),
                               )),
                         ),
-                        SizedBox(
-                          height: 80,
+                        const SizedBox(
+                          height: 30,
                         ),
-                        Align(alignment: Alignment.bottomCenter,child:
-                        Text('Artfully Funding the Future',
-                            style: TextStyle(color: Colors.white)),
-),
+                        const Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Text('Artfully Funding the Future',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
                       ]),
                 )
               ],
