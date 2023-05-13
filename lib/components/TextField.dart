@@ -46,7 +46,7 @@ Widget TextFieldWidget(
                               : Container(),
                           IconButton(
                               onPressed: () {},
-                              icon: SvgPicture.asset("assets/svg/eye.svg"))
+                              icon: SvgPicture.asset("assets/svg/Eye.svg"))
                         ])
                   : Container(
                       width: 0,
@@ -208,7 +208,7 @@ Widget PasswordFieldWidget(
                         onPressed: () {
                           changeVisiblity();
                         },
-                        icon: SvgPicture.asset("assets/svg/eye.svg"))
+                        icon: SvgPicture.asset("assets/svg/Eye.svg"))
                   ]),
               border: const OutlineInputBorder(
                   borderRadius: BorderRadius.zero,
