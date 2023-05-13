@@ -82,6 +82,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       ),
       AccountWidget(
         UserId: UserId["UserId"],
+        message: UserId["message"],
       )
     ];
     return Scaffold(
@@ -93,7 +94,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
                   ? IconButton(
                       onPressed: () {
                         Navigator.pushNamed(context, '/update-profile',
-                            arguments: {"UserId": UserId["UserId"]});
+                            arguments: {"UserId": UserId["UserId"],"message" : UserId["message"]});
                       },
                       icon: SizedBox(
                         height: 20,
@@ -106,7 +107,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
                 onPressed: () {
                   print("aaaaaaa");
                   Navigator.pushNamed(context, "/app",
-                      arguments: {"UserId": UserId["UserId"]});
+                      arguments: {"UserId": UserId["UserId"],"message" : UserId["message"]});
                 },
                 icon: SvgPicture.asset("assets/svg/Vector.svg")),
             backgroundColor: Colors.white,
@@ -144,8 +145,9 @@ class _HomeWidgetState extends State<HomeWidget> {
 
 //ACCOUNT WIDGET
 class AccountWidget extends StatefulWidget {
+  final String message;
   final String UserId;
-  const AccountWidget({super.key, required this.UserId});
+  const AccountWidget({super.key, required this.UserId, required this.message});
 
   @override
   State<AccountWidget> createState() => _AccountWidgetState();
@@ -196,7 +198,7 @@ class _AccountWidgetState extends State<AccountWidget> {
             ))
         : FractionallySizedBox(
             alignment: Alignment.topCenter,
-            heightFactor: .3,
+            heightFactor: .4,
             child: Container(
               padding: EdgeInsets.only(left: 40, right: 40, top: 30),
               child: Column(
@@ -213,9 +215,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                         Column(
                           children: [
                             Text("0",
-                                style: TextStyle(fontWeight: FontWeight.w300)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700, fontSize: 18)),
                             Text(
-                              "0",
+                              "Collectibles",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: Color.fromRGBO(183, 183, 183, 1)),
@@ -226,7 +229,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                           children: [
                             Text(
                               "0",
-                              style: TextStyle(fontWeight: FontWeight.w300),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 18),
                             ),
                             Text(
                               'Money Raised',
@@ -239,7 +243,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                         Column(
                           children: [
                             Text("0",
-                                style: TextStyle(fontWeight: FontWeight.w300)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700, fontSize: 18)),
                             Text('collectiables',
                                 style: TextStyle(
                                     fontSize: 12,
@@ -269,7 +274,17 @@ class _AccountWidgetState extends State<AccountWidget> {
                     ),
                     Align(
                       alignment: Alignment.bottomLeft,
-                      child: Text(bio),
+                      child: bio.length == 0
+                          ? TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/update-profile',
+                                    arguments: {"UserId": widget.UserId});
+                              },
+                              child: Text(
+                                "Add Bio",
+                                style: TextStyle(color: Colors.black),
+                              ))
+                          : Text(bio),
                     ),
                   ]),
             ));

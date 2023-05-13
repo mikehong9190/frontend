@@ -240,7 +240,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
           RegisteredUserResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200)
         Navigator.pushNamed(context, '/app',
-            arguments: {"UserId": jsonData.data.id});
+            arguments: {"UserId": jsonData.data.id,"message" : jsonData.message});
       print(jsonDecode(response.body));
     } catch (error) {
       print(error);
