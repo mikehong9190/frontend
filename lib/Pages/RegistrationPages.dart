@@ -151,7 +151,7 @@ Widget SecondPageWidget(
         ),
         PasswordFieldWidget("Password", controller1, isPasswordHidden,
             isPasswordValid, true, checkPasswordVisiblity),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         PasswordFieldWidget(
@@ -161,7 +161,7 @@ Widget SecondPageWidget(
             arePasswordsEqual,
             true,
             checkConfirmPasswordVisiblity),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         SizedBox(
@@ -191,8 +191,8 @@ Widget SecondPageWidget(
                             borderRadius: BorderRadius.circular(30.0)))),
                 onPressed: () {
                   onNext();
-                  print(controller1.text);
-                  print(controller2.text);
+                  // print(controller1.text);
+                  // print(controller2.text);
                 },
                 child: const Text("Next"),
               )),

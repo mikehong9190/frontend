@@ -12,7 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import '../model/responses.dart';
 
 class UpdateProfileWidget extends StatefulWidget {
-  UpdateProfileWidget({super.key});
+  const UpdateProfileWidget({super.key});
 
   @override
   State<UpdateProfileWidget> createState() => _UpdateProfileWidgetState();
@@ -105,7 +105,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile'),
           body: payload);
-      print(response.body);
+      // print(response.body);
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/app",
             arguments: {"UserId": id, "message": "User updated Successfully"});
@@ -129,7 +129,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
-        print("---------------------");
+        // print("---------------------");
         print(response.body);
         setState(() async {
           emailId = jsonData.email;

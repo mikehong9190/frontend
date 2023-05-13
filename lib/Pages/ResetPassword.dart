@@ -1,16 +1,15 @@
-import 'package:google_sign_in/google_sign_in.dart';
-
-import '../model/responses.dart';
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:frontend/Pages/RegistrationPages.dart';
-import 'package:frontend/Pages/login.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:im_stepper/main.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:frontend/Pages/RegistrationPages.dart';
+// import 'package:frontend/Pages/login.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:im_stepper/main.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
+
+// import '../model/responses.dart';
 import 'package:http/http.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/components/TextField.dart';
 
 class ResetPasswordWidget extends StatefulWidget {
@@ -22,8 +21,8 @@ class ResetPasswordWidget extends StatefulWidget {
 
 class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
   late var isVerified = false;
-  late var emailId;
-  late var userId;
+  late var emailId = '';
+  late var userId = '';
   late var isVerifyingOtp = false;
   late var isNewPasswordHidden = true;
   late var isNewPasswordValid = false;
@@ -52,7 +51,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
       );
     });
     newPasswordController.addListener(() {
-      print("newPasswordController.text");
+      // print("newPasswordController.text");
       setState(
         () {
           if (newPasswordController.text.length > 8 &&
@@ -66,7 +65,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
             });
           }
 
-          if (newPasswordController.text.length > 0 &&
+          if (newPasswordController.text.isNotEmpty &&
               newPasswordController.text == confirmNewPasswordController.text) {
             setState(() {
               arePasswordSame = true;
@@ -106,7 +105,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
     if (response.statusCode == 200) {
       Navigator.pushNamed(context, "/app", arguments: {"UserId": userId});
     }
-    print(response.statusCode);
+    // print(response.statusCode);
     print(response.body);
   }
 
@@ -120,16 +119,17 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
         "requestType": "reset-password",
         "otp": otp
       };
-      print(payload);
+      // print(payload);
       final response = await post(
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/verify-otp'),
           body: jsonEncode(payload));
       print(response.body);
-      if (response.statusCode == 200)
+      if (response.statusCode == 200) {
         setState(() {
           isVerified = true;
         });
+      }
     } catch (error) {
       print(error);
     } finally {
@@ -146,7 +146,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
   }
 
   void checkConfirmPasswordVisibility() async {
-    print("EveryT");
+    // print("EveryT");
     setState(() {
       isConfirmNewPasswordHidden = !isConfirmNewPasswordHidden;
     });
@@ -160,21 +160,21 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Align(
+          const Align(
               alignment: Alignment.center,
               child: Text(
                 "Reset Password",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
               )),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Align(
+          const Align(
             alignment: Alignment.center,
             child: Text("This is used to build your profile on swiirl",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextFieldWidget("OTP", otpController, false, null, true),
@@ -185,7 +185,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                     verifyOtpForPasswordReset(emailId, otpController.text);
                   },
             child: isVerifyingOtp
-                ? Container(
+                ? const SizedBox(
                     width: 20,
                     height: 20,
                     child: CircularProgressIndicator(
@@ -196,7 +196,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                     "Verify OTP",
                     style: TextStyle(
                         color: !isVerified
-                            ? Color.fromRGBO(54, 189, 151, 1)
+                            ? const Color.fromRGBO(54, 189, 151, 1)
                             : Colors.blueGrey),
                   ),
           ),
@@ -216,7 +216,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                 arePasswordSame,
                 true,
                 checkConfirmPasswordVisibility),
-          SizedBox(
+          const SizedBox(
             height: 60,
           ),
           ButtonTheme(
@@ -224,10 +224,9 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                 height: 50,
                 width: 350,
                 child: ElevatedButton(
-                  child: Text("Next"),
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                          Color.fromRGBO(54, 189, 151, 1)),
+                          const Color.fromRGBO(54, 189, 151, 1)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)))),
@@ -236,6 +235,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                           resetPassword();
                         }
                       : null,
+                  child: const Text("Next"),
                 )),
           ),
         ],
