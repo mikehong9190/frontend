@@ -83,7 +83,7 @@ Widget SearchTextFieldWidget(
           height: 50,
           width: double.infinity,
           child: TypeAheadField(
-              textFieldConfiguration: TextFieldConfiguration
+              textFieldConfiguration: TextFieldConfiguration (
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black)),
