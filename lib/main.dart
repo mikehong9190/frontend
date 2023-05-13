@@ -29,13 +29,13 @@ class MyApp extends StatelessWidget {
         // home: MyStateFulWidget(),
         initialRoute: '/',
         routes: {
-          '/': (context) => WelcomeWidget(),
-          '/getStarted': (context) => GettingStartedWidget(),
+          '/': (context) => const WelcomeWidget(),
+          '/getStarted': (context) => const GettingStartedWidget(),
           '/registration': (context) => const RegistrationWidget(),
           '/app': (context) => const MyStateFulWidget(),
           '/update-profile': (context) => UpdateProfileWidget(),
           '/google-auth-school': (context) => const GoogleAuthWidget(),
-          '/reset-password' : (context) => const ResetPasswordWidget()
+          '/reset-password': (context) => const ResetPasswordWidget()
         });
   }
 }
@@ -43,19 +43,19 @@ class MyApp extends StatelessWidget {
 Widget SetupInitiativeWidget(value12) {
   return Center(
     child: Column(children: [
-      Text(
+      const Text(
         "Set up your initiative",
         style: TextStyle(fontSize: 24),
       ),
-      SizedBox(
+      const SizedBox(
         height: 20,
       ),
-      SizedBox(
+      const SizedBox(
         height: 30,
         width: 350,
         child: Text("What are you fundraising for"),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
       SizedBox(
@@ -63,7 +63,7 @@ Widget SetupInitiativeWidget(value12) {
         child: Column(children: [
           ListTile(
             title: const Text('Computer Lab Equipment'),
-            leading: Icon(Icons.adobe_rounded),
+            leading: const Icon(Icons.adobe_rounded),
             trailing: Radio<SingingCharacter>(
                 value: SingingCharacter.lafayette,
                 groupValue: value12,
@@ -73,7 +73,7 @@ Widget SetupInitiativeWidget(value12) {
           ),
           ListTile(
             title: const Text('Science Lab Equipment'),
-            leading: Icon(Icons.adobe_rounded),
+            leading: const Icon(Icons.adobe_rounded),
             trailing: Radio<SingingCharacter>(
                 value: SingingCharacter.lafayette,
                 groupValue: value12,
@@ -83,7 +83,7 @@ Widget SetupInitiativeWidget(value12) {
           ),
           ListTile(
             title: const Text('Art Supplies'),
-            leading: Icon(Icons.adobe_rounded),
+            leading: const Icon(Icons.adobe_rounded),
             trailing: Radio<SingingCharacter>(
                 value: SingingCharacter.lafayette,
                 groupValue: value12,
@@ -91,7 +91,7 @@ Widget SetupInitiativeWidget(value12) {
                   print("asdadd");
                 }),
           ),
-          SizedBox(
+          const SizedBox(
               height: 50,
               width: 350,
               child: TextField(
@@ -118,10 +118,10 @@ Widget SetupInitiativeWidget(value12) {
               height: 50,
               width: 350,
               child: ElevatedButton(
-                child: Text("Next"),
+                child: const Text("Next"),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
-                        Color.fromRGBO(54, 189, 151, 1)),
+                        const Color.fromRGBO(54, 189, 151, 1)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18.0)))),

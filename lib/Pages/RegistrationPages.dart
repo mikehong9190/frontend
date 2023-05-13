@@ -11,107 +11,115 @@ import '../model/responses.dart';
 
 Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
     isLoading, isOtpSend) {
-  return Center(
-      child:
-          Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-    const Align(
-      alignment: Alignment.topLeft,
-      child: Text(
-        "Enter your email address",
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-      ),
-    ),
-    const SizedBox(
-      height: 20,
-    ),
-    const SizedBox(
-      width: double.infinity,
-      child: Text(
-        "Sign in with our email. If you don’t have a swiirl account yet, we’ll get one set up.",
-        style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: Color.fromRGBO(132, 143, 172, 1)),
-      ),
-    ),
-    const SizedBox(
-      height: 20,
-    ),
-    const SizedBox(
-      height: 20,
-    ),
-    TextFieldWidget("Your Email", controller, false, null, !isOtpSend),
-    const SizedBox(
-      height: 10,
-    ),
-    if (isOtpSend) TextFieldWidget("OTP", otpController, false, null, true),
-    const SizedBox(
-      height: 10,
-    ),
-    if (statusCode == 200 || statusCode == 400)
-      SizedBox(
-          height: 20,
-          child: Text(
-            message,
-            style:
-                TextStyle(color: statusCode == 200 ? Colors.green : Colors.red),
-          )),
-    const SizedBox(
-      height: 20,
-    ),
-    Align(
-      alignment: Alignment.center,
-      child: ButtonTheme(
-        child: SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                      const Color.fromRGBO(54, 189, 151, 1)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50.0)))),
-              onPressed: controller.text.contains("@")
-                  ? () {
-                      onNext();
-                    }
-                  : null,
-              child: !isLoading
-                  ? const Text("Next")
-                  : const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                      ),
-                    ),
-            )),
-      ),
-    ),
-    const SizedBox(
-      height: 20,
-    ),
-    const Align(
-        alignment: Alignment.topCenter,
-        child: SizedBox(
-          height: 30,
-          child: Text('OR'),
-        )),
-    const OAuthButtonWidget(content: "Continue with Google", iconUrl: "Google"),
-    // OAuthButtonWidget("Continue with Facebook", "Facebook"),
-    // OAuthButtonWidget("Continue with Apple", "Apple"),
-    const SizedBox(
-      height: 30,
-    ),
-    SizedBox(
-      width: double.infinity,
-      child: Align(
-        alignment: Alignment.bottomLeft,
-        child: Image.asset("assets/images/swiirl-S-Mark-Aqua-Dot 4.png"),
-      ),
-    )
-  ]));
+  return SizedBox(
+      height: double.infinity,
+      child: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+            const Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Enter your email address",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const SizedBox(
+              width: double.infinity,
+              child: Text(
+                "Sign in with our email. If you don’t have a swiirl account yet, we’ll get one set up.",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromRGBO(132, 143, 172, 1)),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextFieldWidget("Your Email", controller, false, null, !isOtpSend),
+            const SizedBox(
+              height: 10,
+            ),
+            if (isOtpSend)
+              TextFieldWidget("OTP", otpController, false, null, true),
+            const SizedBox(
+              height: 10,
+            ),
+            if (statusCode == 200 || statusCode == 400)
+              SizedBox(
+                  height: 20,
+                  child: Text(
+                    message,
+                    style: TextStyle(
+                        color: statusCode == 200 ? Colors.green : Colors.red),
+                  )),
+            const SizedBox(
+              height: 20,
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: ButtonTheme(
+                child: SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color.fromRGBO(54, 189, 151, 1)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(50.0)))),
+                      onPressed: controller.text.contains("@")
+                          ? () {
+                              onNext();
+                            }
+                          : null,
+                      child: !isLoading
+                          ? const Text("Next")
+                          : const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            ),
+                    )),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Align(
+                alignment: Alignment.topCenter,
+                child: SizedBox(
+                  height: 30,
+                  child: Text('OR'),
+                )),
+            const OAuthButtonWidget(
+                content: "Continue with Google", iconUrl: "Google"),
+            // OAuthButtonWidget("Continue with Facebook", "Facebook"),
+            // OAuthButtonWidget("Continue with Apple", "Apple"),
+            const SizedBox(
+              height: 30,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child:
+                    Image.asset("assets/images/swiirl-S-Mark-Aqua-Dot 4.png"),
+              ),
+            )
+          ])));
 }
 
 Widget SecondPageWidget(

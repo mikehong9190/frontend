@@ -60,14 +60,15 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       return [];
     }
   }
-  void checkPasswordVisiblity () async {
+
+  void checkPasswordVisiblity() async {
     setState(() {
       isPasswordHidden = !isPasswordHidden;
     });
   }
 
-  void checkConfirmPasswordVisibility () async {
-       setState(() {
+  void checkConfirmPasswordVisibility() async {
+    setState(() {
       isConfirmPasswordHidden = !isConfirmPasswordHidden;
     });
   }
@@ -260,12 +261,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
   List<Step> getSteps() => [
         Step(
-            title: Text(''),
+            title: const Text(''),
             content: FirstPageWidget(emailController, checkEmailAndChangeStep,
                 message, statusCode, otpController, isLoading, isOtpSend),
             isActive: currentStep >= 0),
         Step(
-            title: Text(''),
+            title: const Text(''),
             content: SecondPageWidget(
                 passwordController,
                 confirmPasswordController,
@@ -279,7 +280,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                 checkConfirmPasswordVisibility),
             isActive: currentStep >= 1),
         Step(
-            title: Text(''),
+            title: const Text(''),
             content: ThirdPageWidget(
                 firstNameController,
                 lastNameController,
@@ -349,9 +350,9 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         body: Theme(
             data: ThemeData(
                 primarySwatch: Colors.blue,
-                colorScheme: ColorScheme.light(primary: Colors.black)),
+                colorScheme: const ColorScheme.light(primary: Colors.black)),
             child: Padding(
-                padding: EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 20),
                 child: Stepper(
                   controlsBuilder: (context, details) {
                     return Container();

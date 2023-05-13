@@ -53,6 +53,7 @@ android {
         versionName flutterVersionName
     }
 
+
     signingConfigs {
         debug {
             keyAlias 'uploadkeystore1'
