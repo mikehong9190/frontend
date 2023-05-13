@@ -2,10 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
-
 import '../model/responses.dart';
 
 class MyStateFulWidget extends StatefulWidget {
@@ -94,7 +92,8 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
               _currentIndex == 3
                   ? IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/update-profile',arguments: {"UserId" : UserId["UserId"]});
+                        Navigator.pushNamed(context, '/update-profile',
+                            arguments: {"UserId": UserId["UserId"]});
                       },
                       icon: SizedBox(
                         height: 20,
@@ -105,8 +104,9 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
             ],
             leading: IconButton(
                 onPressed: () {
-                  print ("aaaaaaa");
-                  Navigator.pushNamed(context, "/app", arguments: {"UserId": UserId["UserId"]});
+                  print("aaaaaaa");
+                  Navigator.pushNamed(context, "/app",
+                      arguments: {"UserId": UserId["UserId"]});
                 },
                 icon: SvgPicture.asset("assets/svg/Vector.svg")),
             backgroundColor: Colors.white,
@@ -153,7 +153,7 @@ class AccountWidget extends StatefulWidget {
 
 class _AccountWidgetState extends State<AccountWidget> {
   bool isLoading = false;
-  late String name ;
+  late String name;
   late String location;
   late String bio;
 
