@@ -52,7 +52,7 @@ Widget TextFieldWidget(
                   : Container(
                       width: 0,
                     ),
-              border: OutlineInputBorder(
+              border: const OutlineInputBorder(
                   borderRadius: BorderRadius.zero,
                   borderSide: BorderSide(color: Colors.black)),
               hintText: !isPassword ? label : "**********",
@@ -85,7 +85,7 @@ Widget SearchTextFieldWidget(
           width: double.infinity,
           child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black)),
                   // hintText: 'Enter a search term',
@@ -138,7 +138,7 @@ Widget SchoolSearchFieldWidget(
           width: double.infinity,
           child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black)),
                   // hintText: 'Enter a search term',
@@ -181,9 +181,9 @@ Widget PasswordFieldWidget(
             alignment: AlignmentDirectional.bottomStart,
             child: Text(label,
                 textAlign: TextAlign.left,
-                style: TextStyle(fontWeight: FontWeight.w500))),
+                style: const TextStyle(fontWeight: FontWeight.w500))),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
       SizedBox(
@@ -208,7 +208,7 @@ Widget PasswordFieldWidget(
                         },
                         icon: SvgPicture.asset("assets/svg/eye.svg"))
                   ]),
-              border: OutlineInputBorder(
+              border: const OutlineInputBorder(
                   borderRadius: BorderRadius.zero,
                   borderSide: BorderSide(color: Colors.black)),
               hintText: !isPassword ? label : "**********",
