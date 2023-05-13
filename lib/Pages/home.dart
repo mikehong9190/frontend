@@ -94,7 +94,10 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
                   ? IconButton(
                       onPressed: () {
                         Navigator.pushNamed(context, '/update-profile',
-                            arguments: {"UserId": UserId["UserId"],"message" : UserId["message"]});
+                            arguments: {
+                              "UserId": UserId["UserId"],
+                              "message": UserId["message"]
+                            });
                       },
                       icon: SizedBox(
                         height: 20,
@@ -106,8 +109,10 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
             leading: IconButton(
                 onPressed: () {
                   print("aaaaaaa");
-                  Navigator.pushNamed(context, "/app",
-                      arguments: {"UserId": UserId["UserId"],"message" : UserId["message"]});
+                  Navigator.pushNamed(context, "/app", arguments: {
+                    "UserId": UserId["UserId"],
+                    "message": UserId["message"]
+                  });
                 },
                 icon: SvgPicture.asset("assets/svg/Vector.svg")),
             backgroundColor: Colors.white,
@@ -158,6 +163,9 @@ class _AccountWidgetState extends State<AccountWidget> {
   late String name;
   late String location;
   late String bio;
+  late int goalsMets = 0;
+  late int moneyRaised = 0;
+  late int collectiables = 0;
 
   @override
   void initState() {
@@ -177,6 +185,10 @@ class _AccountWidgetState extends State<AccountWidget> {
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
         print(response.body);
         setState(() {
+          collectiables =
+              jsonData.collectibles == null ? 0 : jsonData.collectibles;
+          goalsMets = jsonData.goalsMet == null ? 0 : jsonData.goalsMet;
+          moneyRaised = jsonData.moneyRaised == null ? 0 : jsonData.moneyRaised;
           name = '${jsonData.firstName} ${jsonData.lastName}';
           location = jsonData.schoolDistrict;
           isLoading = false;
@@ -214,7 +226,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ),
                         Column(
                           children: [
-                            Text("0",
+                            Text(collectiables.toString(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w700, fontSize: 18)),
                             Text(
@@ -228,7 +240,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                         Column(
                           children: [
                             Text(
-                              "0",
+                              "${moneyRaised}",
                               style: TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 18),
                             ),
@@ -242,10 +254,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ),
                         Column(
                           children: [
-                            Text("0",
+                            Text(goalsMets.toString(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w700, fontSize: 18)),
-                            Text('collectiables',
+                            Text('Goals Mets',
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: Color.fromRGBO(183, 183, 183, 1)))
@@ -278,7 +290,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                           ? TextButton(
                               onPressed: () {
                                 Navigator.pushNamed(context, '/update-profile',
-                                    arguments: {"UserId": widget.UserId,"message" : widget.message});
+                                    arguments: {
+                                      "UserId": widget.UserId,
+                                      "message": widget.message
+                                    });
                               },
                               child: Text(
                                 "Add Bio",

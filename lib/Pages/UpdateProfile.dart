@@ -27,7 +27,6 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   bool isOtpSend = false;
   bool isOtpVerified = false;
   bool isSendingOtp = false;
-  // ignore: non_constant_identifier_names
   late String userId;
   late String message;
   late String emailId;
@@ -130,7 +129,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
         print("---------------------");
-        setState(() {
+        print (response.body);
+        setState(() async {
           emailId = jsonData.email;
           firstNameController.text = jsonData.firstName;
           lastNameController.text = jsonData.lastName;
