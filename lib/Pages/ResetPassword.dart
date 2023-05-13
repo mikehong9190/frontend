@@ -103,7 +103,10 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
             'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/reset-password'),
         body: jsonEncode(payload));
     if (response.statusCode == 200) {
-      Navigator.pushNamed(context, "/app", arguments: {"UserId": userId});
+      Navigator.pushNamed(context, "/app", arguments: {
+        "UserId": userId,
+        "message": "Password updated successfully"
+      });
     }
     // print(response.statusCode);
     print(response.body);
@@ -155,7 +158,8 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
   @override
   build(context) {
     return Scaffold(
-        body: Center(
+        body: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -222,7 +226,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
           ButtonTheme(
             child: SizedBox(
                 height: 50,
-                width: 350,
+                width: double.infinity,
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
