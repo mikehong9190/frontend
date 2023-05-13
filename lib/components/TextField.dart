@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:textfield_search/textfield_search.dart';
 import '../model/responses.dart';
@@ -83,7 +84,7 @@ Widget SearchTextFieldWidget(
           height: 50,
           width: double.infinity,
           child: TypeAheadField(
-              textFieldConfiguration: TextFieldConfiguration
+              textFieldConfiguration: TextFieldConfiguration(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black)),
