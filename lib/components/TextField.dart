@@ -5,7 +5,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:textfield_search/textfield_search.dart';
 import '../model/responses.dart';
 
-Widget TextFieldWidget(label, controller, isPassword, isValid, isEnabled) {
+Widget TextFieldWidget(
+  label,
+  controller,
+  isPassword,
+  isValid,
+  isEnabled,
+) {
   // final String label;
   // TextFieldWidget ({super.key,required this.label,});
   return Column(
@@ -46,7 +52,9 @@ Widget TextFieldWidget(label, controller, isPassword, isValid, isEnabled) {
                   : Container(
                       width: 0,
                     ),
-              border: OutlineInputBorder(borderRadius: BorderRadius.zero),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.zero,
+                  borderSide: BorderSide(color: Colors.black)),
               hintText: !isPassword ? label : "**********",
             ),
           )),
@@ -78,7 +86,8 @@ Widget SearchTextFieldWidget(
           child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black)),
                   // hintText: 'Enter a search term',
                 ),
                 controller: controller,
@@ -130,7 +139,8 @@ Widget SchoolSearchFieldWidget(
           child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black)),
                   // hintText: 'Enter a search term',
                 ),
                 controller: controller,
@@ -152,8 +162,58 @@ Widget SchoolSearchFieldWidget(
                   )),
               onSuggestionSelected: (school) {
                 final schoolData = school!;
-                clickOnSchool(schoolData.id,schoolData.name, controller);
+                clickOnSchool(schoolData.id, schoolData.name, controller);
               })),
+    ],
+  );
+}
+
+Widget PasswordFieldWidget(
+    label, controller, isPassword, isValid, isEnabled, changeVisiblity) {
+  // final String label;
+  // TextFieldWidget ({super.key,required this.label,});
+  return Column(
+    children: [
+      SizedBox(
+        height: 30,
+        width: 350,
+        child: Align(
+            alignment: AlignmentDirectional.bottomStart,
+            child: Text(label,
+                textAlign: TextAlign.left,
+                style: TextStyle(fontWeight: FontWeight.w500))),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      SizedBox(
+          height: 50,
+          width: 350,
+          child: TextField(
+            enabled: isEnabled,
+            controller: controller,
+            obscureText: isPassword,
+            decoration: InputDecoration(
+              suffixIcon: Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween, // added line
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    isValid
+                        ? SvgPicture.asset("assets/svg/check.svg")
+                        : Container(),
+                    IconButton(
+                        onPressed: () {
+                          changeVisiblity();
+                        },
+                        icon: SvgPicture.asset("assets/svg/eye.svg"))
+                  ]),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.zero,
+                  borderSide: BorderSide(color: Colors.black)),
+              hintText: !isPassword ? label : "**********",
+            ),
+          )),
     ],
   );
 }

@@ -107,8 +107,17 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
   ]));
 }
 
-Widget SecondPageWidget(controller1, controller2, onNext, message,
-    isPasswordValid, arePasswordsEqual) {
+Widget SecondPageWidget(
+    controller1,
+    controller2,
+    onNext,
+    message,
+    isPasswordValid,
+    arePasswordsEqual,
+    isPasswordHidden,
+    isConfirmPasswordHidden,
+    checkPasswordVisiblity,
+    checkConfirmPasswordVisiblity) {
   return Center(
     child: Column(
       children: [
@@ -126,12 +135,18 @@ Widget SecondPageWidget(controller1, controller2, onNext, message,
           child: Text("Must be 8 character or longer",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
         ),
-        TextFieldWidget("Password", controller1, true, isPasswordValid, true),
+        PasswordFieldWidget("Password", controller1, isPasswordHidden,
+            isPasswordValid, true, checkPasswordVisiblity),
         SizedBox(
           height: 10,
         ),
-        TextFieldWidget(
-            "Confirm New Password", controller2, true, arePasswordsEqual, true),
+        PasswordFieldWidget(
+            "Confirm New Password",
+            controller2,
+            isConfirmPasswordHidden,
+            arePasswordsEqual,
+            true,
+            checkConfirmPasswordVisiblity),
         SizedBox(
           height: 10,
         ),
@@ -351,9 +366,8 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-school-details'),
           body: jsonEncode(payload));
       print(response.body);
-      if (response.statusCode == 200)
-        print ("dksjfdf");
-        Navigator.pushNamed(context, '/app', arguments: {"UserId": userId});
+      if (response.statusCode == 200) print("dksjfdf");
+      Navigator.pushNamed(context, '/app', arguments: {"UserId": userId});
       print(jsonDecode(response.body));
     } catch (error) {
       print(error);
