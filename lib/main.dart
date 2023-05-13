@@ -10,6 +10,7 @@ import 'Pages/Registration.dart';
 import 'Pages/login.dart';
 import 'Pages/UpdateProfile.dart';
 import 'Pages/RegistrationPages.dart';
+import 'Pages/ResetPassword.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
           '/app': (context) => const MyStateFulWidget(),
           '/update-profile': (context) => UpdateProfileWidget(),
           '/google-auth-school': (context) => const GoogleAuthWidget(),
+          '/reset-password' : (context) => const ResetPasswordWidget()
         });
   }
 }

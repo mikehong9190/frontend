@@ -114,8 +114,17 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
   ]));
 }
 
-Widget SecondPageWidget(controller1, controller2, onNext, message,
-    isPasswordValid, arePasswordsEqual) {
+Widget SecondPageWidget(
+    controller1,
+    controller2,
+    onNext,
+    message,
+    isPasswordValid,
+    arePasswordsEqual,
+    isPasswordHidden,
+    isConfirmPasswordHidden,
+    checkPasswordVisiblity,
+    checkConfirmPasswordVisiblity) {
   return Center(
     child: Column(
       children: [
@@ -140,13 +149,19 @@ Widget SecondPageWidget(controller1, controller2, onNext, message,
         const SizedBox(
           height: 30,
         ),
-        TextFieldWidget("Password", controller1, true, isPasswordValid, true),
-        const SizedBox(
+        PasswordFieldWidget("Password", controller1, isPasswordHidden,
+            isPasswordValid, true, checkPasswordVisiblity),
+        SizedBox(
           height: 10,
         ),
-        TextFieldWidget(
-            "Confirm New Password", controller2, true, arePasswordsEqual, true),
-        const SizedBox(
+        PasswordFieldWidget(
+            "Confirm New Password",
+            controller2,
+            isConfirmPasswordHidden,
+            arePasswordsEqual,
+            true,
+            checkConfirmPasswordVisiblity),
+        SizedBox(
           height: 10,
         ),
         SizedBox(

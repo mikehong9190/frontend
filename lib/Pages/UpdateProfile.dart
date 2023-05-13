@@ -21,6 +21,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   bool isLoading = false;
   bool isOtpSend = false;
   bool isOtpVerified = false;
+  bool isSendingOtp = false;
   // ignore: non_constant_identifier_names
   late String userId;
   late String emailId;
@@ -48,39 +49,27 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
 
   void sendOtpForPasswordReset(email) async {
     try {
+      setState(
+        () {
+          isSendingOtp = true;
+        },
+      );
       final payload = {"emailId": email, "requestType": "reset-password"};
-
       final response = await post(
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/send-otp'),
           body: jsonEncode(payload));
       if (response.statusCode == 200)
-        setState(() {
-          isOtpSend = true;
-        });
+        Navigator.pushNamed(context, "/reset-password",
+            arguments: {"emailId": email, "userId": userId});
     } catch (error) {
       print(error);
-    }
-  }
-
-  void verifyOtpForPasswordReset(email, otp) async {
-    try {
-      final payload = {
-        "emailId": email,
-        "requestType": "reset-password",
-        "otp": otp
-      };
-      final response = await post(
-          Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/verify-otp'),
-          body: jsonEncode(payload));
-      print(response.body);
-      if (response.statusCode == 200)
-        setState(() {
-          isOtpVerified = true;
-        });
-    } catch (error) {
-      print(error);
+    } finally {
+      setState(
+        () {
+          isSendingOtp = false;
+        },
+      );
     }
   }
 
@@ -173,6 +162,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                       height: 80,
                       width: 350,
                       child: TextField(
+                        maxLines: 10,
                         enabled: true,
                         controller: bioController,
                         obscureText: false,
@@ -205,23 +195,26 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
               SizedBox(
                 height: 10,
               ),
-              // TextButton(
-              //     onPressed: () {
-              //       sendOtpForPasswordReset(emailId);
-              //     },
-              //     child: Text("Reset Password")),
-              // if (isOtpSend)
-              //   TextFieldWidget("OTP", otpController, false, null, true),
-              // if (isOtpSend)
-              //   TextButton(
-              //       onPressed: () {
-              //         verifyOtpForPasswordReset(emailId, otpController.text);
-              //       },
-              //       child: Text("Verify OTP")),
-              // if (isOtpVerified)
-              //   SizedBox(
-              //     height: 40,
-              //   ),
+              TextButton(
+                  onPressed: () {
+                    sendOtpForPasswordReset(emailId);
+                  },
+                  child: isSendingOtp
+                      ? Container(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.black,
+                          ),
+                        )
+                      : Text(
+                          "Reset Password",
+                          style:
+                              TextStyle(color: Color.fromRGBO(54, 189, 151, 1)),
+                        )),
+              SizedBox(
+                height: 40,
+              ),
               ButtonTheme(
                 child: SizedBox(
                     height: 50,

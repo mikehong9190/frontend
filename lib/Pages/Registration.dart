@@ -28,6 +28,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   late var schoolId = '';
   late var isLoading = false;
   late var isAgreed = false;
+  late var isPasswordHidden = true;
+  late var isConfirmPasswordHidden = true;
   final otpController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -57,6 +59,17 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       print(error);
       return [];
     }
+  }
+  void checkPasswordVisiblity () async {
+    setState(() {
+      isPasswordHidden = !isPasswordHidden;
+    });
+  }
+
+  void checkConfirmPasswordVisibility () async {
+       setState(() {
+      isConfirmPasswordHidden = !isConfirmPasswordHidden;
+    });
   }
 
   Future<List<School>> getSchools(String query) async {
@@ -259,7 +272,11 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                 checkPasswordAndChangeStep,
                 message,
                 isPasswordValid,
-                arePasswordsEqual),
+                arePasswordsEqual,
+                isPasswordHidden,
+                isConfirmPasswordHidden,
+                checkPasswordVisiblity,
+                checkConfirmPasswordVisibility),
             isActive: currentStep >= 1),
         Step(
             title: Text(''),
