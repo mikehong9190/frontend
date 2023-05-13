@@ -278,7 +278,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                           ? TextButton(
                               onPressed: () {
                                 Navigator.pushNamed(context, '/update-profile',
-                                    arguments: {"UserId": widget.UserId});
+                                    arguments: {"UserId": widget.UserId,"message" : widget.message});
                               },
                               child: Text(
                                 "Add Bio",
