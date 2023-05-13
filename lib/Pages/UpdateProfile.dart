@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +7,7 @@ import 'package:frontend/components/TextField.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../model/responses.dart';
 
@@ -17,22 +19,36 @@ class UpdateProfileWidget extends StatefulWidget {
 }
 
 class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
+  File? _image;
+  PickedFile? _pickedFile;
   bool firstLoad = true;
+  bool isProfileUpdating = false;
   bool isLoading = false;
   bool isOtpSend = false;
   bool isOtpVerified = false;
   bool isSendingOtp = false;
-  // ignore: non_constant_identifier_names
   late String userId;
+  late String message;
   late String emailId;
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final bioController = TextEditingController();
   final otpController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<void> _pickImage() async {
+    final _picker = ImagePicker();
+    _pickedFile =
+        (await _picker.pickImage(source: ImageSource.gallery)) as PickedFile?;
+    if (_pickedFile != null) {
+      setState(() {
+        print(_pickedFile!.path);
+        _image = File(_pickedFile!.path);
+      });
+    }
   }
 
   @override
@@ -42,6 +58,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         <String, dynamic>{}) as Map;
     setState(() {
       userId = UserId["UserId"];
+      message = UserId["message"];
     });
     getUserDetails(UserId["UserId"]);
     // put your logic from initState here
@@ -80,13 +97,24 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       "firstName": firstNameController.text,
       "lastName": lastNameController.text
     };
-    final response = await put(
-        Uri.parse(
-            'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile'),
-        body: payload);
-    print(response.body);
-    if (response.statusCode == 200) {
-      Navigator.pushNamed(context, "/app", arguments: {"UserId": id});
+    try {
+      setState(() {
+        isProfileUpdating = true;
+      });
+      final response = await put(
+          Uri.parse(
+              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile'),
+          body: payload);
+      print(response.body);
+      if (response.statusCode == 200) {
+        Navigator.pushNamed(context, "/app", arguments: {"UserId": id});
+      }
+    } catch (error) {
+      print(error);
+    } finally {
+      setState(() {
+        isProfileUpdating = false;
+      });
     }
   }
 
@@ -101,7 +129,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
         print("---------------------");
-        setState(() {
+        print (response.body);
+        setState(() async {
           emailId = jsonData.email;
           firstNameController.text = jsonData.firstName;
           lastNameController.text = jsonData.lastName;
@@ -110,19 +139,24 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       }
     } catch (error) {
       print(error);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
   @override
   Widget build(context) {
     return Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
             centerTitle: true,
             elevation: 0,
             leading: IconButton(
                 onPressed: () {
                   Navigator.pushNamed(context, "/app",
-                      arguments: {"UserId": userId});
+                      arguments: {"UserId": userId, "message": message});
                 },
                 icon: SvgPicture.asset("assets/svg/Vector.svg")),
             backgroundColor: Colors.white,
@@ -130,117 +164,129 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                 style: TextStyle(
                   color: Colors.black87,
                 ))),
-        body: Center(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-              CircleAvatar(
-                backgroundColor: Colors.amber,
-                radius: 30,
-              ),
-              TextFieldWidget(
-                  "First Name", firstNameController, false, null, true),
-              TextFieldWidget(
-                  "Last Name", lastNameController, false, null, true),
-              // TextFieldWidget("Bio", bioController, false, null, true),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 30,
-                    width: 350,
-                    child: Align(
-                        alignment: AlignmentDirectional.bottomStart,
-                        child: Text("Your Bio",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(fontWeight: FontWeight.w500))),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                      height: 80,
-                      width: 350,
-                      child: TextField(
-                        maxLines: 10,
-                        enabled: true,
-                        controller: bioController,
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          suffixIcon: false
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceBetween, // added line
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                      false
-                                          ? SvgPicture.asset(
-                                              "assets/svg/check.svg")
-                                          : Container(),
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon: SvgPicture.asset(
-                                              "assets/svg/eye.svg"))
-                                    ])
-                              : Container(
-                                  width: 0,
-                                ),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.zero),
-                          hintText: !false ? "Bio" : "**********",
+        body: isLoading
+            ? const Align(
+                alignment: Alignment.center,
+                child: CircularProgressIndicator(
+                  color: Color.fromRGBO(54, 189, 151, 1),
+                ))
+            : Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    const CircleAvatar(
+                      backgroundColor: Colors.amber,
+                      radius: 50,
+                    ),
+                    // GestureDetector(
+                    //   child: Text('Update Profile Pic'),
+                    //   onTap: () => _pickImage(),
+                    // ),
+                    Padding(
+                        padding:
+                            EdgeInsets.only(left: 30, right: 30, bottom: 10),
+                        child: TextFieldWidget("First Name",
+                            firstNameController, false, null, true)),
+                    Padding(
+                        padding: EdgeInsets.only(left: 30, right: 30),
+                        child: TextFieldWidget("Last Name", lastNameController,
+                            false, null, true)),
+                    // TextFieldWidget("Bio", bioController, false, null, true),
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: 30,
+                          width: 350,
+                          child: Align(
+                              alignment: AlignmentDirectional.bottomStart,
+                              child: Text("Your Bio",
+                                  textAlign: TextAlign.left,
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.w500))),
                         ),
-                      )),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              TextButton(
-                  onPressed: () {
-                    sendOtpForPasswordReset(emailId);
-                  },
-                  child: isSendingOtp
-                      ? Container(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            color: Colors.black,
-                          ),
-                        )
-                      : Text(
-                          "Reset Password",
-                          style:
-                              TextStyle(color: Color.fromRGBO(54, 189, 151, 1)),
-                        )),
-              SizedBox(
-                height: 40,
-              ),
-              ButtonTheme(
-                child: SizedBox(
-                    height: 50,
-                    width: 350,
-                    child: ElevatedButton(
-                      child: Container(
-                        child:
-                            // CircularProgressIndicator(
-                            //   color: Colors.white,
-                            // ),
-                            Text('Update Profile'),
-                      ),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Color.fromRGBO(54, 189, 151, 1)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0)))),
-                      onPressed: () {
-                        updateUserDetails(userId);
-                      },
-                    )),
-              )
-            ]))
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                            height: 80,
+                            width: 350,
+                            child: TextField(
+                              maxLines: 10,
+                              enabled: true,
+                              controller: bioController,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.zero,
+                                    borderSide:
+                                        BorderSide(color: Colors.black)),
+                                hintText: "Bio",
+                              ),
+                            )),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    if (message == "Account created successfully!")
+                      TextButton(
+                          onPressed: () {
+                            sendOtpForPasswordReset(emailId);
+                          },
+                          child: isSendingOtp
+                              ? Container(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                  ),
+                                )
+                              : Text(
+                                  "Reset Password",
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(54, 189, 151, 1)),
+                                )),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    ButtonTheme(
+                      child: SizedBox(
+                          height: 50,
+                          width: 350,
+                          child: ElevatedButton(
+                            child: isProfileUpdating
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Container(
+                                    child:
+                                        // CircularProgressIndicator(
+                                        //   color: Colors.white,
+                                        // ),
+                                        Text('Update Profile'),
+                                  ),
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    Color.fromRGBO(54, 189, 151, 1)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0)))),
+                            onPressed: () {
+                              updateUserDetails(userId);
+                            },
+                          )),
+                    )
+                  ]))
         // isLoading
         //   ? Align(
         //       alignment: Alignment.center,r

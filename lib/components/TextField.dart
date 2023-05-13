@@ -55,6 +55,9 @@ Widget TextFieldWidget(
               border: const OutlineInputBorder(
                   borderRadius: BorderRadius.zero,
                   borderSide: BorderSide(color: Colors.black)),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.zero,
+                  borderSide: BorderSide(color: Colors.black)),
               hintText: !isPassword ? label : "**********",
             ),
           )),
