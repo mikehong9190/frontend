@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 import '../model/responses.dart';
+import '../store.dart';
 
 class MyStateFulWidget extends StatefulWidget {
   const MyStateFulWidget({super.key});
@@ -80,10 +82,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
               answers: ["Answer 1 ", "Answer 2"]),
         ],
       ),
-      AccountWidget(
-        UserId: UserId["UserId"],
-        message: UserId["message"],
-      )
+      const AccountWidget()
     ];
     return Scaffold(
         appBar: AppBar(
@@ -150,9 +149,13 @@ class _HomeWidgetState extends State<HomeWidget> {
 
 //ACCOUNT WIDGET
 class AccountWidget extends StatefulWidget {
-  final String message;
-  final String UserId;
-  const AccountWidget({super.key, required this.UserId, required this.message});
+  // final String message;
+  // final String UserId;
+  const AccountWidget({
+    super.key,
+    // required this.UserId,
+    // required this.message
+  });
 
   @override
   State<AccountWidget> createState() => _AccountWidgetState();
@@ -171,7 +174,16 @@ class _AccountWidgetState extends State<AccountWidget> {
   @override
   void initState() {
     super.initState();
-    getUserDetails(widget.UserId);
+    // context.watch<User>().userId;
+    // print ('By Counter ::::: ${context.watch<User>().userId}');
+    // getUserDetails(widget.UserId);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getUserDetails(context.watch<User>().userId);
+    // put your logic from initState here
   }
 
   void getUserDetails(id) async {
@@ -181,10 +193,11 @@ class _AccountWidgetState extends State<AccountWidget> {
       });
       final response = await get(Uri.parse(
           'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/users?id=$id'));
+      print(response.body);
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
-        // print(response.body);
+        print(jsonData.profilePicture);
         setState(() {
           collectiables = jsonData.collectibles ?? 0;
           goalsMets = jsonData.goalsMet ?? 0;
@@ -220,10 +233,13 @@ class _AccountWidgetState extends State<AccountWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const CircleAvatar(
-                          backgroundColor: Colors.amber,
-                          radius: 45,
-                        ),
+                        ClipOval(
+                            child: Image.asset(
+                          "assets/images/defaultImage.png",
+                          fit: BoxFit.cover,
+                          width: 80.0,
+                          height: 80.0,
+                        )),
                         Column(
                           children: [
                             Text(collectiables.toString(),
@@ -292,11 +308,12 @@ class _AccountWidgetState extends State<AccountWidget> {
                       child: bio.isEmpty
                           ? TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/update-profile',
-                                    arguments: {
-                                      "UserId": widget.UserId,
-                                      "message": widget.message
-                                    });
+                                Navigator.pushNamed(context, '/update-profile');
+                                // Navigator.pushNamed(context, '/update-profile',
+                                //     arguments: {
+                                //       "UserId": widget.UserId,
+                                //       "message": widget.message
+                                //     });
                               },
                               child: const Text(
                                 "Add Bio",

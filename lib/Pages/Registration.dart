@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 import '../model/responses.dart';
 
@@ -12,6 +13,8 @@ import 'package:frontend/Pages/RegistrationPages.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:im_stepper/main.dart';
 import 'package:http/http.dart';
+
+import '../store.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 
 class RegistrationWidget extends StatefulWidget {
@@ -246,6 +249,10 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       final jsonData =
           RegisteredUserResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
+        context.read<User>().setUserDetails(
+            userId: jsonData.data.id,
+            emailId: emailController.text,
+            message: jsonData.message);
         Navigator.pushNamed(context, '/app', arguments: {
           "UserId": jsonData.data.id,
           "message": jsonData.message

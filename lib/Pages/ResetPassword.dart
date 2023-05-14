@@ -11,6 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/components/TextField.dart';
+import 'package:provider/provider.dart';
+
+import '../store.dart';
 
 class ResetPasswordWidget extends StatefulWidget {
   const ResetPasswordWidget({super.key});
@@ -21,8 +24,9 @@ class ResetPasswordWidget extends StatefulWidget {
 
 class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
   late var isVerified = false;
-  late var emailId = '';
-  late var userId = '';
+  late var isLoading = false;
+  // late var emailId = '';
+  // late var userId = '';
   late var isVerifyingOtp = false;
   late var isNewPasswordHidden = true;
   late var isNewPasswordValid = false;
@@ -83,42 +87,55 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final userArguments = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    setState(() {
-      emailId = userArguments['emailId'];
-      userId = userArguments['userId'];
-    });
+    // final userArguments = (ModalRoute.of(context)?.settings.arguments ??
+    //     <String, dynamic>{}) as Map;
+    // setState(() {
+    //   emailId = userArguments['emailId'];
+    //   userId = userArguments['userId'];
+    // });
     // put your logic from initState here
   }
 
   void resetPassword() async {
     final payload = {
       "password": newPasswordController.text,
-      "emailId": emailId,
-      "userId": userId
+      "emailId": context.read<User>().emailId,
+      "userId": context.read<User>().userId
     };
-    final response = await post(
-        Uri.parse(
-            'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/reset-password'),
-        body: jsonEncode(payload));
-    if (response.statusCode == 200) {
-      Navigator.pushNamed(context, "/app", arguments: {"UserId": userId});
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      final response = await post(
+          Uri.parse(
+              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/reset-password'),
+          body: jsonEncode(payload));
+      if (response.statusCode == 200) {
+        Navigator.pushNamed(context, "/app");
+        // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reseted"});
+      }
+      // print(response.statusCode);
+      print(response.body);
+    } catch (error) {
+      print(error);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
-    // print(response.statusCode);
-    print(response.body);
   }
 
-  void verifyOtpForPasswordReset(email, otp) async {
+  void verifyOtpForPasswordReset(otp) async {
     try {
       setState(() {
         isVerifyingOtp = true;
       });
       final payload = {
-        "emailId": email,
+        "emailId": context.read<User>().emailId,
         "requestType": "reset-password",
         "otp": otp
       };
+      print(payload);
       // print(payload);
       final response = await post(
           Uri.parse(
@@ -146,7 +163,6 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
   }
 
   void checkConfirmPasswordVisibility() async {
-    // print("EveryT");
     setState(() {
       isConfirmNewPasswordHidden = !isConfirmNewPasswordHidden;
     });
@@ -182,7 +198,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
             onPressed: isVerified
                 ? null
                 : () {
-                    verifyOtpForPasswordReset(emailId, otpController.text);
+                    verifyOtpForPasswordReset(otpController.text);
                   },
             child: isVerifyingOtp
                 ? const SizedBox(

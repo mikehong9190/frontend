@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/Pages/home.dart';
+import 'package:frontend/Pages/login.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'store.dart';
 
 import 'Pages/Welcome.dart';
 import 'Pages/getStarted.dart';
@@ -13,7 +16,10 @@ import 'Pages/RegistrationPages.dart';
 import 'Pages/ResetPassword.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => User(),)],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -28,7 +34,7 @@ class MyApp extends StatelessWidget {
             textTheme:
                 GoogleFonts.urbanistTextTheme(Theme.of(context).textTheme)),
         // home: MyStateFulWidget(),
-        initialRoute: '/',
+        initialRoute: '/registration',
         routes: {
           '/': (context) => const WelcomeWidget(),
           '/getStarted': (context) => const GettingStartedWidget(),
@@ -36,7 +42,8 @@ class MyApp extends StatelessWidget {
           '/app': (context) => const MyStateFulWidget(),
           '/update-profile': (context) => UpdateProfileWidget(),
           '/google-auth-school': (context) => const GoogleAuthWidget(),
-          '/reset-password': (context) => const ResetPasswordWidget()
+          '/reset-password': (context) => const ResetPasswordWidget(),
+          '/login': (context) => const LoginWidget(),
         });
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+// import 'dart:html';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,8 +9,10 @@ import 'package:frontend/components/TextField.dart';
 
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../model/responses.dart';
+import '../store.dart';
 
 class UpdateProfileWidget extends StatefulWidget {
   const UpdateProfileWidget({super.key});
@@ -20,20 +23,21 @@ class UpdateProfileWidget extends StatefulWidget {
 
 class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   File? _image;
-  PickedFile? _pickedFile;
+  XFile? _pickedFile;
   bool firstLoad = true;
   bool isProfileUpdating = false;
   bool isLoading = false;
   bool isOtpSend = false;
   bool isOtpVerified = false;
   bool isSendingOtp = false;
-  late String userId;
-  late String message;
-  late String emailId;
+  // late String userId;
+  // late String message;
+  // late String emailId;
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final bioController = TextEditingController();
   final otpController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -41,10 +45,10 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
 
   Future<void> _pickImage() async {
     final _picker = ImagePicker();
-    _pickedFile =
-        (await _picker.pickImage(source: ImageSource.gallery)) as PickedFile?;
+    _pickedFile = (await _picker.pickImage(source: ImageSource.gallery));
     if (_pickedFile != null) {
       setState(() {
+        print(_pickedFile);
         print(_pickedFile!.path);
         _image = File(_pickedFile!.path);
       });
@@ -54,31 +58,35 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final UserId = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    setState(() {
-      userId = UserId["UserId"];
-      message = UserId["message"];
-    });
-    getUserDetails(UserId["UserId"]);
+    // final UserId = (ModalRoute.of(context)?.settings.arguments ??
+    //     <String, dynamic>{}) as Map;
+    // setState(() {
+    //   userId = UserId["UserId"];
+    //   message = UserId["message"];
+    // });
+    getUserDetails(context.watch<User>().userId);
     // put your logic from initState here
   }
 
-  void sendOtpForPasswordReset(email) async {
+  void sendOtpForPasswordReset() async {
     try {
       setState(
         () {
           isSendingOtp = true;
         },
       );
-      final payload = {"emailId": email, "requestType": "reset-password"};
+      final payload = {
+        "emailId": context.read<User>().emailId,
+        "requestType": "reset-password"
+      };
       final response = await post(
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/send-otp'),
           body: jsonEncode(payload));
       if (response.statusCode == 200)
-        Navigator.pushNamed(context, "/reset-password",
-            arguments: {"emailId": email, "userId": userId});
+        Navigator.pushNamed(context, "/reset-password");
+      // Navigator.pushNamed(context, "/reset-password",
+      //     arguments: {"emailId": email, "userId": userId});
     } catch (error) {
       print(error);
     } finally {
@@ -90,9 +98,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
     }
   }
 
-  void updateUserDetails(id) async {
+  void updateUserDetails() async {
     final payload = {
-      "id": id,
+      "id": context.read<User>().userId,
       "bio": bioController.text,
       "firstName": firstNameController.text,
       "lastName": lastNameController.text
@@ -107,8 +115,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           body: payload);
       // print(response.body);
       if (response.statusCode == 200) {
-        Navigator.pushNamed(context, "/app",
-            arguments: {"UserId": id, "message": "User updated Successfully"});
+        Navigator.pushNamed(context, "/app");
+        // Navigator.pushNamed(context, "/app",
+        //     arguments: {"UserId": id, "message": "User updated Successfully"});
       }
     } catch (error) {
       print(error);
@@ -132,7 +141,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         // print("---------------------");
         print(response.body);
         setState(() async {
-          emailId = jsonData.email;
+          // emailId = jsonData.email;
           firstNameController.text = jsonData.firstName;
           lastNameController.text = jsonData.lastName;
           bioController.text = jsonData.bio ?? '';
@@ -147,6 +156,16 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
     }
   }
 
+  void uploadProfilePic() async {
+    print(_image);
+    try {
+      var putUri = Uri.parse(
+              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile');
+    } catch (error) {
+      print(error);
+    }
+  }
+
   @override
   Widget build(context) {
     return Scaffold(
@@ -156,8 +175,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           elevation: 0,
           leading: IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, "/app",
-                    arguments: {"UserId": userId, "message": message});
+                Navigator.pushNamed(context, "/app");
+                // Navigator.pushNamed(context, "/app",
+                //     arguments: {"UserId": userId, "message": message});
               },
               icon: SvgPicture.asset("assets/svg/Vector.svg")),
           backgroundColor: Colors.white,
@@ -181,14 +201,29 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const CircleAvatar(
-                      backgroundColor: Colors.amber,
-                      radius: 50,
+                    ClipOval(
+                        child: _image != null
+                            ? Image.file(
+                                _image!,
+                                fit: BoxFit.cover,
+                                width: 50,
+                                height: 50,
+                              )
+                            : Image.asset(
+                                "assets/images/defaultImage.png",
+                                fit: BoxFit.cover,
+                                width: 50.0,
+                                height: 50.0,
+                              )),
+                    GestureDetector(
+                      child: Text('Update Profile Pic'),
+                      onTap: () => _pickImage(),
                     ),
-                    // GestureDetector(
-                    //   child: Text('Update Profile Pic'),
-                    //   onTap: () => _pickImage(),
-                    // ),
+                    if (_image != null)
+                      GestureDetector(
+                        child: Text('SAVE'),
+                        onTap: () => uploadProfilePic(),
+                      ),
                     TextFieldWidget(
                         "First Name", firstNameController, false, null, true),
                     const SizedBox(
@@ -233,10 +268,10 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                     const SizedBox(
                       height: 10,
                     ),
-                    if (message == "Account created successfully!")
+                    if (context.watch<User>().isManuallySignedIn)
                       TextButton(
                           onPressed: () {
-                            sendOtpForPasswordReset(emailId);
+                            sendOtpForPasswordReset();
                           },
                           child: isSendingOtp
                               ? const SizedBox(
@@ -268,7 +303,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                         borderRadius:
                                             BorderRadius.circular(30.0)))),
                             onPressed: () {
-                              updateUserDetails(userId);
+                              updateUserDetails();
                             },
                             child: isProfileUpdating
                                 ? const SizedBox(

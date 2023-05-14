@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:textfield_search/textfield_search.dart';
@@ -226,7 +227,7 @@ Widget ThirdPageWidget(
     getSchools,
     clickOnSuggestion,
     clickOnSchool) {
-  print(getSchools);
+  
   return Center(
     child: Column(
       children: [
@@ -309,6 +310,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
   late var schoolId = '';
   bool isLoading = false;
   late var userId;
+
   void didChangeDependencies() {
     super.didChangeDependencies();
     final UserId = (ModalRoute.of(context)?.settings.arguments ??
