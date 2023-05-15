@@ -100,7 +100,7 @@ class UserDetails {
   String lastName;
   String email;
   dynamic bio;
-  dynamic profilePicture;
+  String profilePicture;
   String schoolName;
   String schoolDistrict;
   dynamic goalsMet;
@@ -111,7 +111,7 @@ class UserDetails {
     required this.firstName,
     required this.lastName,
     this.bio,
-    this.profilePicture,
+    required this.profilePicture,
     required this.schoolName,
     required this.schoolDistrict,
     this.goalsMet,
@@ -170,15 +170,18 @@ class RegisteredUserResponse {
 class RegisteredUserData {
   String id;
   String token;
+  String profilePicture;
   RegisteredUserData({
     required this.id,
     required this.token,
+    required this.profilePicture
   });
 
   factory RegisteredUserData.fromJson(Map<String, dynamic> json) =>
       RegisteredUserData(
         id: json["id"],
         token: json["token"],
+        profilePicture: json["profilePicture"]
       );
 
   Map<String, dynamic> toJson() => {

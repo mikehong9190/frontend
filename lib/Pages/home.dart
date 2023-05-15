@@ -387,7 +387,7 @@ class QuestionWidget extends StatelessWidget {
             (e) => Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10, left: 50),
+                  padding: const EdgeInsets.only(bottom: 10, left: 20),
                   child: Text(e),
                 )),
           )
@@ -402,14 +402,16 @@ class FAQWidget extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: questions
-            .map(
-              (e) => e,
-            )
-            .toList());
+    return SingleChildScrollView(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: questions
+              .map(
+                (e) => e,
+              )
+              .toList()),
+    );
   }
 }
 // class FaqWidget extends StatefulWidget {

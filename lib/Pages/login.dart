@@ -24,14 +24,13 @@ class LoginResponse {
 class idResponse {
   final String id;
   final String token;
-  final String profilePicture;
+
   const idResponse(
-      {required this.id, required this.token, required this.profilePicture});
+      {required this.id, required this.token,});
 
   factory idResponse.fromJson(Map<String, dynamic> json) => idResponse(
       id: json["id"],
-      token: json["token"],
-      profilePicture: json['profilePicture']);
+      token: json["token"]);
 }
 
 class LoginWidget extends StatefulWidget {
