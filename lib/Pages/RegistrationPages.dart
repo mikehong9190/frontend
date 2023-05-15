@@ -11,7 +11,7 @@ import 'package:http/http.dart';
 import '../model/responses.dart';
 
 Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
-    isLoading, isOtpSend,goToLogin) {
+    isLoading, isOtpSend, goToLogin) {
   return Center(
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -90,7 +90,7 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
             )),
       ),
     ),
-    
+
     const SizedBox(
       height: 20,
     ),
@@ -104,11 +104,11 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
     Align(
         alignment: Alignment.center,
         child: Padding(
-            padding: EdgeInsets.only(top: 10,left: 70,right: 50),
+            padding: const EdgeInsets.only(top: 10, left: 70, right: 50),
             child: Row(
               children: [
-                Text("Already have an account? "),
-                TextButton(onPressed: goToLogin, child: Text('Login'))
+                const Text("Already have an account? "),
+                TextButton(onPressed: goToLogin, child: const Text('Login'))
               ],
             ))),
     // OAuthButtonWidget("Continue with Facebook", "Facebook"),

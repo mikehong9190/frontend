@@ -195,18 +195,18 @@ class _AccountWidgetState extends State<AccountWidget> {
     // getUserDetails(widget.UserId);
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    String userId = context.watch<User>().userId;
-    print("From Inside $userId");
-    // if (userId.isEmpty) {
-    //   Navigator.pushNamed(context, '/');
-    // } else {
-    if (userId.isNotEmpty) getUserDetails(context.watch<User>().userId);
-    // }
-    // put your logic from initState here
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   String userId = context.watch<User>().userId;
+  //   // print("From Inside $userId");
+  //   // if (userId.isEmpty) {
+  //   //   Navigator.pushNamed(context, '/');
+  //   // } else {
+  //   if (userId.isNotEmpty) getUserDetails(context.watch<User>().userId);
+  //   // }
+  //   // put your logic from initState here
+  // }
 
   void getUserDetails(id) async {
     try {
@@ -221,7 +221,7 @@ class _AccountWidgetState extends State<AccountWidget> {
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
 
         setState(() {
-          profilePicture = jsonData.profilePicture ?? '';
+          profilePicture = jsonData.profilePicture;
           collectiables = jsonData.collectibles ?? 0;
           goalsMets = jsonData.goalsMet ?? 0;
           moneyRaised = jsonData.moneyRaised ?? 0;
