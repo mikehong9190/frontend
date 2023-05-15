@@ -17,7 +17,7 @@ Widget TextFieldWidget(
   return Column(
     children: [
       SizedBox(
-        width: 350,
+        width: double.infinity,
         child: Align(
             alignment: AlignmentDirectional.bottomStart,
             child: Text(label,
@@ -29,7 +29,7 @@ Widget TextFieldWidget(
       ),
       SizedBox(
           height: 50,
-          width: 350,
+          width: double.infinity,
           child: TextField(
             enabled: isEnabled,
             controller: controller,

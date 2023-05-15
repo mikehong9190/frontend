@@ -25,6 +25,7 @@ class CustomNavigatorObserver extends NavigatorObserver {
     }
   }
 }
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -70,7 +71,7 @@ class MyApp extends StatelessWidget {
       title: 'Swirl.io',
       theme: ThemeData.light().copyWith(
           textTheme: GoogleFonts.urbanistTextTheme(Theme.of(context).textTheme),
-          inputDecorationTheme: InputDecorationTheme(
+          inputDecorationTheme: const InputDecorationTheme(
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black)))),
       initialRoute: initialRoute,
@@ -79,7 +80,7 @@ class MyApp extends StatelessWidget {
         '/getStarted': (context) => const GettingStartedWidget(),
         '/registration': (context) => const RegistrationWidget(),
         '/app': (context) => const MyStateFulWidget(),
-        '/update-profile': (context) => UpdateProfileWidget(),
+        '/update-profile': (context) => const UpdateProfileWidget(),
         '/google-auth-school': (context) => const GoogleAuthWidget(),
         '/reset-password': (context) => const ResetPasswordWidget(),
         '/login': (context) => const LoginWidget(),
