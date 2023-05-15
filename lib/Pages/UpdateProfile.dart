@@ -156,7 +156,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
-        setState(() async {
+        setState(() {
           profilePicture = jsonData.profilePicture;
           // emailId = jsonData.email;
           firstNameController.text = jsonData.firstName;
