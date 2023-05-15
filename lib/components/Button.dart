@@ -213,6 +213,7 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
                       "openid"
                     ],
                   );
+
                   try {
                     final result = await _googleSignIn.signIn();
                     final ggAuth = await result?.authentication;
@@ -224,25 +225,31 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
                     //   int endLength = token.length;
                     //   token = token.substring(initLength, endLength);
                     // }
-                    print(token);
                     final response = await post(
                         Uri.parse(
                             'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/signup'),
-                        body:
-                            jsonEncode({"idToken": token, "platform": "ios"}));
+                        body: jsonEncode(
+                            {"idToken": token, "platform": "android"}));
                     final jsonData =
                         Welcome.fromJson(jsonDecode(response.body));
-                    print(response.body);
                     // if (response.statusCode ==)
                     // print(response.body);
                     if (response.statusCode == 200 &&
                         jsonData.message == 'Account created successfully!') {
+                      context.read<User>().setUserDetails(
+                          userId: jsonData.data.id,
+                          emailId: '',
+                          message: jsonData.message);
                       Navigator.pushNamed(context, "/google-auth-school",
                           arguments: {
                             "id": jsonData.data.id,
                             "message": jsonData.message
                           });
                     } else {
+                      context.read<User>().setUserDetails(
+                          userId: jsonData.data.id,
+                          emailId: '',
+                          message: jsonData.message);
                       Navigator.pushNamed(context, "/app", arguments: {
                         "UserId": jsonData.data.id,
                         "message": "Logged in"
