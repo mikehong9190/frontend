@@ -9,12 +9,22 @@ import '../store.dart';
 
 import 'dart:io' show Platform;
 
-class OAuthButtonWidget extends StatelessWidget {
+class OAuthButtonWidget extends StatefulWidget {
   final String content;
   final String iconUrl;
-
+  @override
+  State<OAuthButtonWidget> createState() => _OAuthButtonWidgetState();
   const OAuthButtonWidget(
       {super.key, required this.content, required this.iconUrl});
+}
+
+class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // put your logic from initState here
+  }
 
   googleLogin(context) async {
     // print("googleLogin method Called");
@@ -119,13 +129,13 @@ class OAuthButtonWidget extends StatelessWidget {
                 children: [
                   Expanded(child: Container()),
                   SvgPicture.asset(
-                    "assets/svg/$iconUrl.svg",
+                    "assets/svg/${widget.iconUrl}.svg",
                   ),
                   const SizedBox(
                     width: 20,
                   ),
                   Text(
-                    content,
+                    widget.content,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.black),
                   ),
