@@ -25,7 +25,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
     "Frequently Asked Questions",
     "My Profile"
   ];
-  
+
   static final _bottomNavigationBar = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
       icon: SvgPicture.asset("assets/svg/Home.svg"),
@@ -86,7 +86,6 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       const AccountWidget()
     ];
     return WillPopScope(
-
       child: Scaffold(
           appBar: AppBar(
               centerTitle: true,
@@ -132,7 +131,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
               onTap: changeIndex)),
       onWillPop: () async {
         String currentRoute = ModalRoute.of(context)!.settings.name!;
-        if (currentRoute == '/app') SystemNavigator.pop ();
+        if (currentRoute == '/app') SystemNavigator.pop();
         print("BackButton");
         return true;
       },
@@ -179,7 +178,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   late String bio = '';
   late int goalsMets = 0;
   late int moneyRaised = 0;
-  late int collectiables = 0;
+  late int collectibles = 0;
   late String dollar = '\$';
 
   @override
@@ -190,7 +189,6 @@ class _AccountWidgetState extends State<AccountWidget> {
     // getUserDetails(widget.UserId);
   }
 
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -200,7 +198,6 @@ class _AccountWidgetState extends State<AccountWidget> {
     // }
     // put your logic from initState here
   }
-
 
   void getUserDetails(id) async {
     try {
@@ -213,10 +210,10 @@ class _AccountWidgetState extends State<AccountWidget> {
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
-        print ("skjsdfsdf");
+        print("skjsdfsdf");
         setState(() {
           profilePicture = jsonData.profilePicture;
-          collectiables = jsonData.collectibles ?? 0;
+          collectibles = jsonData.collectibles.length ?? 0;
           goalsMets = jsonData.goalsMet ?? 0;
           moneyRaised = jsonData.moneyRaised ?? 0;
           name = '${jsonData.firstName} ${jsonData.lastName}';
@@ -268,7 +265,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                                   )),
                         Column(
                           children: [
-                            Text(collectiables.toString(),
+                            Text(collectibles.toString(),
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w700, fontSize: 18)),
                             const Text(
