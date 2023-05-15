@@ -84,10 +84,13 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     });
   }
 
+// <<<<<<< ui-changes
+// =======
   void goToLogin() {
     Navigator.pushNamed(context, "/login");
   }
 
+// >>>>>>> dev
   void checkConfirmPasswordVisibility() async {
     setState(() {
       isConfirmPasswordHidden = !isConfirmPasswordHidden;

@@ -50,6 +50,23 @@ class MyApp extends StatelessWidget {
   Widget build(context) {
     if (initialRoute == "/app") context.read<User>().getUserDataFromLocal();
     return MaterialApp(
+// <<<<<<< ui-changes
+//         title: 'Swirl.io',
+//         theme: ThemeData.light().copyWith(
+//             textTheme:
+//                 GoogleFonts.urbanistTextTheme(Theme.of(context).textTheme)),
+//         // home: MyStateFulWidget(),
+//         initialRoute: '/',
+//         routes: {
+//           '/': (context) => const WelcomeWidget(),
+//           '/getStarted': (context) => const GettingStartedWidget(),
+//           '/registration': (context) => const RegistrationWidget(),
+//           '/app': (context) => const MyStateFulWidget(),
+//           '/update-profile': (context) => UpdateProfileWidget(),
+//           '/google-auth-school': (context) => const GoogleAuthWidget(),
+//           '/reset-password': (context) => const ResetPasswordWidget()
+//         });
+// =======
       title: 'Swirl.io',
       theme: ThemeData.light().copyWith(
           textTheme: GoogleFonts.urbanistTextTheme(Theme.of(context).textTheme),
@@ -69,6 +86,7 @@ class MyApp extends StatelessWidget {
         // Add more routes as needed
       },
     );
+// >>>>>>> dev
   }
 }
 
@@ -150,6 +168,10 @@ Widget SetupInitiativeWidget(value12) {
               height: 50,
               width: 350,
               child: ElevatedButton(
+// <<<<<<< ui-changes
+//                 child: const Text("Next"),
+// =======
+// >>>>>>> dev
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                         const Color.fromRGBO(54, 189, 151, 1)),
