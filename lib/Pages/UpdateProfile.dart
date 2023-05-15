@@ -25,12 +25,14 @@ class UpdateProfileWidget extends StatefulWidget {
 class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   File? _image;
   XFile? _pickedFile;
+  bool isUploadingImage = false;
   bool firstLoad = true;
   bool isProfileUpdating = false;
   bool isLoading = false;
   bool isOtpSend = false;
   bool isOtpVerified = false;
   bool isSendingOtp = false;
+  String profilePicture = '';
   // late String userId;
   // late String message;
   // late String emailId;
@@ -154,9 +156,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
-        print("---------------------");
-        print(response.body);
         setState(() async {
+          profilePicture = jsonData.profilePicture ?? '';
           // emailId = jsonData.email;
           firstNameController.text = jsonData.firstName;
           lastNameController.text = jsonData.lastName;
@@ -175,10 +176,24 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   void uploadProfilePic() async {
     print(_image);
     try {
-      var putUri = Uri.parse(
+      setState(() {
+        isUploadingImage = true;
+      });
+      var url = Uri.parse(
           'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile');
+      final request = MultipartRequest('PUT', url);
+      request.fields["id"] = context.read<User>().userId;
+      final multipartFile = MultipartFile.fromBytes(
+          "files", await _image!.readAsBytes(),
+          filename: "jpg");
+      request.files.add(multipartFile);
+      final response = await request.send();
     } catch (error) {
       print(error);
+    } finally {
+      setState(() {
+        isUploadingImage = false;
+      });
     }
   }
 
@@ -218,27 +233,48 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                       height: 20,
                     ),
                     ClipOval(
-                        child: _image != null
-                            ? Image.file(
-                                _image!,
-                                fit: BoxFit.cover,
-                                width: 50,
-                                height: 50,
-                              )
-                            : Image.asset(
-                                "assets/images/defaultImage.png",
+                        child: (profilePicture.isNotEmpty
+                            ? Image.network(
+                                profilePicture,
                                 fit: BoxFit.cover,
                                 width: 80.0,
                                 height: 80.0,
-                              )),
+                              )
+                            : _image != null
+                                ? Image.file(
+                                    _image!,
+                                    fit: BoxFit.cover,
+                                    width: 50,
+                                    height: 50,
+                                  )
+                                : Image.asset(
+                                    "assets/images/defaultImage.png",
+                                    fit: BoxFit.cover,
+                                    width: 80.0,
+                                    height: 80.0,
+                                  ))),
+                    SizedBox(
+                      height: 10,
+                    ),
                     GestureDetector(
                       child: Text('Update Profile Pic'),
                       onTap: () => _pickImage(),
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     if (_image != null)
                       GestureDetector(
-                        child: Text('SAVE'),
-                        onTap: () => uploadProfilePic(),
+                        child: isUploadingImage
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.black,
+                                ),
+                              )
+                            : Text('SAVE'),
+                        onTap: isUploadingImage ? null : () => uploadProfilePic(),
                       ),
                     TextFieldWidget(
                         "First Name", firstNameController, false, null, true),

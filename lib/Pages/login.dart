@@ -24,12 +24,13 @@ class LoginResponse {
 class idResponse {
   final String id;
   final String token;
-
-  const idResponse({required this.id, required this.token});
+  final String profilePicture;
+  const idResponse({required this.id, required this.token,required this.profilePicture});
 
   factory idResponse.fromJson(Map<String, dynamic> json) => idResponse(
         id: json["id"],
         token: json["token"],
+        profilePicture: json["profilePicture"]
       );
 }
 
@@ -78,6 +79,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       if (response.statusCode == 200) {
         final jsonData = LoginResponse.fromJson(jsonDecode(response.body));
         context.read<User>().setUserDetails(
+            profilePicture: jsonData.data.profilePicture,
             userId: jsonData.data.id,
             emailId: emailController.text,
             message: jsonData.message);

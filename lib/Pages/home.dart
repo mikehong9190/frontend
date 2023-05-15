@@ -179,6 +179,7 @@ class AccountWidget extends StatefulWidget {
 class _AccountWidgetState extends State<AccountWidget> {
   bool isLoading = false;
   late String name = '';
+  late String profilePicture = '';
   late String location = '';
   late String bio = '';
   late int goalsMets = 0;
@@ -218,8 +219,9 @@ class _AccountWidgetState extends State<AccountWidget> {
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
-        print(jsonData.profilePicture);
+
         setState(() {
+          profilePicture = jsonData.profilePicture ?? '';
           collectiables = jsonData.collectibles ?? 0;
           goalsMets = jsonData.goalsMet ?? 0;
           moneyRaised = jsonData.moneyRaised ?? 0;
@@ -236,6 +238,8 @@ class _AccountWidgetState extends State<AccountWidget> {
 
   @override
   Widget build(context) {
+    // String profilePicture = context.read<User>().profilePicture;
+    // print( 'IMAGE $profilePicture');
     return isLoading
         ? const Align(
             alignment: Alignment.center,
@@ -255,12 +259,19 @@ class _AccountWidgetState extends State<AccountWidget> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         ClipOval(
-                            child: Image.asset(
-                          "assets/images/defaultImage.png",
-                          fit: BoxFit.cover,
-                          width: 80.0,
-                          height: 80.0,
-                        )),
+                            child: profilePicture.isNotEmpty
+                                ? Image.network(
+                                    profilePicture,
+                                    fit: BoxFit.cover,
+                                    width: 80.0,
+                                    height: 80.0,
+                                  )
+                                : Image.asset(
+                                    "assets/images/defaultImage.png",
+                                    fit: BoxFit.cover,
+                                    width: 80.0,
+                                    height: 80.0,
+                                  )),
                         Column(
                           children: [
                             Text(collectiables.toString(),

@@ -6,25 +6,29 @@ class User with ChangeNotifier {
   String _userId = '';
   String _emailId = '';
   bool isManuallySignedIn = true;
-
+  String _profilePicture = '';
   String get userId => _userId;
   String get emailId => _emailId;
+  String get profilePicture => _profilePicture;
 
   void setUserDetails(
       {required String userId,
       required String emailId,
-      required String message}) async {
+      required String message,
+      required profilePicture}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('profilePicture', profilePicture);
     prefs.setString('userId', userId);
     prefs.setString('emailId', emailId);
     prefs.setBool('userLoggedIn', userId.isNotEmpty);
     prefs.setBool('isManuallySignedIn',
         !message.toString().toLowerCase().contains("google"));
 
+    _profilePicture = profilePicture;
     _userId = userId;
     userLoggedIn = userId.isNotEmpty;
     _emailId = emailId;
-    print (message);
+    print(message);
     isManuallySignedIn = !message.toString().toLowerCase().contains("google");
     notifyListeners();
   }
@@ -43,14 +47,13 @@ class User with ChangeNotifier {
     notifyListeners();
   }
 
-  void getUserDataFromLocal () async {
+  void getUserDataFromLocal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getString('userId'));
-      _userId = prefs.getString('userId')!;
+    _userId = prefs.getString('userId')!;
+    _profilePicture = prefs.getString('profilePicture')!;
     userLoggedIn = prefs.getBool('userLoggedIn')!;
     _emailId = prefs.getString('emailId')!;
     isManuallySignedIn = prefs.getBool('isManuallySignedIn')!;
     notifyListeners();
   }
 }
-

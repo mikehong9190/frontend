@@ -262,6 +262,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
           RegisteredUserResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         context.read<User>().setUserDetails(
+          profilePicture: jsonData.data.profilePicture,
             userId: jsonData.data.id,
             emailId: emailController.text,
             message: jsonData.message);
