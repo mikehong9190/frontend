@@ -5,6 +5,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import '../model/responses.dart';
+import '../store.dart';
+
 import 'dart:io' show Platform;
 
 class OAuthButtonWidget extends StatelessWidget {
@@ -39,15 +41,23 @@ class OAuthButtonWidget extends StatelessWidget {
         final response = await post(
             Uri.parse(
                 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/signup'),
-            body: jsonEncode({"idToken": token}));
+            body: jsonEncode({"idToken": token,"platform" : "android"}));
         final jsonData = Welcome.fromJson(jsonDecode(response.body));
         // if (response.statusCode ==)
         // print(response.body);
         if (response.statusCode == 200 &&
             jsonData.message == 'Account created successfully!') {
+              context.read<User>().setUserDetails(
+            userId: jsonData.data.id,
+            emailId: '',
+            message: jsonData.message);
           Navigator.pushNamed(context, "/google-auth-school",
               arguments: {"id": jsonData.data.id, "message": jsonData.message});
         } else {
+          context.read<User>().setUserDetails(
+            userId: jsonData.data.id,
+            emailId: '',
+            message: jsonData.message);
           Navigator.pushNamed(context, "/app",
               arguments: {"UserId": jsonData.data.id, "message": "Logged in"});
         }

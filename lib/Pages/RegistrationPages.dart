@@ -204,11 +204,11 @@ Widget SecondPageWidget(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0)))),
-                onPressed: () {
+                onPressed: isPasswordValid && arePasswordsEqual ?() {
                   onNext();
                   // print(controller1.text);
                   // print(controller2.text);
-                },
+                } : null,
                 child: const Text("Next"),
               )),
         ),

@@ -16,8 +16,10 @@ class User with ChangeNotifier {
       required String emailId,
       required String message}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print (profilePicture);
-    prefs.setString('profilePicture', profilePicture);
+    // prefs.setString('profilePicture', profilePicture);
+    print (userId);
+    print (emailId);
+    print (message);
     prefs.setString('userId', userId);
     prefs.setString('emailId', emailId);
     prefs.setBool('userLoggedIn', userId.isNotEmpty);
