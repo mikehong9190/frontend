@@ -14,9 +14,9 @@ class User with ChangeNotifier {
   void setUserDetails(
       {required String userId,
       required String emailId,
-      required String message,
-      required profilePicture}) async {
+      required String message}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    print (profilePicture);
     prefs.setString('profilePicture', profilePicture);
     prefs.setString('userId', userId);
     prefs.setString('emailId', emailId);
@@ -28,7 +28,6 @@ class User with ChangeNotifier {
     _userId = userId;
     userLoggedIn = userId.isNotEmpty;
     _emailId = emailId;
-    print(message);
     isManuallySignedIn = !message.toString().toLowerCase().contains("google");
     notifyListeners();
   }
@@ -50,7 +49,7 @@ class User with ChangeNotifier {
   void getUserDataFromLocal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _userId = prefs.getString('userId')!;
-    _profilePicture = prefs.getString('profilePicture')!;
+    // _profilePicture = prefs.getString('profilePicture');
     userLoggedIn = prefs.getBool('userLoggedIn')!;
     _emailId = prefs.getString('emailId')!;
     isManuallySignedIn = prefs.getBool('isManuallySignedIn')!;

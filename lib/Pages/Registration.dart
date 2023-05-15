@@ -47,14 +47,14 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   late var arePasswordsEqual = false;
   late var message = '';
 
-
-   @override
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     // Checking the navigation history
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.pushNamedAndRemoveUntil(context, '/app',(Route<dynamic> route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/app', (Route<dynamic> route) => false);
     });
   }
 
@@ -265,11 +265,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
           RegisteredUserResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         context.read<User>().setUserDetails(
-          profilePicture: jsonData.data.profilePicture,
+
             userId: jsonData.data.id,
             emailId: emailController.text,
             message: jsonData.message);
-        Navigator.pushNamedAndRemoveUntil(context, '/app',(Route<dynamic> route) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/app', (Route<dynamic> route) => false);
         // Navigator.pushNamed(context, '/app', arguments: {
         //   "UserId": jsonData.data.id,
         //   "message": jsonData.message
@@ -295,8 +296,15 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   List<Step> getSteps() => [
         Step(
             title: const Text(''),
-            content: FirstPageWidget(emailController, checkEmailAndChangeStep,
-                message, statusCode, otpController, isLoading, isOtpSend,goToLogin),
+            content: FirstPageWidget(
+                emailController,
+                checkEmailAndChangeStep,
+                message,
+                statusCode,
+                otpController,
+                isLoading,
+                isOtpSend,
+                goToLogin),
             isActive: currentStep >= 0),
         Step(
             title: const Text(''),

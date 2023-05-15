@@ -30,7 +30,7 @@ class idResponse {
   factory idResponse.fromJson(Map<String, dynamic> json) => idResponse(
         id: json["id"],
         token: json["token"],
-        profilePicture: json["profilePicture"]
+        profilePicture: json['profilePicture']
       );
 }
 
@@ -79,7 +79,6 @@ class _LoginWidgetState extends State<LoginWidget> {
       if (response.statusCode == 200) {
         final jsonData = LoginResponse.fromJson(jsonDecode(response.body));
         context.read<User>().setUserDetails(
-            profilePicture: jsonData.data.profilePicture,
             userId: jsonData.data.id,
             emailId: emailController.text,
             message: jsonData.message);
