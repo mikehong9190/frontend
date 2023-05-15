@@ -26,7 +26,7 @@ class OAuthButtonWidget extends StatelessWidget {
           "openid"
         ],
       );
-      print (_googleSignIn);
+      print(_googleSignIn);
       try {
         final result = await _googleSignIn.signIn();
         final ggAuth = await result?.authentication;
@@ -85,13 +85,13 @@ class OAuthButtonWidget extends StatelessWidget {
         //   int endLength = token.length;
         //   token = token.substring(initLength, endLength);
         // }
-        print (token);
+        print(token);
         final response = await post(
             Uri.parse(
                 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/signup'),
             body: jsonEncode({"idToken": token}));
         final jsonData = Welcome.fromJson(jsonDecode(response.body));
-        print (response.body);
+        print(response.body);
         // if (response.statusCode ==)
         // print(response.body);
         if (response.statusCode == 200 &&
@@ -116,7 +116,7 @@ class OAuthButtonWidget extends StatelessWidget {
           height: 10,
         ),
         SizedBox(
-          width: 350,
+          width: double.infinity,
           height: 50,
           child: OutlinedButton(
               child: Row(
@@ -131,7 +131,7 @@ class OAuthButtonWidget extends StatelessWidget {
                   Text(
                     content,
                     textAlign: TextAlign.center,
-                    style: TextStyle (color: Colors.black),
+                    style: TextStyle(color: Colors.black),
                   ),
                   Expanded(child: Container())
                 ],

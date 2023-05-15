@@ -10,7 +10,7 @@ import 'package:frontend/components/TextField.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/responses.dart';
 import '../store.dart';
@@ -157,7 +157,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
         setState(() async {
-          profilePicture = jsonData.profilePicture ?? '';
+          profilePicture = jsonData.profilePicture;
           // emailId = jsonData.email;
           firstNameController.text = jsonData.firstName;
           lastNameController.text = jsonData.lastName;
@@ -274,7 +274,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                 ),
                               )
                             : Text('SAVE'),
-                        onTap: isUploadingImage ? null : () => uploadProfilePic(),
+                        onTap:
+                            isUploadingImage ? null : () => uploadProfilePic(),
                       ),
                     TextFieldWidget(
                         "First Name", firstNameController, false, null, true),

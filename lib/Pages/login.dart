@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -25,13 +25,13 @@ class idResponse {
   final String id;
   final String token;
   final String profilePicture;
-  const idResponse({required this.id, required this.token,required this.profilePicture});
+  const idResponse(
+      {required this.id, required this.token, required this.profilePicture});
 
   factory idResponse.fromJson(Map<String, dynamic> json) => idResponse(
-        id: json["id"],
-        token: json["token"],
-        profilePicture: json['profilePicture']
-      );
+      id: json["id"],
+      token: json["token"],
+      profilePicture: json['profilePicture']);
 }
 
 class LoginWidget extends StatefulWidget {
@@ -134,34 +134,22 @@ class _LoginWidgetState extends State<LoginWidget> {
           backgroundColor: Colors.white,
           elevation: 0,
         ),
-        body: Center(
+        body: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: 30),
-                child: Column(
-                  children: [
-                    const Align(
-                      alignment: Alignment.topLeft,
-                      child: Text("Login to Swiirl",
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.w700)),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Align(
-                        alignment: Alignment.topLeft,
-                        child: Text("Login",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: Color.fromRGBO(132, 143, 172, 1)))),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                  ],
-                ),
+              Column(
+                children: const [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("Login to Swiirl",
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.w700)),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
               ),
               TextFieldWidget("Your Email", emailController, false, null, true),
               PasswordFieldWidget(
@@ -178,15 +166,15 @@ class _LoginWidgetState extends State<LoginWidget> {
                   height: 20,
                   child: Text(
                     message,
-                    style: TextStyle(color: Colors.red),
+                    style: const TextStyle(color: Colors.red),
                   )),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               ButtonTheme(
                 child: SizedBox(
                     height: 50,
-                    width: 350,
+                    width: double.infinity,
                     child: ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
@@ -223,26 +211,25 @@ class _LoginWidgetState extends State<LoginWidget> {
                   )),
               const OAuthButtonWidget(
                   content: "Continue with Google", iconUrl: "Google"),
-              Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                      padding: EdgeInsets.only(top: 10, left: 80, right: 50),
-                      child: Row(
-                        children: [
-                          Text("Already have an account? "),
-                          TextButton(
-                              onPressed: goToRegistration,
-                              child: Text(
-                                'Signin',
-                                style: TextStyle(color: Colors.black),
-                              ))
-                        ],
-                      ))),
-              Expanded(
-                child: const SizedBox(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Don't have an account ?"),
+                  TextButton(
+                    onPressed: goToRegistration,
+                    child: const Text(
+                      'Signin',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ],
+              ),
+              const Expanded(
+                child: SizedBox(),
               ),
               Padding(
-                  padding: EdgeInsets.only(left: 20, bottom: 20),
+                  padding: const EdgeInsets.only(left: 0, bottom: 20),
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: Image.asset(

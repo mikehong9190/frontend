@@ -190,6 +190,7 @@ class _AccountWidgetState extends State<AccountWidget> {
     // getUserDetails(widget.UserId);
   }
 
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -199,6 +200,7 @@ class _AccountWidgetState extends State<AccountWidget> {
     // }
     // put your logic from initState here
   }
+
 
   void getUserDetails(id) async {
     try {
@@ -213,7 +215,7 @@ class _AccountWidgetState extends State<AccountWidget> {
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
         print ("skjsdfsdf");
         setState(() {
-          profilePicture = jsonData.profilePicture ?? '';
+          profilePicture = jsonData.profilePicture;
           collectiables = jsonData.collectibles ?? 0;
           goalsMets = jsonData.goalsMet ?? 0;
           moneyRaised = jsonData.moneyRaised ?? 0;
