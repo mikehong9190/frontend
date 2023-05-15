@@ -106,24 +106,23 @@ class UserDetails {
   dynamic goalsMet;
   dynamic moneyRaised;
   dynamic collectibles;
-  
-  UserDetails({
-    required this.firstName,
-    required this.lastName,
-    this.bio,
-    required this.profilePicture,
-    required this.schoolName,
-    required this.schoolDistrict,
-    this.goalsMet,
-    this.moneyRaised,
-    this.collectibles,
-    required this.email
-  });
+
+  UserDetails(
+      {required this.firstName,
+      required this.lastName,
+      this.bio,
+      required this.profilePicture,
+      required this.schoolName,
+      required this.schoolDistrict,
+      this.goalsMet,
+      this.moneyRaised,
+      this.collectibles,
+      required this.email});
 
   factory UserDetails.fromJson(Map<String, dynamic> json) => UserDetails(
         firstName: json["firstName"],
         lastName: json["lastName"],
-        email : json["email"],
+        email: json["email"],
         bio: json["bio"],
         profilePicture: json["profilePicture"],
         schoolName: json["schoolName"],
@@ -132,7 +131,6 @@ class UserDetails {
         moneyRaised: json["moneyRaised"],
         collectibles: json["collectibles"],
       );
-
 
   Map<String, dynamic> toJson() => {
         "firstName": firstName,
@@ -156,7 +154,8 @@ class RegisteredUserResponse {
     required this.data,
   });
 
-  factory RegisteredUserResponse.fromJson(Map<String, dynamic> json) => RegisteredUserResponse(
+  factory RegisteredUserResponse.fromJson(Map<String, dynamic> json) =>
+      RegisteredUserResponse(
         message: json["message"],
         data: RegisteredUserData.fromJson(json["data"]),
       );
@@ -170,18 +169,18 @@ class RegisteredUserResponse {
 class RegisteredUserData {
   String id;
   String token;
-  String profilePicture;
+  // String profilePicture;
   RegisteredUserData({
     required this.id,
     required this.token,
-    required this.profilePicture
+    // required this.profilePicture
   });
 
   factory RegisteredUserData.fromJson(Map<String, dynamic> json) =>
       RegisteredUserData(
         id: json["id"],
         token: json["token"],
-        profilePicture: json["profilePicture"]
+        // profilePicture: json["profilePicture"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -189,7 +188,6 @@ class RegisteredUserData {
         "token": token,
       };
 }
-
 
 // class UserId {
 //   String userId;
@@ -200,67 +198,57 @@ class RegisteredUserData {
 // }
 
 class UserIdData {
-    String userId;
+  String userId;
 
-    UserIdData({
-        required this.userId,
-    });
+  UserIdData({
+    required this.userId,
+  });
 
-    factory UserIdData.fromJson(Map<String, dynamic> json) => UserIdData(
+  factory UserIdData.fromJson(Map<String, dynamic> json) => UserIdData(
         userId: json["UserId"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "UserId": userId,
-    };
+      };
 }
 
-
-
-
-
-
-
-
-
-
-
 class Welcome {
-    String message;
-    Data data;
+  String message;
+  Data data;
 
-    Welcome({
-        required this.message,
-        required this.data,
-    });
+  Welcome({
+    required this.message,
+    required this.data,
+  });
 
-    factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
+  factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
         message: json["message"],
         data: Data.fromJson(json["data"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "message": message,
         "data": data.toJson(),
-    };
+      };
 }
 
 class Data {
-    String id;
-    String token;
+  String id;
+  String token;
 
-    Data({
-        required this.id,
-        required this.token,
-    });
+  Data({
+    required this.id,
+    required this.token,
+  });
 
-    factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         token: json["token"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "token": token,
-    };
+      };
 }

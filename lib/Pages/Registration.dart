@@ -54,7 +54,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     String userId = context.read<User>().userId;
     if (userId.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        SystemNavigator.pop ();
+        SystemNavigator.pop();
       });
     }
   }
@@ -266,6 +266,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       if (response.statusCode == 200) {
         final jsonData =
             RegisteredUserResponse.fromJson(jsonDecode(response.body));
+
+        print("json,$jsonData");
         context.read<User>().setUserDetails(
             userId: jsonData.data.id,
             emailId: emailController.text,
@@ -279,7 +281,9 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         // });
       }
       print(jsonDecode(response.body));
-    } catch (error) {
+    } catch (error, res) {
+      print(res);
+
       print(error);
     } finally {
       setState(() {

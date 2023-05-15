@@ -377,7 +377,7 @@ class QuestionWidget extends StatelessWidget {
     return Column(children: [
       const SizedBox(height: 50),
       Align(
-        alignment: Alignment.center,
+        alignment: Alignment.topLeft,
         child: Text(question,
             style: const TextStyle(fontFamily: 'Urbanist', fontSize: 24)),
       ),
@@ -387,7 +387,7 @@ class QuestionWidget extends StatelessWidget {
             (e) => Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10, left: 20),
+                  padding: const EdgeInsets.only(bottom: 10, left: 0),
                   child: Text(e),
                 )),
           )
@@ -403,6 +403,7 @@ class FAQWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
