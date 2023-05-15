@@ -87,6 +87,11 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    String userId = context.watch<User>().userId;
+    // if (userId.isEmpty) {
+    //   Navigator.pushNamed(context, '/');
+    //   return;
+    // }
     // final userArguments = (ModalRoute.of(context)?.settings.arguments ??
     //     <String, dynamic>{}) as Map;
     // setState(() {
@@ -251,7 +256,15 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                           resetPassword();
                         }
                       : null,
-                  child: const Text("Next"),
+                  child: isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text("Next"),
                 )),
           ),
         ],

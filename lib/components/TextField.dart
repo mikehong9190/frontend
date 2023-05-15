@@ -84,7 +84,7 @@ Widget SearchTextFieldWidget(
       ),
       SizedBox(
           height: 50,
-          width: double.infinity,
+          width: 350,
           child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
                 decoration: const InputDecoration(
@@ -137,7 +137,7 @@ Widget SchoolSearchFieldWidget(
       ),
       SizedBox(
           height: 50,
-          width: double.infinity,
+          width: 350,
           child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
                 decoration: const InputDecoration(

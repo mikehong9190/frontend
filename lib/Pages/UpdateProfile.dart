@@ -10,6 +10,7 @@ import 'package:frontend/components/TextField.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/responses.dart';
 import '../store.dart';
@@ -58,13 +59,28 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    String userId = context.watch<User>().userId;
+    print(userId);
+    if (userId.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/', (Route<dynamic> route) => false);
+      });
+    }
+    // if (userId.isEmpty) {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     Navigator.pushNamed(context, '/');
+    //   });
+    //   return;
+    // } else {
+    getUserDetails(userId);
+    // }
     // final UserId = (ModalRoute.of(context)?.settings.arguments ??
     //     <String, dynamic>{}) as Map;
     // setState(() {
     //   userId = UserId["UserId"];
     //   message = UserId["message"];
     // });
-    getUserDetails(context.watch<User>().userId);
     // put your logic from initState here
   }
 
@@ -138,7 +154,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
-        // print("---------------------");
+        print("---------------------");
         print(response.body);
         setState(() async {
           // emailId = jsonData.email;
@@ -160,7 +176,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
     print(_image);
     try {
       var putUri = Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile');
+          'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile');
     } catch (error) {
       print(error);
     }
@@ -212,8 +228,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                             : Image.asset(
                                 "assets/images/defaultImage.png",
                                 fit: BoxFit.cover,
-                                width: 50.0,
-                                height: 50.0,
+                                width: 80.0,
+                                height: 80.0,
                               )),
                     GestureDetector(
                       child: Text('Update Profile Pic'),
@@ -315,7 +331,13 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                   )
                                 : const Text('Update Profile'),
                           )),
-                    )
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          context.read<User>().clearUserDetails();
+                          Navigator.pushNamed(context, '/');
+                        },
+                        child: Text('Sign Out'))
                   ]))
               // isLoading
               //   ? Align(

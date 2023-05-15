@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 import 'dart:convert';
 import '../components/Button.dart';
 import '../components/TextField.dart';
 // import '../components/Button.dart';
+import '../store.dart';
 
 class LoginResponse {
   final String message;
@@ -39,8 +41,10 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
+  String message = '';
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool isLoading = false;
   bool isPasswordHidden = true;
   bool isPasswordValid = true;
 
@@ -50,8 +54,18 @@ class _LoginWidgetState extends State<LoginWidget> {
     // put your logic from initState here
   }
 
+  bool buttonDisability() {
+    return emailController.text.contains("@") &&
+        emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty;
+  }
+
   void login() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
+      print("Runssss");
       final response = await post(
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/login'),
@@ -60,16 +74,32 @@ class _LoginWidgetState extends State<LoginWidget> {
             "password": passwordController.text
           }));
       print(response.body);
-      final jsonData = LoginResponse.fromJson(jsonDecode(response.body));
-      print(jsonData.data.id);
+      print(response.statusCode);
       if (response.statusCode == 200) {
-        Navigator.pushNamed(context, "/app", arguments: {
-          "UserId": jsonData.data.id,
-          "message": jsonData.message
+        final jsonData = LoginResponse.fromJson(jsonDecode(response.body));
+        context.read<User>().setUserDetails(
+            userId: jsonData.data.id,
+            emailId: emailController.text,
+            message: jsonData.message);
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/app', (Route<dynamic> route) => false);
+        // Navigator.pushNamed(context, "/app", arguments: {
+        //   "UserId": jsonData.data.id,
+        //   "message": jsonData.message
+        // });
+      } else {
+        print("dsdkjfnsdf");
+        setState(() {
+          message = 'Either Email OR Password is incorrect';
         });
       }
+      print("aaaaaaaaaaaa");
     } catch (error) {
       print(error);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -84,6 +114,10 @@ class _LoginWidgetState extends State<LoginWidget> {
         () {},
       );
     });
+  }
+
+  void goToRegistration() {
+    Navigator.pushNamed(context, "/registration");
   }
 
   void changePasswordVisibility() {
@@ -139,6 +173,15 @@ class _LoginWidgetState extends State<LoginWidget> {
               const SizedBox(
                 height: 20,
               ),
+              SizedBox(
+                  height: 20,
+                  child: Text(
+                    message,
+                    style: TextStyle(color: Colors.red),
+                  )),
+              SizedBox(
+                height: 10,
+              ),
               ButtonTheme(
                 child: SizedBox(
                     height: 50,
@@ -152,12 +195,20 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   RoundedRectangleBorder(
                                       borderRadius:
                                           BorderRadius.circular(30.0)))),
-                      onPressed: () {
-                        login();
-                        // print(controller1.text);
-                        // print(controller2.text);
-                      },
-                      child: const Text("Next"),
+                      onPressed: buttonDisability()
+                          ? () {
+                              login();
+                            }
+                          : null,
+                      child: isLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text("Next"),
                     )),
               ),
               const SizedBox(
@@ -171,17 +222,31 @@ class _LoginWidgetState extends State<LoginWidget> {
                   )),
               const OAuthButtonWidget(
                   content: "Continue with Google", iconUrl: "Google"),
-              const SizedBox(
-                height: 10,
+              Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                      padding: EdgeInsets.only(top: 10, left: 80, right: 50),
+                      child: Row(
+                        children: [
+                          Text("Already have an account? "),
+                          TextButton(
+                              onPressed: goToRegistration,
+                              child: Text(
+                                'Signin',
+                                style: TextStyle(color: Colors.black),
+                              ))
+                        ],
+                      ))),
+              Expanded(
+                child: const SizedBox(),
               ),
-              SizedBox(
-                width: 350,
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child:
-                      Image.asset("assets/images/swiirl-S-Mark-Aqua-Dot 4.png"),
-                ),
-              ),
+              Padding(
+                  padding: EdgeInsets.only(left: 20, bottom: 20),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Image.asset(
+                        "assets/images/swiirl-S-Mark-Aqua-Dot 4.png"),
+                  )),
             ],
           ),
         ));

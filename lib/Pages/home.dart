@@ -24,6 +24,15 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
     "Frequently Asked Questions",
     "My Profile"
   ];
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Checking the navigation history
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final history = Navigator.of(context);
+      print('Navigation History: $history');
+    });
+  }
 
   static final _bottomNavigationBar = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
@@ -52,8 +61,8 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
 
   @override
   Widget build(context) {
-    final UserId = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
+    // final UserId = (ModalRoute.of(context)?.settings.arguments ??
+    //     <String, dynamic>{}) as Map;
     final _body = [
       HomeWidget(),
       InitiativeWidget(),
@@ -84,49 +93,55 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       ),
       const AccountWidget()
     ];
-    return Scaffold(
-        appBar: AppBar(
-            centerTitle: true,
-            elevation: 0,
-            actions: [
-              _currentIndex == 3
-                  ? IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/update-profile',
-                            arguments: {
-                              "UserId": UserId["UserId"],
-                              "message": UserId["message"]
-                            });
-                      },
-                      icon: SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: SvgPicture.asset("assets/svg/settings.svg"),
-                      ))
-                  : Container()
-            ],
-            leading: IconButton(
-                onPressed: () {
-                  print("aaaaaaa");
-                  Navigator.pushNamed(context, "/app", arguments: {
-                    "UserId": UserId["UserId"],
-                    "message": UserId["message"]
-                  });
-                },
-                icon: SvgPicture.asset("assets/svg/Vector.svg")),
-            backgroundColor: Colors.white,
-            title: Text(_TopBar[_currentIndex],
-                style: const TextStyle(
-                  color: Colors.black87,
-                ))),
-        body: _body[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-            iconSize: 20.0,
-            type: BottomNavigationBarType.fixed,
-            items: _bottomNavigationBar,
-            currentIndex: _currentIndex,
-            selectedItemColor: const Color.fromRGBO(116, 231, 199, 1),
-            onTap: changeIndex));
+    return WillPopScope(
+      child: Scaffold(
+          appBar: AppBar(
+              centerTitle: true,
+              elevation: 0,
+              actions: [
+                _currentIndex == 3
+                    ? IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/update-profile',
+                          );
+                          // Navigator.pushNamed(context, '/update-profile',
+                          //     arguments: {
+                          //       "UserId": UserId["UserId"],
+                          //       "message": UserId["message"]
+                          //     });
+                        },
+                        icon: SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: SvgPicture.asset("assets/svg/settings.svg"),
+                        ))
+                    : Container()
+              ],
+              leading: IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/app");
+                  },
+                  icon: SvgPicture.asset("assets/svg/Vector.svg")),
+              backgroundColor: Colors.white,
+              title: Text(_TopBar[_currentIndex],
+                  style: const TextStyle(
+                    color: Colors.black87,
+                  ))),
+          body: _body[_currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+              iconSize: 20.0,
+              type: BottomNavigationBarType.fixed,
+              items: _bottomNavigationBar,
+              currentIndex: _currentIndex,
+              selectedItemColor: const Color.fromRGBO(116, 231, 199, 1),
+              onTap: changeIndex)),
+      onWillPop: () async {
+        print("BackButton");
+        return true;
+      },
+    );
   }
 }
 
@@ -163,9 +178,9 @@ class AccountWidget extends StatefulWidget {
 
 class _AccountWidgetState extends State<AccountWidget> {
   bool isLoading = false;
-  late String name;
-  late String location;
-  late String bio;
+  late String name = '';
+  late String location = '';
+  late String bio = '';
   late int goalsMets = 0;
   late int moneyRaised = 0;
   late int collectiables = 0;
@@ -182,7 +197,13 @@ class _AccountWidgetState extends State<AccountWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    getUserDetails(context.watch<User>().userId);
+    String userId = context.watch<User>().userId;
+    print("From Inside $userId");
+    // if (userId.isEmpty) {
+    //   Navigator.pushNamed(context, '/');
+    // } else {
+    if (userId.isNotEmpty) getUserDetails(context.watch<User>().userId);
+    // }
     // put your logic from initState here
   }
 
