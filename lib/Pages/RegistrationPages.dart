@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:textfield_search/textfield_search.dart';
@@ -10,7 +11,7 @@ import 'package:http/http.dart';
 import '../model/responses.dart';
 
 Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
-    isLoading, isOtpSend) {
+    isLoading, isOtpSend,goToLogin) {
   return Center(
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -89,6 +90,7 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
             )),
       ),
     ),
+    
     const SizedBox(
       height: 20,
     ),
@@ -99,6 +101,16 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
           child: Text('OR'),
         )),
     const OAuthButtonWidget(content: "Continue with Google", iconUrl: "Google"),
+    Align(
+        alignment: Alignment.center,
+        child: Padding(
+            padding: EdgeInsets.only(top: 10,left: 70,right: 50),
+            child: Row(
+              children: [
+                Text("Already have an account? "),
+                TextButton(onPressed: goToLogin, child: Text('Login'))
+              ],
+            ))),
     // OAuthButtonWidget("Continue with Facebook", "Facebook"),
     // OAuthButtonWidget("Continue with Apple", "Apple"),
     const SizedBox(
@@ -151,7 +163,7 @@ Widget SecondPageWidget(
         ),
         PasswordFieldWidget("Password", controller1, isPasswordHidden,
             isPasswordValid, true, checkPasswordVisiblity),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         PasswordFieldWidget(
@@ -161,7 +173,7 @@ Widget SecondPageWidget(
             arePasswordsEqual,
             true,
             checkConfirmPasswordVisiblity),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         SizedBox(
@@ -191,8 +203,8 @@ Widget SecondPageWidget(
                             borderRadius: BorderRadius.circular(30.0)))),
                 onPressed: () {
                   onNext();
-                  print(controller1.text);
-                  print(controller2.text);
+                  // print(controller1.text);
+                  // print(controller2.text);
                 },
                 child: const Text("Next"),
               )),
@@ -226,7 +238,6 @@ Widget ThirdPageWidget(
     getSchools,
     clickOnSuggestion,
     clickOnSchool) {
-  print(getSchools);
   return Center(
     child: Column(
       children: [
@@ -309,6 +320,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
   late var schoolId = '';
   bool isLoading = false;
   late var userId;
+
   void didChangeDependencies() {
     super.didChangeDependencies();
     final UserId = (ModalRoute.of(context)?.settings.arguments ??
@@ -369,7 +381,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
 
   void createUser() async {
     try {
-      print("Hello");
+      // print("Hello");
       setState(() {
         isLoading = true;
       });
@@ -383,15 +395,16 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
       } else {
         payload["schoolId"] = schoolId;
       }
-      print(payload);
+      // print(payload);
       final response = await put(
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-school-details'),
           body: jsonEncode(payload));
-      print(response.body);
+      // print(response.body);
       if (response.statusCode == 200) print("dksjfdf");
-      Navigator.pushNamed(context, '/app', arguments: {"UserId": userId});
-      print(jsonDecode(response.body));
+      Navigator.pushNamed(context, '/app',
+          arguments: {"UserId": userId, "message": "Google Sign in"});
+      // print(jsonDecode(response.body));
     } catch (error) {
       print(error);
     } finally {
@@ -406,7 +419,8 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
   Widget build(BuildContext context) {
     //TODO: implement build
     return Scaffold(
-        body: Center(
+        body: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -423,7 +437,10 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
           const Align(
             alignment: Alignment.center,
             child: Text("This is used to build your profile on swiirl",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromRGBO(132, 143, 172, 1))),
           ),
           const SizedBox(
             height: 10,
@@ -441,17 +458,8 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
           ButtonTheme(
             child: SizedBox(
                 height: 50,
-                width: 350,
+                width: double.infinity,
                 child: ElevatedButton(
-                  child: isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        )
-                      : const Text("Next"),
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
                           const Color.fromRGBO(54, 189, 151, 1)),
@@ -461,6 +469,15 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
                   onPressed: () {
                     createUser();
                   },
+                  child: isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text("Next"),
                 )),
           ),
         ],

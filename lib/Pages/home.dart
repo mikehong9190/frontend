@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 import '../model/responses.dart';
+import '../store.dart';
 
 class MyStateFulWidget extends StatefulWidget {
   const MyStateFulWidget({super.key});
@@ -22,6 +24,15 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
     "Frequently Asked Questions",
     "My Profile"
   ];
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Checking the navigation history
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final history = Navigator.of(context);
+      print('Navigation History: $history');
+    });
+  }
 
   static final _bottomNavigationBar = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
@@ -50,8 +61,8 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
 
   @override
   Widget build(context) {
-    final UserId = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
+    // final UserId = (ModalRoute.of(context)?.settings.arguments ??
+    //     <String, dynamic>{}) as Map;
     final _body = [
       HomeWidget(),
       InitiativeWidget(),
@@ -80,48 +91,57 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
               answers: ["Answer 1 ", "Answer 2"]),
         ],
       ),
-      AccountWidget(
-        UserId: UserId["UserId"],
-      )
+      const AccountWidget()
     ];
-    return Scaffold(
-        appBar: AppBar(
-            centerTitle: true,
-            elevation: 0,
-            actions: [
-              _currentIndex == 3
-                  ? IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/update-profile',
-                            arguments: {"UserId": UserId["UserId"]});
-                      },
-                      icon: SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: SvgPicture.asset("assets/svg/settings.svg"),
-                      ))
-                  : Container()
-            ],
-            leading: IconButton(
-                onPressed: () {
-                  print("aaaaaaa");
-                  Navigator.pushNamed(context, "/app",
-                      arguments: {"UserId": UserId["UserId"]});
-                },
-                icon: SvgPicture.asset("assets/svg/Vector.svg")),
-            backgroundColor: Colors.white,
-            title: Text(_TopBar[_currentIndex],
-                style: TextStyle(
-                  color: Colors.black87,
-                ))),
-        body: _body[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-            iconSize: 20.0,
-            type: BottomNavigationBarType.fixed,
-            items: _bottomNavigationBar,
-            currentIndex: _currentIndex,
-            selectedItemColor: Color.fromRGBO(116, 231, 199, 1),
-            onTap: changeIndex));
+    return WillPopScope(
+      child: Scaffold(
+          appBar: AppBar(
+              centerTitle: true,
+              elevation: 0,
+              actions: [
+                _currentIndex == 3
+                    ? IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/update-profile',
+                          );
+                          // Navigator.pushNamed(context, '/update-profile',
+                          //     arguments: {
+                          //       "UserId": UserId["UserId"],
+                          //       "message": UserId["message"]
+                          //     });
+                        },
+                        icon: SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: SvgPicture.asset("assets/svg/settings.svg"),
+                        ))
+                    : Container()
+              ],
+              leading: IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/app");
+                  },
+                  icon: SvgPicture.asset("assets/svg/Vector.svg")),
+              backgroundColor: Colors.white,
+              title: Text(_TopBar[_currentIndex],
+                  style: const TextStyle(
+                    color: Colors.black87,
+                  ))),
+          body: _body[_currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+              iconSize: 20.0,
+              type: BottomNavigationBarType.fixed,
+              items: _bottomNavigationBar,
+              currentIndex: _currentIndex,
+              selectedItemColor: const Color.fromRGBO(116, 231, 199, 1),
+              onTap: changeIndex)),
+      onWillPop: () async {
+        print("BackButton");
+        return true;
+      },
+    );
   }
 }
 
@@ -144,8 +164,13 @@ class _HomeWidgetState extends State<HomeWidget> {
 
 //ACCOUNT WIDGET
 class AccountWidget extends StatefulWidget {
-  final String UserId;
-  const AccountWidget({super.key, required this.UserId});
+  // final String message;
+  // final String UserId;
+  const AccountWidget({
+    super.key,
+    // required this.UserId,
+    // required this.message
+  });
 
   @override
   State<AccountWidget> createState() => _AccountWidgetState();
@@ -153,14 +178,34 @@ class AccountWidget extends StatefulWidget {
 
 class _AccountWidgetState extends State<AccountWidget> {
   bool isLoading = false;
-  late String name;
-  late String location;
-  late String bio;
+  late String name = '';
+  late String profilePicture = '';
+  late String location = '';
+  late String bio = '';
+  late int goalsMets = 0;
+  late int moneyRaised = 0;
+  late int collectiables = 0;
+  late String dollar = '\$';
 
   @override
   void initState() {
     super.initState();
-    getUserDetails(widget.UserId);
+    // context.watch<User>().userId;
+    // print ('By Counter ::::: ${context.watch<User>().userId}');
+    // getUserDetails(widget.UserId);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    String userId = context.watch<User>().userId;
+    print("From Inside $userId");
+    // if (userId.isEmpty) {
+    //   Navigator.pushNamed(context, '/');
+    // } else {
+    if (userId.isNotEmpty) getUserDetails(context.watch<User>().userId);
+    // }
+    // put your logic from initState here
   }
 
   void getUserDetails(id) async {
@@ -170,15 +215,20 @@ class _AccountWidgetState extends State<AccountWidget> {
       });
       final response = await get(Uri.parse(
           'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/users?id=$id'));
+      print(response.body);
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
-        print(response.body);
+
         setState(() {
+          profilePicture = jsonData.profilePicture ?? '';
+          collectiables = jsonData.collectibles ?? 0;
+          goalsMets = jsonData.goalsMet ?? 0;
+          moneyRaised = jsonData.moneyRaised ?? 0;
           name = '${jsonData.firstName} ${jsonData.lastName}';
           location = jsonData.schoolDistrict;
           isLoading = false;
-          bio = jsonData.bio == null ? '' : jsonData.bio;
+          bio = jsonData.bio ?? '';
         });
       }
     } catch (error) {
@@ -188,34 +238,47 @@ class _AccountWidgetState extends State<AccountWidget> {
 
   @override
   Widget build(context) {
+    // String profilePicture = context.read<User>().profilePicture;
+    // print( 'IMAGE $profilePicture');
     return isLoading
-        ? Align(
+        ? const Align(
             alignment: Alignment.center,
             child: CircularProgressIndicator(
               color: Color.fromRGBO(54, 189, 151, 1),
             ))
         : FractionallySizedBox(
             alignment: Alignment.topCenter,
-            heightFactor: .3,
+            heightFactor: .4,
             child: Container(
-              padding: EdgeInsets.only(left: 40, right: 40, top: 30),
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.amber,
-                          radius: 30,
-                        ),
+                        ClipOval(
+                            child: profilePicture.isNotEmpty
+                                ? Image.network(
+                                    profilePicture,
+                                    fit: BoxFit.cover,
+                                    width: 80.0,
+                                    height: 80.0,
+                                  )
+                                : Image.asset(
+                                    "assets/images/defaultImage.png",
+                                    fit: BoxFit.cover,
+                                    width: 80.0,
+                                    height: 80.0,
+                                  )),
                         Column(
                           children: [
-                            Text("0",
-                                style: TextStyle(fontWeight: FontWeight.w300)),
-                            Text(
-                              "0",
+                            Text(collectiables.toString(),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w700, fontSize: 18)),
+                            const Text(
+                              "Collectibles",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: Color.fromRGBO(183, 183, 183, 1)),
@@ -225,10 +288,11 @@ class _AccountWidgetState extends State<AccountWidget> {
                         Column(
                           children: [
                             Text(
-                              "0",
-                              style: TextStyle(fontWeight: FontWeight.w300),
+                              "\$ $moneyRaised",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 18),
                             ),
-                            Text(
+                            const Text(
                               'Money Raised',
                               style: TextStyle(
                                   fontSize: 12,
@@ -238,9 +302,10 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ),
                         Column(
                           children: [
-                            Text("0",
-                                style: TextStyle(fontWeight: FontWeight.w300)),
-                            Text('collectiables',
+                            Text(goalsMets.toString(),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w700, fontSize: 18)),
+                            const Text('Goals Mets',
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: Color.fromRGBO(183, 183, 183, 1)))
@@ -248,28 +313,45 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ),
                       ],
                     ),
-                    Align(
+                    Container(
+                      margin: const EdgeInsets.only(top: 20),
                       alignment: Alignment.bottomLeft,
                       child: Text(
                         name,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 18),
                       ),
                     ),
-                    Align(
+                    Container(
+                      margin: const EdgeInsets.only(top: 10),
                       alignment: Alignment.bottomLeft,
                       child: Row(children: [
                         SvgPicture.asset("assets/svg/location.svg"),
                         Text(
                           location,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.w500, fontSize: 14),
                         )
                       ]),
                     ),
-                    Align(
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 20),
                       alignment: Alignment.bottomLeft,
-                      child: Text(bio),
+                      child: bio.isEmpty
+                          ? TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/update-profile');
+                                // Navigator.pushNamed(context, '/update-profile',
+                                //     arguments: {
+                                //       "UserId": widget.UserId,
+                                //       "message": widget.message
+                                //     });
+                              },
+                              child: const Text(
+                                "Add Bio",
+                                style: TextStyle(color: Colors.black),
+                              ))
+                          : Text(bio),
                     ),
                   ]),
             ));
@@ -302,19 +384,19 @@ class QuestionWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return Column(children: [
-      SizedBox(height: 50),
+      const SizedBox(height: 50),
       Align(
         alignment: Alignment.center,
         child: Text(question,
-            style: TextStyle(fontFamily: 'Urbanist', fontSize: 24)),
+            style: const TextStyle(fontFamily: 'Urbanist', fontSize: 24)),
       ),
-      SizedBox(height: 30),
+      const SizedBox(height: 30),
       ...answers
           .map(
             (e) => Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 10, left: 50),
+                  padding: const EdgeInsets.only(bottom: 10, left: 50),
                   child: Text(e),
                 )),
           )
@@ -330,8 +412,8 @@ class FAQWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        // crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: questions
             .map(
               (e) => e,

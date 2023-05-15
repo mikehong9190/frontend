@@ -31,6 +31,7 @@ class WelcomeWidget extends StatelessWidget {
                           width: 120,
                           child: IconButton(
                               onPressed: () {
+                                print ("Working");
                                 Navigator.pushNamed(context, "/getStarted");
                               },
                               icon: SizedBox(

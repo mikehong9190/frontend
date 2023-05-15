@@ -9,27 +9,52 @@ class GettingStartedWidget extends StatelessWidget {
     return Scaffold(
         body: SizedBox(
             child: Stack(children: [
-      Center(
-          child: Column(
-        // mainAxisAlignment: MainAxisAlignment.start,
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 450,
-            child: ClipRect(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 30),
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(243, 243, 243, 1),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FittedBox(
-                      fit: BoxFit.contain,
-                      child: Image.asset(
-                        "./assets/images/swiirl-mockup.png",
+// <<<<<<< ui-changes
+//       Center(
+//           child: Column(
+//         // mainAxisAlignment: MainAxisAlignment.start,
+//         // crossAxisAlignment: CrossAxisAlignment.center,
+//         children: [
+//           SizedBox(
+//             height: 450,
+//             child: ClipRect(
+//               child: Container(
+//                 margin: const EdgeInsets.symmetric(horizontal: 30),
+//                 width: double.infinity,
+//                 decoration: const BoxDecoration(
+//                   color: Color.fromRGBO(243, 243, 243, 1),
+//                 ),
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.end,
+//                   children: [
+//                     FittedBox(
+//                       fit: BoxFit.contain,
+//                       child: Image.asset(
+//                         "./assets/images/swiirl-mockup.png",
+// =======
+              Center(
+                  child: Column(
+                // mainAxisAlignment: MainAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 450,
+                    child: ClipRect(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 30),
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          color: Color.fromRGBO(243, 243, 243, 1),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Image.asset(
+                              "./assets/images/swiirl-mockup.png",
+                            ),
+                          ],
+                        ),
+// >>>>>>> dev
                       ),
                     ),
                   ],

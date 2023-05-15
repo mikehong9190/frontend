@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:textfield_search/textfield_search.dart';
 import '../model/responses.dart';
@@ -18,7 +17,7 @@ Widget TextFieldWidget(
   return Column(
     children: [
       SizedBox(
-        width: double.infinity,
+        width: 350,
         child: Align(
             alignment: AlignmentDirectional.bottomStart,
             child: Text(label,
@@ -30,7 +29,7 @@ Widget TextFieldWidget(
       ),
       SizedBox(
           height: 50,
-          width: double.infinity,
+          width: 350,
           child: TextField(
             enabled: isEnabled,
             controller: controller,
@@ -47,12 +46,15 @@ Widget TextFieldWidget(
                               : Container(),
                           IconButton(
                               onPressed: () {},
-                              icon: SvgPicture.asset("assets/svg/eye.svg"))
+                              icon: SvgPicture.asset("assets/svg/Eye.svg"))
                         ])
                   : Container(
                       width: 0,
                     ),
               border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.zero,
+                  borderSide: BorderSide(color: Colors.black)),
+              enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.zero,
                   borderSide: BorderSide(color: Colors.black)),
               hintText: !isPassword ? label : "**********",
@@ -82,7 +84,7 @@ Widget SearchTextFieldWidget(
       ),
       SizedBox(
           height: 50,
-          width: double.infinity,
+          width: 350,
           child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
                 decoration: const InputDecoration(
@@ -123,7 +125,7 @@ Widget SchoolSearchFieldWidget(
     children: [
       SizedBox(
         height: 30,
-        width: double.infinity,
+        width: 350,
         child: Align(
             alignment: AlignmentDirectional.bottomStart,
             child: Text(label,
@@ -135,7 +137,7 @@ Widget SchoolSearchFieldWidget(
       ),
       SizedBox(
           height: 50,
-          width: double.infinity,
+          width: 350,
           child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
                 decoration: const InputDecoration(
@@ -176,7 +178,7 @@ Widget PasswordFieldWidget(
     children: [
       SizedBox(
         height: 30,
-        width: 350,
+        width: double.infinity,
         child: Align(
             alignment: AlignmentDirectional.bottomStart,
             child: Text(label,
@@ -188,7 +190,7 @@ Widget PasswordFieldWidget(
       ),
       SizedBox(
           height: 50,
-          width: 350,
+          width: double.infinity,
           child: TextField(
             enabled: isEnabled,
             controller: controller,
@@ -206,7 +208,7 @@ Widget PasswordFieldWidget(
                         onPressed: () {
                           changeVisiblity();
                         },
-                        icon: SvgPicture.asset("assets/svg/eye.svg"))
+                        icon: SvgPicture.asset("assets/svg/Eye.svg"))
                   ]),
               border: const OutlineInputBorder(
                   borderRadius: BorderRadius.zero,

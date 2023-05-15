@@ -15,7 +15,7 @@ class OAuthButtonWidget extends StatelessWidget {
       {super.key, required this.content, required this.iconUrl});
 
   googleLogin(context) async {
-    print("googleLogin method Called");
+    // print("googleLogin method Called");
     if (Platform.isAndroid) {
       final _googleSignIn = GoogleSignIn(
         scopes: [
@@ -24,6 +24,7 @@ class OAuthButtonWidget extends StatelessWidget {
           "openid"
         ],
       );
+      print (_googleSignIn);
       try {
         final result = await _googleSignIn.signIn();
         final ggAuth = await result?.authentication;
@@ -41,10 +42,14 @@ class OAuthButtonWidget extends StatelessWidget {
             body: jsonEncode({"idToken": token}));
         final jsonData = Welcome.fromJson(jsonDecode(response.body));
         // if (response.statusCode ==)
-        print(response.body);
-        if (response.statusCode == 200) {
+        // print(response.body);
+        if (response.statusCode == 200 &&
+            jsonData.message == 'Account created successfully!') {
           Navigator.pushNamed(context, "/google-auth-school",
-              arguments: {"id": jsonData.data.id});
+              arguments: {"id": jsonData.data.id, "message": jsonData.message});
+        } else {
+          Navigator.pushNamed(context, "/app",
+              arguments: {"UserId": jsonData.data.id, "message": "Logged in"});
         }
       } catch (error) {
         print(error);
@@ -70,16 +75,22 @@ class OAuthButtonWidget extends StatelessWidget {
         //   int endLength = token.length;
         //   token = token.substring(initLength, endLength);
         // }
+        print (token);
         final response = await post(
             Uri.parse(
                 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/signup'),
             body: jsonEncode({"idToken": token}));
         final jsonData = Welcome.fromJson(jsonDecode(response.body));
+        print (response.body);
         // if (response.statusCode ==)
-        print(response.body);
-        if (response.statusCode == 200) {
+        // print(response.body);
+        if (response.statusCode == 200 &&
+            jsonData.message == 'Account created successfully!') {
           Navigator.pushNamed(context, "/google-auth-school",
-              arguments: {"id": jsonData.data.id});
+              arguments: {"id": jsonData.data.id, "message": jsonData.message});
+        } else {
+          Navigator.pushNamed(context, "/app",
+              arguments: {"UserId": jsonData.data.id, "message": "Logged in"});
         }
       } catch (error) {
         print(error);
@@ -95,7 +106,7 @@ class OAuthButtonWidget extends StatelessWidget {
           height: 10,
         ),
         SizedBox(
-          width: double.infinity,
+          width: 350,
           height: 50,
           child: OutlinedButton(
               child: Row(
@@ -110,6 +121,7 @@ class OAuthButtonWidget extends StatelessWidget {
                   Text(
                     content,
                     textAlign: TextAlign.center,
+                    style: TextStyle (color: Colors.black),
                   ),
                   Expanded(child: Container())
                 ],
