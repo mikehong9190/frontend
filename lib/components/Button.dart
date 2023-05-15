@@ -228,8 +228,8 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
                     final response = await post(
                         Uri.parse(
                             'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/signup'),
-                        body: jsonEncode(
-                            {"idToken": token, "platform": "android"}));
+                        body:
+                            jsonEncode({"idToken": token, "platform": "ios"}));
                     final jsonData =
                         Welcome.fromJson(jsonDecode(response.body));
                     // if (response.statusCode ==)
