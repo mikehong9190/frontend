@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 import '../model/responses.dart';
+import '../store.dart';
 
 class MyStateFulWidget extends StatefulWidget {
   const MyStateFulWidget({super.key});
@@ -22,6 +24,15 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
     "Frequently Asked Questions",
     "My Profile"
   ];
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Checking the navigation history
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final history = Navigator.of(context);
+      print('Navigation History: $history');
+    });
+  }
 
   static final _bottomNavigationBar = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
@@ -50,8 +61,8 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
 
   @override
   Widget build(context) {
-    final UserId = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
+    // final UserId = (ModalRoute.of(context)?.settings.arguments ??
+    //     <String, dynamic>{}) as Map;
     final _body = [
       HomeWidget(),
       InitiativeWidget(),
@@ -80,54 +91,57 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
               answers: ["Answer 1 ", "Answer 2"]),
         ],
       ),
-      AccountWidget(
-        UserId: UserId["UserId"],
-        message: UserId["message"],
-      )
+      const AccountWidget()
     ];
-    return Scaffold(
-        appBar: AppBar(
-            centerTitle: true,
-            elevation: 0,
-            actions: [
-              _currentIndex == 3
-                  ? IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/update-profile',
-                            arguments: {
-                              "UserId": UserId["UserId"],
-                              "message": UserId["message"]
-                            });
-                      },
-                      icon: SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: SvgPicture.asset("assets/svg/settings.svg"),
-                      ))
-                  : Container()
-            ],
-            leading: IconButton(
-                onPressed: () {
-                  print("aaaaaaa");
-                  Navigator.pushNamed(context, "/app", arguments: {
-                    "UserId": UserId["UserId"],
-                    "message": UserId["message"]
-                  });
-                },
-                icon: SvgPicture.asset("assets/svg/Vector.svg")),
-            backgroundColor: Colors.white,
-            title: Text(_TopBar[_currentIndex],
-                style: const TextStyle(
-                  color: Colors.black87,
-                ))),
-        body: _body[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-            iconSize: 20.0,
-            type: BottomNavigationBarType.fixed,
-            items: _bottomNavigationBar,
-            currentIndex: _currentIndex,
-            selectedItemColor: const Color.fromRGBO(116, 231, 199, 1),
-            onTap: changeIndex));
+    return WillPopScope(
+      child: Scaffold(
+          appBar: AppBar(
+              centerTitle: true,
+              elevation: 0,
+              actions: [
+                _currentIndex == 3
+                    ? IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/update-profile',
+                          );
+                          // Navigator.pushNamed(context, '/update-profile',
+                          //     arguments: {
+                          //       "UserId": UserId["UserId"],
+                          //       "message": UserId["message"]
+                          //     });
+                        },
+                        icon: SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: SvgPicture.asset("assets/svg/settings.svg"),
+                        ))
+                    : Container()
+              ],
+              leading: IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/app");
+                  },
+                  icon: SvgPicture.asset("assets/svg/Vector.svg")),
+              backgroundColor: Colors.white,
+              title: Text(_TopBar[_currentIndex],
+                  style: const TextStyle(
+                    color: Colors.black87,
+                  ))),
+          body: _body[_currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+              iconSize: 20.0,
+              type: BottomNavigationBarType.fixed,
+              items: _bottomNavigationBar,
+              currentIndex: _currentIndex,
+              selectedItemColor: const Color.fromRGBO(116, 231, 199, 1),
+              onTap: changeIndex)),
+      onWillPop: () async {
+        print("BackButton");
+        return true;
+      },
+    );
   }
 }
 
@@ -150,9 +164,13 @@ class _HomeWidgetState extends State<HomeWidget> {
 
 //ACCOUNT WIDGET
 class AccountWidget extends StatefulWidget {
-  final String message;
-  final String UserId;
-  const AccountWidget({super.key, required this.UserId, required this.message});
+  // final String message;
+  // final String UserId;
+  const AccountWidget({
+    super.key,
+    // required this.UserId,
+    // required this.message
+  });
 
   @override
   State<AccountWidget> createState() => _AccountWidgetState();
@@ -160,9 +178,10 @@ class AccountWidget extends StatefulWidget {
 
 class _AccountWidgetState extends State<AccountWidget> {
   bool isLoading = false;
-  late String name;
-  late String location;
-  late String bio;
+  late String name = '';
+  late String profilePicture = '';
+  late String location = '';
+  late String bio = '';
   late int goalsMets = 0;
   late int moneyRaised = 0;
   late int collectiables = 0;
@@ -171,7 +190,22 @@ class _AccountWidgetState extends State<AccountWidget> {
   @override
   void initState() {
     super.initState();
-    getUserDetails(widget.UserId);
+    // context.watch<User>().userId;
+    // print ('By Counter ::::: ${context.watch<User>().userId}');
+    // getUserDetails(widget.UserId);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    String userId = context.watch<User>().userId;
+    print("From Inside $userId");
+    // if (userId.isEmpty) {
+    //   Navigator.pushNamed(context, '/');
+    // } else {
+    if (userId.isNotEmpty) getUserDetails(context.watch<User>().userId);
+    // }
+    // put your logic from initState here
   }
 
   void getUserDetails(id) async {
@@ -181,11 +215,13 @@ class _AccountWidgetState extends State<AccountWidget> {
       });
       final response = await get(Uri.parse(
           'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/users?id=$id'));
+      print(response.body);
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
-        // print(response.body);
+
         setState(() {
+          profilePicture = jsonData.profilePicture ?? '';
           collectiables = jsonData.collectibles ?? 0;
           goalsMets = jsonData.goalsMet ?? 0;
           moneyRaised = jsonData.moneyRaised ?? 0;
@@ -202,6 +238,8 @@ class _AccountWidgetState extends State<AccountWidget> {
 
   @override
   Widget build(context) {
+    // String profilePicture = context.read<User>().profilePicture;
+    // print( 'IMAGE $profilePicture');
     return isLoading
         ? const Align(
             alignment: Alignment.center,
@@ -220,10 +258,20 @@ class _AccountWidgetState extends State<AccountWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const CircleAvatar(
-                          backgroundColor: Colors.amber,
-                          radius: 45,
-                        ),
+                        ClipOval(
+                            child: profilePicture.isNotEmpty
+                                ? Image.network(
+                                    profilePicture,
+                                    fit: BoxFit.cover,
+                                    width: 80.0,
+                                    height: 80.0,
+                                  )
+                                : Image.asset(
+                                    "assets/images/defaultImage.png",
+                                    fit: BoxFit.cover,
+                                    width: 80.0,
+                                    height: 80.0,
+                                  )),
                         Column(
                           children: [
                             Text(collectiables.toString(),
@@ -292,11 +340,12 @@ class _AccountWidgetState extends State<AccountWidget> {
                       child: bio.isEmpty
                           ? TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/update-profile',
-                                    arguments: {
-                                      "UserId": widget.UserId,
-                                      "message": widget.message
-                                    });
+                                Navigator.pushNamed(context, '/update-profile');
+                                // Navigator.pushNamed(context, '/update-profile',
+                                //     arguments: {
+                                //       "UserId": widget.UserId,
+                                //       "message": widget.message
+                                //     });
                               },
                               child: const Text(
                                 "Add Bio",

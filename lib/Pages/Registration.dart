@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 import '../model/responses.dart';
 
@@ -12,6 +13,8 @@ import 'package:frontend/Pages/RegistrationPages.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:im_stepper/main.dart';
 import 'package:http/http.dart';
+
+import '../store.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 
 class RegistrationWidget extends StatefulWidget {
@@ -44,6 +47,17 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   late var arePasswordsEqual = false;
   late var message = '';
 
+
+   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Checking the navigation history
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.pushNamedAndRemoveUntil(context, '/app',(Route<dynamic> route) => false);
+    });
+  }
+
   SingingCharacter? _character = SingingCharacter.jefferson;
 
   Future<List<SingleDistrictResponse>> getDistrict(String query) async {
@@ -68,6 +82,10 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     setState(() {
       isPasswordHidden = !isPasswordHidden;
     });
+  }
+
+  void goToLogin() {
+    Navigator.pushNamed(context, "/login");
   }
 
   void checkConfirmPasswordVisibility() async {
@@ -236,20 +254,23 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       } else {
         payload["schoolId"] = schoolId;
       }
-      print(payload);
-      print("asdasd");
       final response = await post(
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/signup'),
           body: jsonEncode(payload));
-      print(response.body);
       final jsonData =
           RegisteredUserResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
-        Navigator.pushNamed(context, '/app', arguments: {
-          "UserId": jsonData.data.id,
-          "message": jsonData.message
-        });
+        context.read<User>().setUserDetails(
+          profilePicture: jsonData.data.profilePicture,
+            userId: jsonData.data.id,
+            emailId: emailController.text,
+            message: jsonData.message);
+        Navigator.pushNamedAndRemoveUntil(context, '/app',(Route<dynamic> route) => false);
+        // Navigator.pushNamed(context, '/app', arguments: {
+        //   "UserId": jsonData.data.id,
+        //   "message": jsonData.message
+        // });
       }
       print(jsonDecode(response.body));
     } catch (error) {
@@ -272,7 +293,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         Step(
             title: const Text(''),
             content: FirstPageWidget(emailController, checkEmailAndChangeStep,
-                message, statusCode, otpController, isLoading, isOtpSend),
+                message, statusCode, otpController, isLoading, isOtpSend,goToLogin),
             isActive: currentStep >= 0),
         Step(
             title: const Text(''),
