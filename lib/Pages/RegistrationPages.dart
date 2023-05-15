@@ -101,16 +101,19 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
           child: Text('OR'),
         )),
     const OAuthButtonWidget(content: "Continue with Google", iconUrl: "Google"),
-    Align(
-        alignment: Alignment.center,
-        child: Padding(
-            padding: const EdgeInsets.only(top: 10, left: 70, right: 50),
-            child: Row(
-              children: [
-                const Text("Already have an account? "),
-                TextButton(onPressed: goToLogin, child: const Text('Login'))
-              ],
-            ))),
+    Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Already have an account ?"),
+        TextButton(
+            onPressed: goToLogin,
+            child: const Text(
+              'Login',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+            ))
+      ],
+    ),
     // OAuthButtonWidget("Continue with Facebook", "Facebook"),
     // OAuthButtonWidget("Continue with Apple", "Apple"),
     const SizedBox(
