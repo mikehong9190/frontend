@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -50,12 +51,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    // Checking the navigation history
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/app', (Route<dynamic> route) => false);
-    });
+    String userId = context.read<User>().userId;
+    if (userId.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        SystemNavigator.pop ();
+      });
+    }
   }
 
   SingingCharacter? _character = SingingCharacter.jefferson;
@@ -258,14 +259,15 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/signup'),
           body: jsonEncode(payload));
-      final jsonData =
-          RegisteredUserResponse.fromJson(jsonDecode(response.body));
+      print(response.body);
       if (response.statusCode == 200) {
+        final jsonData =
+            RegisteredUserResponse.fromJson(jsonDecode(response.body));
         context.read<User>().setUserDetails(
-
             userId: jsonData.data.id,
             emailId: emailController.text,
             message: jsonData.message);
+        print("sajkdnsda");
         Navigator.pushNamedAndRemoveUntil(
             context, '/app', (Route<dynamic> route) => false);
         // Navigator.pushNamed(context, '/app', arguments: {

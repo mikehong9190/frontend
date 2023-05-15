@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
@@ -24,16 +25,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
     "Frequently Asked Questions",
     "My Profile"
   ];
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    // Checking the navigation history
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final history = Navigator.of(context);
-      print('Navigation History: $history');
-    });
-  }
-
+  
   static final _bottomNavigationBar = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
       icon: SvgPicture.asset("assets/svg/Home.svg"),
@@ -94,6 +86,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       const AccountWidget()
     ];
     return WillPopScope(
+
       child: Scaffold(
           appBar: AppBar(
               centerTitle: true,
@@ -138,6 +131,8 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
               selectedItemColor: const Color.fromRGBO(116, 231, 199, 1),
               onTap: changeIndex)),
       onWillPop: () async {
+        String currentRoute = ModalRoute.of(context)!.settings.name!;
+        if (currentRoute == '/app') SystemNavigator.pop ();
         print("BackButton");
         return true;
       },
@@ -200,9 +195,6 @@ class _AccountWidgetState extends State<AccountWidget> {
     super.didChangeDependencies();
     String userId = context.watch<User>().userId;
     print("From Inside $userId");
-    // if (userId.isEmpty) {
-    //   Navigator.pushNamed(context, '/');
-    // } else {
     if (userId.isNotEmpty) getUserDetails(context.watch<User>().userId);
     // }
     // put your logic from initState here
@@ -219,7 +211,7 @@ class _AccountWidgetState extends State<AccountWidget> {
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
-
+        print ("skjsdfsdf");
         setState(() {
           profilePicture = jsonData.profilePicture ?? '';
           collectiables = jsonData.collectibles ?? 0;
