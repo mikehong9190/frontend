@@ -353,7 +353,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     passwordController.addListener(() {
       setState(
         () {
-          if (passwordController.text.length > 8 &&
+          if (passwordController.text.length >= 8 &&
               passwordController.text.length < 20) {
             setState(() {
               isPasswordValid = true;

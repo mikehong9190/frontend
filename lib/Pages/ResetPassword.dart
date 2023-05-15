@@ -58,7 +58,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
       // print("newPasswordController.text");
       setState(
         () {
-          if (newPasswordController.text.length > 8 &&
+          if (newPasswordController.text.length >= 8 &&
               newPasswordController.text.length < 20) {
             setState(() {
               isNewPasswordValid = true;
