@@ -88,17 +88,12 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     String userId = context.watch<User>().userId;
-    // if (userId.isEmpty) {
-    //   Navigator.pushNamed(context, '/');
-    //   return;
-    // }
-    // final userArguments = (ModalRoute.of(context)?.settings.arguments ??
-    //     <String, dynamic>{}) as Map;
-    // setState(() {
-    //   emailId = userArguments['emailId'];
-    //   userId = userArguments['userId'];
-    // });
-    // put your logic from initState here
+    if (userId.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/', (Route<dynamic> route) => false);
+      });
+    }
   }
 
   void resetPassword() async {
