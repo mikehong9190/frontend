@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 
 import '../model/responses.dart';
 import '../store.dart';
+import '../constants.dart';
 
 class UpdateProfileWidget extends StatefulWidget {
   const UpdateProfileWidget({super.key});
@@ -151,8 +152,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       setState(() {
         isLoading = true;
       });
-      final response = await get(Uri.parse(
-          'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/users?id=$id'));
+      final queryParameters = {'id' : id};
+      final response = await get(Uri.https(apiHost, '/v1/users',queryParameters));
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
@@ -164,7 +165,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           bioController.text = jsonData.bio ?? '';
         });
       }
-    } catch (error) {
+    } catch (error,stackTrace) {
+      print (stackTrace);
       print(error);
     } finally {
       setState(() {
@@ -174,13 +176,13 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   }
 
   void uploadProfilePic() async {
-    print(_image);
     try {
       setState(() {
         isUploadingImage = true;
       });
-      var url = Uri.parse(
-          'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile');
+      var url = Uri.https(apiHost, '/v1/users/update-profile');
+      // var url = Uri.parse(
+      //     'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile');
       final request = MultipartRequest('PUT', url);
       request.fields["id"] = context.read<User>().userId;
       final multipartFile = MultipartFile.fromBytes(
@@ -188,6 +190,11 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           filename: "jpg");
       request.files.add(multipartFile);
       final response = await request.send();
+      if (response.statusCode == 200) {
+        // setState(() {
+        //   _image = null;
+        // });
+      }
     } catch (error) {
       print(error);
     } finally {
@@ -233,19 +240,19 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                       height: 20,
                     ),
                     ClipOval(
-                        child: (profilePicture.isNotEmpty
-                            ? Image.network(
-                                profilePicture,
+                        child: (_image != null
+                            ? Image.file(
+                                _image!,
                                 fit: BoxFit.cover,
-                                width: 80.0,
-                                height: 80.0,
+                                width: 80,
+                                height: 80,
                               )
-                            : _image != null
-                                ? Image.file(
-                                    _image!,
+                            : profilePicture.isNotEmpty
+                                ? Image.network(
+                                    profilePicture,
                                     fit: BoxFit.cover,
-                                    width: 50,
-                                    height: 50,
+                                    width: 80.0,
+                                    height: 80.0,
                                   )
                                 : Image.asset(
                                     "assets/images/defaultImage.png",
@@ -253,14 +260,16 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                     width: 80.0,
                                     height: 80.0,
                                   ))),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     GestureDetector(
-                      child: Text('Update Profile Pic'),
+                      child: const Text('Update Profile Picture',
+                          style: TextStyle(
+                              color: Color.fromRGBO(54, 189, 151, 1))),
                       onTap: () => _pickImage(),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     if (_image != null)
@@ -273,7 +282,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                   color: Colors.black,
                                 ),
                               )
-                            : Text('SAVE'),
+                            : const Text('Save'),
                         onTap:
                             isUploadingImage ? null : () => uploadProfilePic(),
                       ),
@@ -321,24 +330,6 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                     const SizedBox(
                       height: 10,
                     ),
-                    if (context.watch<User>().isManuallySignedIn)
-                      TextButton(
-                          onPressed: () {
-                            sendOtpForPasswordReset();
-                          },
-                          child: isSendingOtp
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.black,
-                                  ),
-                                )
-                              : const Text(
-                                  "Reset Password",
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(54, 189, 151, 1)),
-                                )),
                     const SizedBox(
                       height: 40,
                     ),
@@ -369,12 +360,43 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                 : const Text('Update Profile'),
                           )),
                     ),
-                    TextButton(
-                        onPressed: () {
-                          context.read<User>().clearUserDetails();
-                          Navigator.pushNamed(context, '/');
-                        },
-                        child: Text('Sign Out'))
+
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 80),
+                        child: Center(
+                          child: Row(
+                            children: [
+                              if (context.watch<User>().isManuallySignedIn)
+                                TextButton(
+                                    onPressed: () {
+                                      sendOtpForPasswordReset();
+                                    },
+                                    child: isSendingOtp
+                                        ? const SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.black,
+                                            ),
+                                          )
+                                        : const Text(
+                                            "Reset Password",
+                                            style: TextStyle(
+                                                color: Color.fromRGBO(
+                                                    54, 189, 151, 1)),
+                                          )),
+                              TextButton(
+                                  onPressed: () {
+                                    context.read<User>().clearUserDetails();
+                                    Navigator.pushNamed(context, '/');
+                                  },
+                                  child: Text('Sign Out',
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromRGBO(54, 189, 151, 1))))
+                            ],
+                          ),
+                        ))
                   ]))
               // isLoading
               //   ? Align(

@@ -49,7 +49,7 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
     const SizedBox(
       height: 10,
     ),
-    if (statusCode == 200 || statusCode == 400)
+    if (statusCode != 0)
       SizedBox(
           height: 20,
           child: Text(
