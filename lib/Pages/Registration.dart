@@ -3,7 +3,7 @@
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-
+import '../constants.dart';
 import '../model/responses.dart';
 
 import 'dart:convert';
@@ -63,10 +63,10 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
   Future<List<SingleDistrictResponse>> getDistrict(String query) async {
     try {
-      final response = await get(
-        Uri.parse(
-            'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/school/search?text=$query'),
-      );
+      final queryParameters = {"text": query};
+
+      final response =
+          await get(Uri.https(apiHost, '/v1/school/search', queryParameters));
       if (response.statusCode == 200) {
         final jsonData = DistrictResponse.fromJson(jsonDecode(response.body));
         return jsonData.data;
@@ -100,8 +100,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
   Future<List<School>> getSchools(String query) async {
     try {
-      final response = await get(Uri.parse(
-          'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/school/search?text=&district=${schoolDistrictController.text}'));
+      final queryParameters = {
+        "text": "",
+        "district": schoolDistrictController
+      };
+      final response =
+          await get(Uri.https(apiHost, '/v1/school/search', queryParameters));
       if (response.statusCode == 200) {
         final jsonData = SchoolList.fromJson(jsonDecode(response.body));
         return jsonData.data;
@@ -119,9 +123,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       setState(() {
         isLoading = true;
       });
-      final response = await post(
-          Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/validate-email'),
+      final response = await post(Uri.https(apiHost, '/v1/validate-email'),
           body: jsonEncode(
               {"emailId": emailController.text, "requestType": "email"}));
       final jsonData =
@@ -135,10 +137,11 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       } else {
         setState(() {
           statusCode = response.statusCode;
-          message = "Email Already Exists";
+          message = jsonData.message;
         });
       }
-    } catch (err) {
+    } catch (err, stackTrace) {
+      print(StackTrace);
       print(err);
     } finally {
       setState(() {
@@ -166,9 +169,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       setState(() {
         isLoading = true;
       });
-      final response = await post(
-          Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/verify-otp'),
+      final response = await post(Uri.https(apiHost, '/v1/verify-otp'),
           body: jsonEncode({
             "emailId": emailController.text,
             "requestType": "email",
@@ -258,11 +259,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       } else {
         payload["schoolId"] = schoolId;
       }
-      final response = await post(
-          Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/signup'),
+      final response = await post(Uri.https(apiHost, '/v1/signup'),
           body: jsonEncode(payload));
-      print(response.body);
       if (response.statusCode == 200) {
         final jsonData =
             RegisteredUserResponse.fromJson(jsonDecode(response.body));

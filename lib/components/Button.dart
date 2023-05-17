@@ -22,6 +22,7 @@ class OAuthButtonWidget extends StatefulWidget {
 }
 
 class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
+  bool isLoading = false;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -60,14 +61,20 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
         if (response.statusCode == 200 &&
             jsonData.message == 'Account created successfully!') {
           context.read<User>().setUserDetails(
-              userId: jsonData.data.id, emailId: '', message: jsonData.message);
-          Navigator.pushNamed(context, "/google-auth-school",
-              arguments: {"id": jsonData.data.id, "message": jsonData.message});
+              userId: jsonData.data.id,
+              emailId: '',
+              message: "created account using google");
+          Navigator.pushNamed(context, "/google-auth-school");
+          // Navigator.pushNamed(context, "/google-auth-school",
+          //     arguments: {"id": jsonData.data.id, "message": jsonData.message});
         } else {
           context.read<User>().setUserDetails(
-              userId: jsonData.data.id, emailId: '', message: jsonData.message);
-          Navigator.pushNamed(context, "/app",
-              arguments: {"UserId": jsonData.data.id, "message": "Logged in"});
+              userId: jsonData.data.id,
+              emailId: '',
+              message: "logged in using google");
+          Navigator.pushNamed(context, "/app");
+          // Navigator.pushNamed(context, "/app",
+          //     arguments: {"UserId": jsonData.data.id, "message": "logged in using google"});
         }
       } catch (error) {
         print(error);
@@ -104,11 +111,15 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
         // print(response.body);
         if (response.statusCode == 200 &&
             jsonData.message == 'Account created successfully!') {
-          Navigator.pushNamed(context, "/google-auth-school",
-              arguments: {"id": jsonData.data.id, "message": jsonData.message});
+          Navigator.pushNamed(context, "/google-auth-school", arguments: {
+            "id": jsonData.data.id,
+            "message": "created account using google"
+          });
         } else {
-          Navigator.pushNamed(context, "/app",
-              arguments: {"UserId": jsonData.data.id, "message": "Logged in"});
+          Navigator.pushNamed(context, "/app", arguments: {
+            "UserId": jsonData.data.id,
+            "message": "Logged in using google"
+          });
         }
       } catch (error) {
         print(error);
