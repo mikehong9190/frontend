@@ -152,8 +152,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       setState(() {
         isLoading = true;
       });
-      final queryParameters = {'id' : id};
-      final response = await get(Uri.https(apiHost, '/v1/users',queryParameters));
+      final queryParameters = {'id': id};
+      final response =
+          await get(Uri.https(apiHost, '/v1/users', queryParameters));
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
@@ -165,8 +166,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           bioController.text = jsonData.bio ?? '';
         });
       }
-    } catch (error,stackTrace) {
-      print (stackTrace);
+    } catch (error, stackTrace) {
+      print(stackTrace);
       print(error);
     } finally {
       setState(() {
@@ -180,9 +181,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       setState(() {
         isUploadingImage = true;
       });
-      var url = Uri.https(apiHost, '/v1/users/update-profile');
-      // var url = Uri.parse(
-      //     'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile');
+      var url = Uri.https(apiHost,
+          'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile');
       final request = MultipartRequest('PUT', url);
       request.fields["id"] = context.read<User>().userId;
       final multipartFile = MultipartFile.fromBytes(
@@ -232,172 +232,169 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           : Container(
               margin: const EdgeInsets.symmetric(horizontal: 30),
               child: Center(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ClipOval(
-                        child: (_image != null
-                            ? Image.file(
-                                _image!,
-                                fit: BoxFit.cover,
-                                width: 80,
-                                height: 80,
-                              )
-                            : profilePicture.isNotEmpty
-                                ? Image.network(
-                                    profilePicture,
-                                    fit: BoxFit.cover,
-                                    width: 80.0,
-                                    height: 80.0,
-                                  )
-                                : Image.asset(
-                                    "assets/images/defaultImage.png",
-                                    fit: BoxFit.cover,
-                                    width: 80.0,
-                                    height: 80.0,
-                                  ))),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    GestureDetector(
-                      child: const Text('Update Profile Picture',
-                          style: TextStyle(
-                              color: Color.fromRGBO(54, 189, 151, 1))),
-                      onTap: () => _pickImage(),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    if (_image != null)
-                      GestureDetector(
-                        child: isUploadingImage
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.black,
-                                ),
-                              )
-                            : const Text('Save'),
-                        onTap:
-                            isUploadingImage ? null : () => uploadProfilePic(),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 20,
                       ),
-                    TextFieldWidget(
-                        "First Name", firstNameController, false, null, true),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFieldWidget(
-                        "Last Name", lastNameController, false, null, true),
-                    // TextFieldWidget("Bio", bioController, false, null, true),
-                    Column(
-                      children: [
-                        const SizedBox(
-                          height: 30,
-                          width: double.infinity,
-                          child: Align(
-                              alignment: AlignmentDirectional.bottomStart,
-                              child: Text("Your Bio",
-                                  textAlign: TextAlign.left,
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.w500))),
+                      ClipOval(
+                          child: (_image != null
+                              ? Image.file(
+                                  _image!,
+                                  fit: BoxFit.cover,
+                                  width: 80,
+                                  height: 80,
+                                )
+                              : profilePicture.isNotEmpty
+                                  ? Image.network(
+                                      profilePicture,
+                                      fit: BoxFit.cover,
+                                      width: 80.0,
+                                      height: 80.0,
+                                    )
+                                  : Image.asset(
+                                      "assets/images/defaultImage.png",
+                                      fit: BoxFit.cover,
+                                      width: 80.0,
+                                      height: 80.0,
+                                    ))),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                        child: const Text('Update Profile Picture',
+                            style: TextStyle(
+                                color: Color.fromRGBO(54, 189, 151, 1))),
+                        onTap: () => _pickImage(),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      if (_image != null)
+                        GestureDetector(
+                          onTap: isUploadingImage
+                              ? null
+                              : () => uploadProfilePic(),
+                          child: isUploadingImage
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                  ),
+                                )
+                              : const Text('Save'),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        SizedBox(
-                            height: 80,
+                      TextFieldWidget(
+                          "First Name", firstNameController, false, null, true),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFieldWidget(
+                          "Last Name", lastNameController, false, null, true),
+                      // TextFieldWidget("Bio", bioController, false, null, true),
+                      Column(
+                        children: [
+                          const SizedBox(
+                            height: 30,
                             width: double.infinity,
-                            child: TextField(
-                              maxLines: 10,
-                              enabled: true,
-                              controller: bioController,
-                              obscureText: false,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.zero,
-                                    borderSide:
-                                        BorderSide(color: Colors.black)),
-                                hintText: "Bio",
-                              ),
-                            )),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    ButtonTheme(
-                      child: SizedBox(
-                          height: 50,
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromRGBO(54, 189, 151, 1)),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0)))),
-                            onPressed: () {
-                              updateUserDetails();
-                            },
-                            child: isProfileUpdating
-                                ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : const Text('Update Profile'),
-                          )),
-                    ),
-
-                    Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 80),
-                        child: Center(
-                          child: Row(
-                            children: [
-                              if (context.watch<User>().isManuallySignedIn)
-                                TextButton(
-                                    onPressed: () {
-                                      sendOtpForPasswordReset();
-                                    },
-                                    child: isSendingOtp
-                                        ? const SizedBox(
-                                            width: 20,
-                                            height: 20,
-                                            child: CircularProgressIndicator(
-                                              color: Colors.black,
-                                            ),
-                                          )
-                                        : const Text(
-                                            "Reset Password",
-                                            style: TextStyle(
-                                                color: Color.fromRGBO(
-                                                    54, 189, 151, 1)),
-                                          )),
-                              TextButton(
-                                  onPressed: () {
-                                    context.read<User>().clearUserDetails();
-                                    Navigator.pushNamed(context, '/');
-                                  },
-                                  child: Text('Sign Out',
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromRGBO(54, 189, 151, 1))))
-                            ],
+                            child: Align(
+                                alignment: AlignmentDirectional.bottomStart,
+                                child: Text("Your Bio",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500))),
                           ),
-                        ))
-                  ]))
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          SizedBox(
+                              height: 80,
+                              width: double.infinity,
+                              child: TextField(
+                                maxLines: 10,
+                                enabled: true,
+                                controller: bioController,
+                                obscureText: false,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.zero,
+                                      borderSide:
+                                          BorderSide(color: Colors.black)),
+                                  hintText: "Bio",
+                                ),
+                              )),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      ButtonTheme(
+                        child: SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color.fromRGBO(54, 189, 151, 1)),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0)))),
+                              onPressed: () {
+                                updateUserDetails();
+                              },
+                              child: isProfileUpdating
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : const Text('Update Profile'),
+                            )),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (context.watch<User>().isManuallySignedIn)
+                            TextButton(
+                                onPressed: () {
+                                  sendOtpForPasswordReset();
+                                },
+                                child: isSendingOtp
+                                    ? const SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    : const Text(
+                                        "Reset Password",
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                54, 189, 151, 1)),
+                                      )),
+                          TextButton(
+                              onPressed: () {
+                                context.read<User>().clearUserDetails();
+                                Navigator.pushNamed(context, '/');
+                              },
+                              child: const Text('Sign Out',
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(54, 189, 151, 1))))
+                        ],
+                      ),
+                    ]),
+              ),
               // isLoading
               //   ? Align(
               //       alignment: Alignment.center,r
@@ -426,7 +423,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
               //     currentIndex: _currentIndex,
               //     selectedItemColor: Color.fromRGBO(116, 231, 199, 1),
               //     onTap: changeIndex)
-              ),
+            ),
     );
   }
 }

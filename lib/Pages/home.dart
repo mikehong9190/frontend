@@ -98,11 +98,6 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
                             context,
                             '/update-profile',
                           );
-                          // Navigator.pushNamed(context, '/update-profile',
-                          //     arguments: {
-                          //       "UserId": UserId["UserId"],
-                          //       "message": UserId["message"]
-                          //     });
                         },
                         icon: SizedBox(
                           height: 20,
@@ -210,7 +205,7 @@ class _AccountWidgetState extends State<AccountWidget> {
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
-        print("skjsdfsdf");
+        // print("skjsdfsdf");
         setState(() {
           profilePicture = jsonData.profilePicture;
           collectibles = jsonData.collectibles.length ?? 0;
@@ -241,7 +236,7 @@ class _AccountWidgetState extends State<AccountWidget> {
             alignment: Alignment.topCenter,
             heightFactor: .4,
             child: Container(
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
               child: Column(
                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -341,9 +336,31 @@ class _AccountWidgetState extends State<AccountWidget> {
                               child: const Text(
                                 "Add Bio",
                                 style: TextStyle(color: Colors.black),
-                              ))
+                              ),
+                            )
                           : Text(bio),
                     ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(children: [
+                        const Text(
+                          'Artworks',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w700),
+                        ),
+                        const Spacer(),
+                        Image.asset(
+                          "assets/images/Filter.png",
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Sort & Filter',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ]),
+                    )
                   ]),
             ));
   }
@@ -362,7 +379,38 @@ class _InitiativeWidgetState extends State<InitiativeWidget> {
 
   @override
   Widget build(context) {
-    return const Text("Initiative");
+    return Container(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        child: Column(
+          children: [
+            const Spacer(),
+            Image.asset("assets/images/swiirl-black.png"),
+            const SizedBox(
+              height: 30,
+            ),
+            ButtonTheme(
+              child: SizedBox(
+                height: 70,
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          const Color.fromRGBO(0, 0, 0, 1)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0)))),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/camera',
+                    );
+                  },
+                  child: const Text("Start a new Initiative !"),
+                ),
+              ),
+            ),
+          ],
+        ));
   }
 }
 
@@ -415,47 +463,3 @@ class FAQWidget extends StatelessWidget {
     );
   }
 }
-// class FaqWidget extends StatefulWidget {
-//   const FaqWidget({super.key});
-
-//   @override
-//   State<FaqWidget> createState() => _FaqWidgetState();
-// }
-
-// class _FaqWidgetState extends State<FaqWidget> {
-//   bool _isTileExpanded = false;
-//   // static final _questions =[{_question : "Questions"}];
-//   @override
-//   Widget build(context) {
-//     return Column(children: <Widget>[
-//       Padding(
-//           padding: EdgeInsets.all(16.0),
-//           child: Text("The code word is ‘Rochambeau,’ dig me?",
-//               style: DefaultTextStyle.of(context)
-//                   .style
-//                   .apply(fontSizeFactor: 2.0))),
-//       Text("The code word is ‘Rochambeau,’ dig me?"),
-//       Text("The code word is ‘Rochambeau,’ dig me?"),
-//       Text("The code word is ‘Rochambeau,’ dig me?"),
-//     ]);
-//   }
-// }
-
-// class QuestionBoxWidget extends StatelessWidget {
-//   const QuestionBoxWidget ({
-//     super.key,
-//     this.question = question,
-//     this.answer = answer,
-//   })
-// }
-// class Questions {
-//   late String question;
-//   late Array answer;
-// }
-// class SingleBox extends StatelessWidget {
-
-//   @override
-//   Widget build (context) {
-
-//   }
-// }
