@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
         '/google-auth-school': (context) => const GoogleAuthWidget(),
         '/reset-password': (context) => const ResetPasswordWidget(),
         '/login': (context) => const LoginWidget(),
-        '/camera': (context) => const ICamera(),
+        // '/camera': (context) => const ICamera(),
         // '/create-initiative':(context)=>const
         // Add more routes as needed
       },

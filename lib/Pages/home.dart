@@ -3,9 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:frontend/Pages/camera.dart';
+import 'package:frontend/Pages/gallery.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:camera/camera.dart';
+
 import '../model/responses.dart';
 import '../store.dart';
 
@@ -400,9 +404,11 @@ class _InitiativeWidgetState extends State<InitiativeWidget> {
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0)))),
                   onPressed: () {
-                    Navigator.pushNamed(
+                    Navigator.push(
                       context,
-                      '/camera',
+                      MaterialPageRoute(
+                        builder: (_) => const Gallery(),
+                      ),
                     );
                   },
                   child: const Text("Start a new Initiative !"),

@@ -19,10 +19,11 @@ Widget TextFieldWidget(
       SizedBox(
         width: double.infinity,
         child: Align(
-            alignment: AlignmentDirectional.bottomStart,
-            child: Text(label,
-                textAlign: TextAlign.left,
-                style: const TextStyle(fontWeight: FontWeight.w500))),
+          alignment: AlignmentDirectional.bottomStart,
+          child: Text(label,
+              textAlign: TextAlign.left,
+              style: const TextStyle(fontWeight: FontWeight.w500)),
+        ),
       ),
       const SizedBox(
         height: 10,

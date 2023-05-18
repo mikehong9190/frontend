@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:camera/camera.dart';
 
 class User with ChangeNotifier {
   bool userLoggedIn = false;
@@ -11,15 +12,28 @@ class User with ChangeNotifier {
   String get emailId => _emailId;
   String get profilePicture => _profilePicture;
 
+  final List<XFile> _images = [];
+  List<XFile> get images => _images;
+
+  void addImage(XFile image) {
+    _images.add(image);
+    notifyListeners();
+  }
+
+  void removeImage(XFile image) {
+    _images.remove(image);
+    notifyListeners();
+  }
+
   void setUserDetails(
       {required String userId,
       required String emailId,
       required String message}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // prefs.setString('profilePicture', profilePicture);
-    print (userId);
-    print (emailId);
-    print (message);
+    print(userId);
+    print(emailId);
+    print(message);
     prefs.setString('userId', userId);
     prefs.setString('emailId', emailId);
     prefs.setBool('userLoggedIn', userId.isNotEmpty);
