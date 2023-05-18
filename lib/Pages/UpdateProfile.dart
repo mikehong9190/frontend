@@ -180,7 +180,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       setState(() {
         isUploadingImage = true;
       });
-      var url = Uri.https(apiHost, '/v1/users/update-profile');
+      var url = Uri.https(apiHost, '/v1/update-profile');
       // var url = Uri.parse(
       //     'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile');
       final request = MultipartRequest('PUT', url);
@@ -190,7 +190,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           filename: "jpg");
       request.files.add(multipartFile);
       final response = await request.send();
+      print (response.reasonPhrase);
       if (response.statusCode == 200) {
+        print ("Working");
         // setState(() {
         //   _image = null;
         // });

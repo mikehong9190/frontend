@@ -9,6 +9,7 @@ import '../components/Button.dart';
 import '../components/TextField.dart';
 // import '../components/Button.dart';
 import '../store.dart';
+import '../constants.dart';
 
 class LoginResponse {
   final String message;
@@ -66,9 +67,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         isLoading = true;
       });
       print("Runssss");
-      final response = await post(
-          Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/login'),
+      final response = await post(Uri.https(apiHost,'/v1/login'),
           body: jsonEncode({
             "emailId": emailController.text,
             "password": passwordController.text
