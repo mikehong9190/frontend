@@ -1,9 +1,10 @@
-// import 'dart:convert';
-// import 'dart:html';
-// import 'dart:io';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:camera/camera.dart';
+import 'package:provider/provider.dart';
+
+import '../store.dart';
 import 'package:frontend/Pages/gallery.dart';
 
 class ICamera extends StatefulWidget {
@@ -33,32 +34,6 @@ class _CameraState extends State<ICamera> {
     initCamera(_currentCamera);
   }
 
-  // void goToPreview(XFile picture) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => ImagePreview(picture),
-  //     ),
-  //   );
-  // }
-
-  Future takePicture() async {
-    if (!_cameraController.value.isInitialized) {
-      return null;
-    }
-    if (_cameraController.value.isTakingPicture) {
-      return null;
-    }
-    try {
-      await _cameraController.setFlashMode(FlashMode.off);
-      XFile picture = await _cameraController.takePicture();
-      // goToPreview(picture);
-    } on CameraException catch (e) {
-      debugPrint('OOPS: $e');
-      return null;
-    }
-  }
-
   Future toggleCamera() async {
     final CameraDescription newCamera = (_currentCamera == widget.cameras![0])
         ? widget.cameras![1]
@@ -86,42 +61,112 @@ class _CameraState extends State<ICamera> {
 
   @override
   Widget build(context) {
+    var imageModel = Provider.of<User>(context);
+
+    void goToPreview(XFile picture) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Preview"),
+            content: SizedBox(
+              height: 610,
+              child: Column(
+                children: [
+                  Image.file(
+                    File(picture.path),
+                    fit: BoxFit.cover,
+                    // height: MediaQuery.of(context).size.width * 0.9,
+                    width: MediaQuery.of(context).size.width * 0.7,
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ButtonTheme(
+                        child: SizedBox(
+                          height: 40,
+                          width: MediaQuery.of(context).size.width * 0.30,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromRGBO(0, 0, 0, 1)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)))),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("Retake"),
+                          ),
+                        ),
+                      ),
+                      ButtonTheme(
+                        child: SizedBox(
+                          height: 40,
+                          width: MediaQuery.of(context).size.width * 0.30,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromRGBO(54, 189, 151, 1)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)))),
+                            onPressed: () {
+                              imageModel.addImage(picture);
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Confirm"),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
+    Future takePicture() async {
+      if (!_cameraController.value.isInitialized) {
+        return null;
+      }
+      if (_cameraController.value.isTakingPicture) {
+        return null;
+      }
+      try {
+        await _cameraController.setFlashMode(FlashMode.off);
+        XFile picture = await _cameraController.takePicture();
+        goToPreview(picture);
+      } on CameraException catch (e) {
+        debugPrint('OOPS: $e');
+        return null;
+      }
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         elevation: 0,
+        centerTitle: true,
         leading: IconButton(
             onPressed: () {
               Navigator.pushNamed(context, "/app");
             },
             icon: SvgPicture.asset("assets/svg/Vector.svg")),
         backgroundColor: Colors.white,
-        title: Row(
-          children: [
-            const Text(
-              'Take a Picture',
-              style: TextStyle(
-                color: Colors.black87,
-              ),
-            ),
-            const Spacer(),
-            SizedBox(
-              width: 55,
-              height: 55,
-              child: IconButton(
-                onPressed: () {},
-                icon: Image.asset('assets/images/camera-retake.png'),
-              ),
-            ),
-            SizedBox(
-              width: 55,
-              height: 55,
-              child: IconButton(
-                onPressed: () {},
-                icon: Image.asset('assets/images/cam-tick.png'),
-              ),
-            ),
-          ],
+        title: const Text(
+          'Take a Picture',
+          style: TextStyle(
+            color: Colors.black87,
+          ),
         ),
       ),
       body: Column(children: [
@@ -164,7 +209,18 @@ class _CameraState extends State<ICamera> {
                       ),
                     );
                   },
-                  icon: Image.asset('assets/images/defaultImage.png'),
+                  icon: imageModel.images.isNotEmpty
+                      ? Image.file(
+                          File(imageModel
+                              .images[imageModel.images.length - 1].path),
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width * 0.7,
+                        )
+                      : Image.asset(
+                          "assets/images/defaultImage.png",
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width * 0.7,
+                        ),
                 ),
               ),
               const SizedBox(
