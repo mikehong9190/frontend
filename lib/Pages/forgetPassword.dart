@@ -28,6 +28,8 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
   late var isLoading = false;
   // late var emailId = '';
   // late var userId = '';
+  late String message = '';
+  late var sendingOtp = false;
   late var isOtpSend = false;
   late var emailController = TextEditingController();
   late var isVerifyingOtp = false;
@@ -93,6 +95,9 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
     };
 
     try {
+      setState(() {
+        sendingOtp = true;
+      });
       final response = await post(Uri.https(apiHost, '/v1/send-otp'),
           body: jsonEncode(payload));
       if (response.statusCode == 200) {
@@ -102,6 +107,10 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       }
     } catch (error, stackTrace) {
       print(stackTrace);
+    } finally {
+      setState(() {
+        sendingOtp = false;
+      });
     }
   }
 
@@ -153,13 +162,10 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
         "requestType": "password",
         "otp": otp
       };
-      print(payload);
-      // print(payload);
-      final response = await post(
-          Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/verify-otp'),
+
+      final response = await post(Uri.https(apiHost, '/v1/verify-otp'),
           body: jsonEncode(payload));
-      print(response.body);
+
       if (response.statusCode == 200) {
         setState(() {
           isVerified = true;
@@ -204,22 +210,23 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
           const SizedBox(
             height: 20,
           ),
-          const Align(
-            alignment: Alignment.center,
-            child: Text("This is used to build your profile on swiirl",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-          ),
+          // const Align(
+          //   alignment: Alignment.center,
+          //   child: Text("This is used to build your profile on swiirl",
+          //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+          // ),
           const SizedBox(
             height: 10,
           ),
-          TextFieldWidget("Your Email", emailController, false, null, !isOtpSend),
-           TextButton(
-            onPressed: isVerified
+          TextFieldWidget(
+              "Your Email", emailController, false, null, !isOtpSend),
+          TextButton(
+            onPressed: isOtpSend
                 ? null
                 : () {
                     sendOTP();
                   },
-            child: isVerifyingOtp
+            child: sendingOtp
                 ? const SizedBox(
                     width: 20,
                     height: 20,
@@ -236,30 +243,30 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                   ),
           ),
           if (isOtpSend)
-          TextFieldWidget("OTP", otpController, false, null, true),
-           if (isOtpSend)
-          TextButton(
-            onPressed: isVerified
-                ? null
-                : () {
-                    verifyOtpForPasswordReset(otpController.text);
-                  },
-            child: isVerifyingOtp
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      color: Colors.black,
+            TextFieldWidget("OTP", otpController, false, null, true),
+          if (isOtpSend)
+            TextButton(
+              onPressed: isVerified
+                  ? null
+                  : () {
+                      verifyOtpForPasswordReset(otpController.text);
+                    },
+              child: isVerifyingOtp
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
+                    )
+                  : Text(
+                      "Verify OTP",
+                      style: TextStyle(
+                          color: !isVerified
+                              ? const Color.fromRGBO(54, 189, 151, 1)
+                              : Colors.blueGrey),
                     ),
-                  )
-                : Text(
-                    "Verify OTP",
-                    style: TextStyle(
-                        color: !isVerified
-                            ? const Color.fromRGBO(54, 189, 151, 1)
-                            : Colors.blueGrey),
-                  ),
-          ),
+            ),
           if (isVerified)
             PasswordFieldWidget(
                 "New Password",
