@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/Pages/camera.dart';
 import 'package:frontend/Pages/gallery.dart';
+import 'package:frontend/Pages/setup_initiative.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -407,7 +408,7 @@ class _InitiativeWidgetState extends State<InitiativeWidget> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => const Gallery(),
+                        builder: (_) => const SetupInitiative(),
                       ),
                     );
                   },

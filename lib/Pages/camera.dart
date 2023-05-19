@@ -8,7 +8,21 @@ import '../store.dart';
 import 'package:frontend/Pages/gallery.dart';
 
 class ICamera extends StatefulWidget {
-  const ICamera({Key? key, required this.cameras, required this.context})
+  final String initiativeTypeId;
+  final String initiativeType;
+  final dynamic target;
+  final dynamic grade;
+  final dynamic noOfStudents;
+  const ICamera(
+      {Key? key,
+      required this.cameras,
+      required this.context,
+      required,
+      required this.initiativeTypeId,
+      required this.initiativeType,
+      required this.target,
+      required this.grade,
+      required this.noOfStudents})
       : super(key: key);
 
   final List<CameraDescription>? cameras;
@@ -20,6 +34,12 @@ class ICamera extends StatefulWidget {
 class _CameraState extends State<ICamera> {
   late CameraController _cameraController;
   late CameraDescription _currentCamera;
+
+  late dynamic id = widget.initiativeTypeId;
+  late dynamic name = widget.initiativeType;
+  late dynamic target = widget.target;
+  late dynamic grade = widget.grade;
+  late dynamic noOfStudents = widget.noOfStudents;
 
   @override
   void dispose() {
@@ -205,7 +225,12 @@ class _CameraState extends State<ICamera> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => const Gallery(),
+                        builder: (_) => Gallery(
+                            initiativeTypeId: id,
+                            initiativeType: name,
+                            target: target,
+                            grade: grade,
+                            noOfStudents: noOfStudents),
                       ),
                     );
                   },

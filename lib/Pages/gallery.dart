@@ -3,6 +3,7 @@
 // import 'dart:io';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -10,16 +11,98 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:frontend/Pages/camera.dart';
+import 'package:http/http.dart' as http;
 
 import '../store.dart';
 
 class Gallery extends StatefulWidget {
-  const Gallery({super.key});
+  final String initiativeTypeId;
+  final String initiativeType;
+  final dynamic target;
+  final dynamic grade;
+  final dynamic noOfStudents;
+  const Gallery(
+      {super.key,
+      required this.initiativeTypeId,
+      required this.initiativeType,
+      required this.target,
+      required this.grade,
+      required this.noOfStudents});
+
   @override
   State<Gallery> createState() => _GalleryState();
 }
 
 class _GalleryState extends State<Gallery> {
+  late dynamic id = widget.initiativeTypeId;
+  late dynamic name = widget.initiativeType;
+  late dynamic target = widget.target;
+  late dynamic grade = widget.grade;
+  late dynamic noOfStudents = widget.noOfStudents;
+  bool isLoading = false;
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text("Success"),
+        content: const Text("Images uploaded successfully"),
+        actions: [
+          CupertinoDialogAction(
+              child: const Text("Okay"),
+              onPressed: () => {Navigator.pushNamed(context, "/app")}),
+        ],
+      ),
+    );
+  }
+
+  void uploadImages(context, List<XFile> images) async {
+    if (images.isEmpty) return;
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var user = Provider.of<User>(context, listen: false);
+      var imageModel = Provider.of<User>(context, listen: false);
+
+      final url = Uri.parse(
+          "https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/create-initiative");
+      final request = http.MultipartRequest('POST', url);
+      for (final image in images) {
+        final multipartFile = http.MultipartFile.fromBytes(
+            'files', await image.readAsBytes(),
+            filename: image.name);
+        request.files.add(multipartFile);
+      }
+      request.fields['userId'] = user.userId;
+      request.fields['initiativeTypeId'] = id;
+      request.fields['name'] = name;
+      request.fields['target'] = '$target';
+      request.fields['grade'] = grade;
+      request.fields['numberOfStudents'] = '$noOfStudents';
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        _showAlertDialog(context);
+        imageModel.clearImages();
+        print('Initiative uploaded successfully');
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        // print(response.body);
+        print('Error uploading file: ${response.reasonPhrase}');
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print("Error: ${e}");
+    }
+  }
+
   @override
   Widget build(context) {
     var imageModel = Provider.of<User>(context);
@@ -107,80 +190,98 @@ class _GalleryState extends State<Gallery> {
                       ],
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 50),
-                    width: double.infinity,
-                    child: imageModel.images.isNotEmpty
-                        ? GridView.count(
-                            padding: const EdgeInsets.only(top: 10),
-                            primary: false,
-                            crossAxisSpacing: 15,
-                            mainAxisSpacing: 15,
-                            crossAxisCount: 2,
-                            children: <Widget>[
-                              ...imageModel.images.map((image) => Stack(
-                                    children: <Widget>[
-                                      Container(
-                                        padding: const EdgeInsets.only(
-                                          top: 30,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.withOpacity(
-                                                  0.5), // Shadow color
-                                              spreadRadius: 1, // Spread radius
-                                              blurRadius: 3, // Blur radius
-                                              offset: const Offset(0,
-                                                  2), // Offset in x and y direction
+                  isLoading
+                      ? Column(children: const [
+                          SizedBox(height: 70),
+                          Align(
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(
+                              color: Color.fromRGBO(54, 189, 151, 1),
+                            ),
+                          ),
+                        ])
+                      : Container(
+                          margin: const EdgeInsets.only(top: 50),
+                          width: double.infinity,
+                          child: imageModel.images.isNotEmpty
+                              ? GridView.count(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  primary: false,
+                                  crossAxisSpacing: 15,
+                                  mainAxisSpacing: 15,
+                                  crossAxisCount: 2,
+                                  children: <Widget>[
+                                    ...imageModel.images.map((image) => Stack(
+                                          children: <Widget>[
+                                            Container(
+                                              padding: const EdgeInsets.only(
+                                                top: 30,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(10)),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(
+                                                            0.5), // Shadow color
+                                                    spreadRadius:
+                                                        1, // Spread radius
+                                                    blurRadius:
+                                                        3, // Blur radius
+                                                    offset: const Offset(0,
+                                                        2), // Offset in x and y direction
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                    child: Image.file(
+                                                      File(image.path),
+                                                      fit: BoxFit.cover,
+                                                      width: double.infinity,
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.15,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ],
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              child: Image.file(
-                                                File(image.path),
-                                                fit: BoxFit.cover,
-                                                width: double.infinity,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.15,
+                                            Positioned(
+                                              right: 0,
+                                              child: IconButton(
+                                                onPressed: () => imageModel
+                                                    .removeImage(image),
+                                                iconSize: 25,
+                                                padding: EdgeInsets.zero,
+                                                constraints:
+                                                    const BoxConstraints(),
+                                                icon: const Icon(
+                                                    Icons.remove_circle,
+                                                    color: Colors.white),
                                               ),
                                             ),
                                           ],
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: 0,
-                                        child: IconButton(
-                                          onPressed: () =>
-                                              imageModel.removeImage(image),
-                                          iconSize: 25,
-                                          padding: EdgeInsets.zero,
-                                          constraints: const BoxConstraints(),
-                                          icon: const Icon(Icons.remove_circle,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                            ],
-                          )
-                        : const Center(
-                            child: Text(
-                              "No artworks added yet",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ),
-                  ),
+                                        )),
+                                  ],
+                                )
+                              : const Center(
+                                  child: Text(
+                                    "No artworks added yet",
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                        ),
                   Positioned(
                     bottom: 16.0,
                     left: 0,
@@ -193,7 +294,9 @@ class _GalleryState extends State<Gallery> {
                           label: const Text("Click to Upload"),
                           backgroundColor:
                               const Color.fromRGBO(54, 189, 151, 1),
-                          onPressed: () {},
+                          onPressed: () {
+                            uploadImages(context, imageModel.images);
+                          },
                         ),
                       ),
                     ),
@@ -247,6 +350,12 @@ class _GalleryState extends State<Gallery> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (_) => ICamera(
+                                                      initiativeTypeId: id,
+                                                      initiativeType: name,
+                                                      target: target,
+                                                      grade: grade,
+                                                      noOfStudents:
+                                                          noOfStudents,
                                                       cameras: value,
                                                       context: context),
                                                 ),

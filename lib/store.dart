@@ -12,6 +12,7 @@ class User with ChangeNotifier {
   String get emailId => _emailId;
   String get profilePicture => _profilePicture;
 
+  //storing images
   final List<XFile> _images = [];
   List<XFile> get images => _images;
 
@@ -29,6 +30,8 @@ class User with ChangeNotifier {
     _images.clear();
     notifyListeners();
   }
+
+  //initiative setup
 
   void setUserDetails(
       {required String userId,
