@@ -9,6 +9,7 @@ import '../components/Button.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 import '../model/responses.dart';
+import '../store.dart';
 
 Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
     isLoading, isOtpSend, goToLogin) {
@@ -204,11 +205,13 @@ Widget SecondPageWidget(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0)))),
-                onPressed: isPasswordValid && arePasswordsEqual ?() {
-                  onNext();
-                  // print(controller1.text);
-                  // print(controller2.text);
-                } : null,
+                onPressed: isPasswordValid && arePasswordsEqual
+                    ? () {
+                        onNext();
+                        // print(controller1.text);
+                        // print(controller2.text);
+                      }
+                    : null,
                 child: const Text("Next"),
               )),
         ),
@@ -240,7 +243,8 @@ Widget ThirdPageWidget(
     getDistricts,
     getSchools,
     clickOnSuggestion,
-    clickOnSchool) {
+    clickOnSchool,
+    isRegisterButtonEnabled) {
   return Center(
     child: Column(
       children: [
@@ -291,9 +295,11 @@ Widget ThirdPageWidget(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0)))),
-                onPressed: () {
-                  onNext();
-                },
+                onPressed: isRegisterButtonEnabled
+                    ? () {
+                        onNext();
+                      }
+                    : null,
                 child: isLoading
                     ? const SizedBox(
                         width: 20,
@@ -321,17 +327,35 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
   final schoolNameController = TextEditingController();
   final schoolDistrictController = TextEditingController();
   late var schoolId = '';
+  late var isRegisterButtonEnabled = false;
   bool isLoading = false;
-  late var userId;
+  // late var userId;
 
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final UserId = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    setState(() {
-      userId = UserId["id"];
-    });
+    // final UserId = (ModalRoute.of(context)?.settings.arguments ??
+    //     <String, dynamic>{}) as Map;
+    // setState(() {
+    //   userId = UserId["id"];
+    // });
     // put your logic from initState here
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    schoolNameController.addListener(() {
+      setState(() {
+        isRegisterButtonEnabled = schoolDistrictController.text.isNotEmpty &&
+            schoolNameController.text.isNotEmpty;
+      });
+    });
+    schoolDistrictController.addListener(() {
+      setState(() {
+        isRegisterButtonEnabled = schoolDistrictController.text.isNotEmpty &&
+            schoolNameController.text.isNotEmpty;
+      });
+    });
   }
 
   Future<List<SingleDistrictResponse>> getDistricts(String query) async {
@@ -388,8 +412,9 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
       setState(() {
         isLoading = true;
       });
+      if (context.read<User>().userId.isEmpty) throw Error();
       late var payload = {
-        "id": userId,
+        "id": context.read<User>().userId,
         "createSchool": schoolId.isEmpty ? "true" : "false"
       };
       if (schoolId.isEmpty) {
@@ -404,9 +429,9 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-school-details'),
           body: jsonEncode(payload));
       // print(response.body);
-      if (response.statusCode == 200);
-      Navigator.pushNamed(context, '/app',
-          arguments: {"UserId": userId, "message": "Google Sign in"});
+      if (response.statusCode == 200) Navigator.pushNamed(context, '/app');
+      // Navigator.pushNamed(context, '/app',
+      //     arguments: {"UserId": userId, "message": "Google Sign in"});
       // print(jsonDecode(response.body));
     } catch (error) {
       print(error);
@@ -469,9 +494,11 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)))),
-                  onPressed: () {
-                    createUser();
-                  },
+                  onPressed: isRegisterButtonEnabled
+                      ? () {
+                          createUser();
+                        }
+                      : null,
                   child: isLoading
                       ? const SizedBox(
                           width: 20,
@@ -488,98 +515,3 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
     ));
   }
 }
-
-
-// class ResetPasswordWidget extends StatefulWidget {
-//   const ResetPasswordWidget({super.key});
-
-//   @override
-//   _ResetPasswordWidgetState createState() => _ResetPasswordWidgetState();
-// }
-
-// class _ResetPasswordWidgetState extends State<GoogleAuthWidget> {
-  
-//   final otpController = TextEditingController();
-//   late var schoolId = '';
-//   bool isLoading = false;
-
-  
-
-  
-
-//   void clickOnSuggestion(value, controller) {
-//     setState(() {
-//       controller.text = value;
-//     });
-//   }
-
-//   void clickOnSchool(id, name, controller) {
-//     print(id);
-//     setState(() {
-//       controller.text = name;
-//       schoolId = id;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // TODO: implement build
-
-//     return Center(
-//       child: Column(
-//         children: [
-//           Align(
-//               alignment: Alignment.topLeft,
-//               child: Text(
-//                 "Registration Details",
-//                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-//               )),
-//           SizedBox(
-//             height: 20,
-//           ),
-//           Align(
-//             alignment: Alignment.topLeft,
-//             child: Text("This is used to build your profile on swiirl",
-//                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-//           ),
-//           SizedBox(
-//             height: 10,
-//           ),
-//           SearchTextFieldWidget("School District", schoolDistrictController,
-//               false, null, getDistricts, clickOnSuggestion),
-//           SchoolSearchFieldWidget("School Name", schoolNameController, false,
-//               null, getSchools, clickOnSchool),
-//           // TextFieldWidget(
-//           //     "School District", schoolDistrictController, false, null, true),
-//           // TextFieldWidget("School Name", schoolNameController, false, null, true),
-//           SizedBox(
-//             height: 60,
-//           ),
-//           ButtonTheme(
-//             child: SizedBox(
-//                 height: 50,
-//                 width: 350,
-//                 child: ElevatedButton(
-//                   child: isLoading
-//                       ? Container(
-//                           width: 20,
-//                           height: 20,
-//                           child: CircularProgressIndicator(
-//                             color: Colors.white,
-//                           ),
-//                         )
-//                       : Text("Next"),
-//                   style: ButtonStyle(
-//                       backgroundColor: MaterialStateProperty.all(
-//                           Color.fromRGBO(54, 189, 151, 1)),
-//                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-//                           RoundedRectangleBorder(
-//                               borderRadius: BorderRadius.circular(30.0)))),
-//                   onPressed: () {},
-//                 )),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

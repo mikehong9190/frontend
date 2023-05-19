@@ -30,7 +30,7 @@ class RegistrationWidget extends StatefulWidget {
 enum SingingCharacter { lafayette, jefferson }
 
 class _RegistrationWidgetState extends State<RegistrationWidget> {
-  late var currentStep = 0;
+  late var currentStep = 2;
   late var statusCode = 0;
   late var isOtpSend = false;
   late var schoolId = '';
@@ -48,8 +48,10 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   final schoolDistrictController = TextEditingController();
   late var isPasswordValid = false;
   late var arePasswordsEqual = false;
+  late var isRegisterButtonEnabled = false;
   late var message = '';
   InitiativeTypeEnum? _initiativeTypeEnum;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -298,6 +300,13 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     });
   }
 
+  bool buttonDisability() {
+    return firstNameController.text.isNotEmpty &&
+        lastNameController.text.isNotEmpty &&
+        schoolDistrictController.text.isNotEmpty &&
+        schoolNameController.text.isNotEmpty;
+  }
+
   List<Step> getSteps() => [
         Step(
             title: const Text(''),
@@ -337,11 +346,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                 getDistrict,
                 getSchools,
                 clickOnSuggestion,
-                clickOnSchool),
+                clickOnSchool,
+                isRegisterButtonEnabled),
             isActive: currentStep >= 2),
-        Step(
-            title: const Text(''),
-            content: SetupInitiativeWidget(_initiativeTypeEnum, changeState)),
+        // Step(
+        //     title: const Text(''),
+        //     content: SetupInitiativeWidget(_initiativeTypeEnum, changeState)),
       ];
 
   @override
@@ -352,6 +362,42 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         () {},
       );
     });
+    firstNameController.addListener(() {
+      print(isRegisterButtonEnabled);
+      setState(() {
+        isRegisterButtonEnabled = firstNameController.text.isNotEmpty &&
+            lastNameController.text.isNotEmpty &&
+            schoolDistrictController.text.isNotEmpty &&
+            schoolNameController.text.isNotEmpty;
+      });
+    });
+    
+    lastNameController.addListener(() {
+      setState(() {
+        isRegisterButtonEnabled = firstNameController.text.isNotEmpty &&
+            lastNameController.text.isNotEmpty &&
+            schoolDistrictController.text.isNotEmpty &&
+            schoolNameController.text.isNotEmpty;
+      });
+    });
+
+    schoolNameController.addListener(() {
+      setState(() {
+        isRegisterButtonEnabled = firstNameController.text.isNotEmpty &&
+            lastNameController.text.isNotEmpty &&
+            schoolDistrictController.text.isNotEmpty &&
+            schoolNameController.text.isNotEmpty;
+      });
+    });
+    schoolDistrictController.addListener(() {
+      setState(() {
+        isRegisterButtonEnabled = firstNameController.text.isNotEmpty &&
+            lastNameController.text.isNotEmpty &&
+            schoolDistrictController.text.isNotEmpty &&
+            schoolNameController.text.isNotEmpty;
+      });
+    });
+
     passwordController.addListener(() {
       setState(
         () {
