@@ -250,10 +250,10 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         isLoading = true;
       });
       late var payload = {
-        "firstname": firstNameController.text,
-        "lastname": lastNameController.text,
-        "emailId": emailController.text,
-        "password": passwordController.text,
+        "firstname": firstNameController.text.trim(),
+        "lastname": lastNameController.text.trim(),
+        "emailId": emailController.text.trim(),
+        "password": passwordController.text.trim(),
         "createSchool": schoolId.isEmpty ? "true" : "false"
       };
 

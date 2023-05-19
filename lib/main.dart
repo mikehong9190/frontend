@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/Pages/app.dart';
+import 'package:frontend/Pages/forgetPassword.dart';
 import 'package:frontend/Pages/login.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -83,6 +84,7 @@ class MyApp extends StatelessWidget {
         '/update-profile': (context) => const UpdateProfileWidget(),
         '/google-auth-school': (context) => const GoogleAuthWidget(),
         '/reset-password': (context) => const ResetPasswordWidget(),
+        '/forget-password' : (context) => const ForgetPasswordWidget(),
         '/login': (context) => const LoginWidget(),
         // Add more routes as needed
       },

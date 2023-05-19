@@ -404,7 +404,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-school-details'),
           body: jsonEncode(payload));
       // print(response.body);
-      if (response.statusCode == 200) print("dksjfdf");
+      if (response.statusCode == 200);
       Navigator.pushNamed(context, '/app',
           arguments: {"UserId": userId, "message": "Google Sign in"});
       // print(jsonDecode(response.body));
