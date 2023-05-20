@@ -104,6 +104,10 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
         setState(() {
           isOtpSend = true;
         });
+      } else {
+        setState(() {
+          message = "OTP can't be send to the Email";
+        });
       }
     } catch (error, stackTrace) {
       print(stackTrace);
@@ -116,9 +120,8 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
 
   void resetPassword() async {
     final payload = {
-      "password": newPasswordController.text,
-      "emailId": context.read<User>().emailId,
-      "userId": context.read<User>().userId
+      "password": newPasswordController.text.trim(),
+      "emailId": emailController.text.trim()
     };
 // <<<<<<< login-integration
     setState(() {
@@ -128,8 +131,12 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       final response = await post(Uri.https(apiHost, '/v1/reset-password'),
           body: jsonEncode(payload));
       if (response.statusCode == 200) {
-        Navigator.pushNamed(context, "/app");
+        Navigator.pushNamed(context, "/login");
         // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reseted"});
+      } else {
+        setState(() {
+          message = "Error while resetting password";
+        });
       }
       // print(response.statusCode);
       print(response.body);
@@ -169,6 +176,10 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       if (response.statusCode == 200) {
         setState(() {
           isVerified = true;
+        });
+      } else {
+        setState(() {
+          message = "Wrong OTP";
         });
       }
     } catch (error) {
