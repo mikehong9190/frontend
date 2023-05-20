@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/services.dart';
+import 'package:frontend/Pages/Initiative.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import '../constants.dart';
@@ -14,6 +15,7 @@ import 'package:frontend/Pages/RegistrationPages.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:im_stepper/main.dart';
 import 'package:http/http.dart';
+import '../components/RadioButton.dart';
 
 import '../store.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
@@ -46,7 +48,9 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   final schoolDistrictController = TextEditingController();
   late var isPasswordValid = false;
   late var arePasswordsEqual = false;
+  late var isRegisterButtonEnabled = false;
   late var message = '';
+  InitiativeTypeEnum? _initiativeTypeEnum;
 
   @override
   void didChangeDependencies() {
@@ -79,6 +83,9 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     }
   }
 
+  void changeState(value) => setState(() {
+        _initiativeTypeEnum = value;
+      });
   void checkPasswordVisiblity() async {
     setState(() {
       isPasswordHidden = !isPasswordHidden;
@@ -157,7 +164,6 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   }
 
   void clickOnSchool(id, name, controller) {
-    print(id);
     setState(() {
       controller.text = name;
       schoolId = id;
@@ -246,10 +252,10 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         isLoading = true;
       });
       late var payload = {
-        "firstname": firstNameController.text,
-        "lastname": lastNameController.text,
-        "emailId": emailController.text,
-        "password": passwordController.text,
+        "firstname": firstNameController.text.trim(),
+        "lastname": lastNameController.text.trim(),
+        "emailId": emailController.text.trim(),
+        "password": passwordController.text.trim(),
         "createSchool": schoolId.isEmpty ? "true" : "false"
       };
 
@@ -264,13 +270,10 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       if (response.statusCode == 200) {
         final jsonData =
             RegisteredUserResponse.fromJson(jsonDecode(response.body));
-
-        print("json,$jsonData");
         context.read<User>().setUserDetails(
             userId: jsonData.data.id,
             emailId: emailController.text,
             message: jsonData.message);
-        print("sajkdnsda");
         Navigator.pushNamedAndRemoveUntil(
             context, '/app', (Route<dynamic> route) => false);
         // Navigator.pushNamed(context, '/app', arguments: {
@@ -279,8 +282,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         // });
       }
       print(jsonDecode(response.body));
-    } catch (error, res) {
-      print(res);
+    } catch (error, stackTrace) {
+      print(stackTrace);
 
       print(error);
     } finally {
@@ -295,6 +298,13 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     setState(() {
       currentStep += 1;
     });
+  }
+
+  bool buttonDisability() {
+    return firstNameController.text.isNotEmpty &&
+        lastNameController.text.isNotEmpty &&
+        schoolDistrictController.text.isNotEmpty &&
+        schoolNameController.text.isNotEmpty;
   }
 
   List<Step> getSteps() => [
@@ -336,8 +346,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                 getDistrict,
                 getSchools,
                 clickOnSuggestion,
-                clickOnSchool),
+                clickOnSchool,
+                isRegisterButtonEnabled),
             isActive: currentStep >= 2),
+        // Step(
+        //     title: const Text(''),
+        //     content: SetupInitiativeWidget(_initiativeTypeEnum, changeState)),
       ];
 
   @override
@@ -348,6 +362,42 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         () {},
       );
     });
+    firstNameController.addListener(() {
+      print(isRegisterButtonEnabled);
+      setState(() {
+        isRegisterButtonEnabled = firstNameController.text.isNotEmpty &&
+            lastNameController.text.isNotEmpty &&
+            schoolDistrictController.text.isNotEmpty &&
+            schoolNameController.text.isNotEmpty;
+      });
+    });
+    
+    lastNameController.addListener(() {
+      setState(() {
+        isRegisterButtonEnabled = firstNameController.text.isNotEmpty &&
+            lastNameController.text.isNotEmpty &&
+            schoolDistrictController.text.isNotEmpty &&
+            schoolNameController.text.isNotEmpty;
+      });
+    });
+
+    schoolNameController.addListener(() {
+      setState(() {
+        isRegisterButtonEnabled = firstNameController.text.isNotEmpty &&
+            lastNameController.text.isNotEmpty &&
+            schoolDistrictController.text.isNotEmpty &&
+            schoolNameController.text.isNotEmpty;
+      });
+    });
+    schoolDistrictController.addListener(() {
+      setState(() {
+        isRegisterButtonEnabled = firstNameController.text.isNotEmpty &&
+            lastNameController.text.isNotEmpty &&
+            schoolDistrictController.text.isNotEmpty &&
+            schoolNameController.text.isNotEmpty;
+      });
+    });
+
     passwordController.addListener(() {
       setState(
         () {

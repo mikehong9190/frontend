@@ -9,6 +9,7 @@ import '../components/Button.dart';
 import '../components/TextField.dart';
 // import '../components/Button.dart';
 import '../store.dart';
+import '../constants.dart';
 
 class LoginResponse {
   final String message;
@@ -25,12 +26,13 @@ class idResponse {
   final String id;
   final String token;
 
-  const idResponse(
-      {required this.id, required this.token,});
+  const idResponse({
+    required this.id,
+    required this.token,
+  });
 
-  factory idResponse.fromJson(Map<String, dynamic> json) => idResponse(
-      id: json["id"],
-      token: json["token"]);
+  factory idResponse.fromJson(Map<String, dynamic> json) =>
+      idResponse(id: json["id"], token: json["token"]);
 }
 
 class LoginWidget extends StatefulWidget {
@@ -65,16 +67,11 @@ class _LoginWidgetState extends State<LoginWidget> {
       setState(() {
         isLoading = true;
       });
-      print("Runssss");
-      final response = await post(
-          Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/login'),
+      final response = await post(Uri.https(apiHost, '/v1/login'),
           body: jsonEncode({
             "emailId": emailController.text,
             "password": passwordController.text
           }));
-      print(response.body);
-      print(response.statusCode);
       if (response.statusCode == 200) {
         final jsonData = LoginResponse.fromJson(jsonDecode(response.body));
         context.read<User>().setUserDetails(
@@ -88,12 +85,10 @@ class _LoginWidgetState extends State<LoginWidget> {
         //   "message": jsonData.message
         // });
       } else {
-        print("dsdkjfnsdf");
         setState(() {
           message = 'Either Email OR Password is incorrect';
         });
       }
-      print("aaaaaaaaaaaa");
     } catch (error) {
       print(error);
     } finally {
@@ -124,6 +119,10 @@ class _LoginWidgetState extends State<LoginWidget> {
     setState(() {
       isPasswordHidden = !isPasswordHidden;
     });
+  }
+
+  void goToForgetPassword() {
+    Navigator.pushNamed(context, '/forget-password');
   }
 
   @override
@@ -158,6 +157,22 @@ class _LoginWidgetState extends State<LoginWidget> {
                   isPasswordValid,
                   true,
                   changePasswordVisibility),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: SizedBox(
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/forget-password");
+                          },
+                          child: Text(
+                            'forget password ?',
+                            style: TextStyle(
+                                color: Color.fromRGBO(54, 189, 151, 1)),
+                          ))),
+                ),
+              ),
               const SizedBox(
                 height: 20,
               ),

@@ -124,7 +124,7 @@ class UserDetails {
         lastName: json["lastName"],
         email: json["email"],
         bio: json["bio"],
-        profilePicture: json["profilePicture"],
+        profilePicture: json["profilePicture"] ?? '',
         schoolName: json["schoolName"],
         schoolDistrict: json["schoolDistrict"],
         goalsMet: json["goalsMet"],
