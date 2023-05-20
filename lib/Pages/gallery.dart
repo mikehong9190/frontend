@@ -215,7 +215,7 @@ class _GalleryState extends State<Gallery> {
                                           children: <Widget>[
                                             Container(
                                               padding: const EdgeInsets.only(
-                                                top: 30,
+                                                top: 35,
                                               ),
                                               decoration: BoxDecoration(
                                                 color: Colors.white,
@@ -263,12 +263,13 @@ class _GalleryState extends State<Gallery> {
                                                 onPressed: () => imageModel
                                                     .removeImage(image),
                                                 iconSize: 25,
-                                                padding: EdgeInsets.zero,
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
                                                 constraints:
                                                     const BoxConstraints(),
                                                 icon: const Icon(
-                                                    Icons.remove_circle,
-                                                    color: Colors.white),
+                                                    Icons.remove_circle_sharp,
+                                                    color: Colors.black),
                                               ),
                                             ),
                                           ],
