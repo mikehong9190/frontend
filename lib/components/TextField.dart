@@ -97,7 +97,7 @@ Widget SearchTextFieldWidget(
               suggestionsCallback: getDistricts,
               itemBuilder: (context, SingleDistrictResponse? suggestion) {
                 final district = suggestion!;
-                print (district);
+                print(district);
                 return ListTile(
                   title: Text(
                     district.district,
@@ -157,7 +157,11 @@ Widget SchoolSearchFieldWidget(
                   ),
                 );
               },
-              noItemsFoundBuilder: null,
+              noItemsFoundBuilder: (context) => const SizedBox(
+                  height: 100,
+                  child: Center(
+                    child: Text('No school Found'),
+                  )),
               onSuggestionSelected: (school) {
                 final schoolData = school!;
                 clickOnSchool(schoolData.id, schoolData.name, controller);

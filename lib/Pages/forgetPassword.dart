@@ -98,7 +98,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       setState(() {
         sendingOtp = true;
       });
-      final response = await post(Uri.https(apiHost, '/v1/send-otp'),
+      final response = await post(Uri.https(apiHost, '/v1/validate-email'),
           body: jsonEncode(payload));
       if (response.statusCode == 200) {
         setState(() {

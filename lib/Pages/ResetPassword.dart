@@ -146,13 +146,13 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
         "requestType": "reset-password",
         "otp": otp
       };
-      print(payload);
+
       // print(payload);
       final response = await post(
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/verify-otp'),
           body: jsonEncode(payload));
-      print(response.body);
+   
       if (response.statusCode == 200) {
         setState(() {
           isVerified = true;

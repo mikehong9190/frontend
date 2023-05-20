@@ -30,7 +30,7 @@ class RegistrationWidget extends StatefulWidget {
 enum SingingCharacter { lafayette, jefferson }
 
 class _RegistrationWidgetState extends State<RegistrationWidget> {
-  late var currentStep = 0;
+  late var currentStep = 2;
   late var statusCode = 0;
   late var isOtpSend = false;
   late var schoolId = '';
@@ -109,17 +109,20 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     try {
       final queryParameters = {
         "text": "",
-        "district": schoolDistrictController
+        "district": schoolDistrictController.text
       };
+      print("sadljkad");
       final response =
           await get(Uri.https(apiHost, '/v1/school/search', queryParameters));
+          print("-----------${response.body}r------------");
       if (response.statusCode == 200) {
         final jsonData = SchoolList.fromJson(jsonDecode(response.body));
         return jsonData.data;
       } else {
         return [];
       }
-    } catch (error) {
+    } catch (error,stackTrace) {
+      print(stackTrace);
       print(error);
       return [];
     }
