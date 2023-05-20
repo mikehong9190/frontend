@@ -111,10 +111,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         "text": "",
         "district": schoolDistrictController.text
       };
-      print("sadljkad");
       final response =
           await get(Uri.https(apiHost, '/v1/school/search', queryParameters));
-          print("-----------${response.body}r------------");
       if (response.statusCode == 200) {
         final jsonData = SchoolList.fromJson(jsonDecode(response.body));
         return jsonData.data;
