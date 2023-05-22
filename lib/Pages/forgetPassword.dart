@@ -114,7 +114,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       } else {
         setState(() {
           statusCode = response.statusCode;
-          message = jsonData.message ?? 'OTP cant be send to the user';
+          message = jsonData.message;
         });
       }
 
@@ -171,14 +171,18 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
 
       final response = await post(Uri.https(apiHost, '/v1/verify-otp'),
           body: jsonEncode(payload));
-
+           final jsonData =
+          OTPVerificationResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         setState(() {
+          statusCode = response.statusCode;
+          message = jsonData.message;
           isVerified = true;
         });
       } else {
         setState(() {
-          message = "Wrong OTP";
+          statusCode = response.statusCode;
+          message = jsonData.message;
         });
       }
     } catch (error) {
