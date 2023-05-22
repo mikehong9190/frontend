@@ -29,6 +29,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
   // late var emailId = '';
   // late var userId = '';
   late String message = '';
+  late int statusCode = 0;
   late var sendingOtp = false;
   late var isOtpSend = false;
   late var emailController = TextEditingController();
@@ -100,15 +101,20 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       });
       final response = await post(Uri.https(apiHost, '/v1/validate-email'),
           body: jsonEncode(payload));
+      print (response.body);
       if (response.statusCode == 200) {
         setState(() {
+          statusCode = response.statusCode;
           isOtpSend = true;
+          message = "OTP send Successfully";
         });
       } else {
         setState(() {
+          statusCode = response.statusCode;
           message = "OTP can't be send to the Email";
         });
       }
+
     } catch (error, stackTrace) {
       print(stackTrace);
     } finally {
@@ -135,6 +141,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
         // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reseted"});
       } else {
         setState(() {
+          statusCode = response.statusCode;
           message = "Error while resetting password";
         });
       }
@@ -145,16 +152,6 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
     } finally {
       setState(() {
         isLoading = false;
-// =======
-//     final response = await post(
-//         Uri.parse(
-//             'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/reset-password'),
-//         body: jsonEncode(payload));
-//     if (response.statusCode == 200) {
-//       Navigator.pushNamed(context, "/app", arguments: {
-//         "UserId": userId,
-//         "message": "Password updated successfully"
-// >>>>>>> dev
       });
     }
   }
@@ -278,6 +275,14 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                               : Colors.blueGrey),
                     ),
             ),
+          if (statusCode != 0)
+      SizedBox(
+          height: 20,
+          child: Text(
+            message,
+            style:
+                TextStyle(color: statusCode == 200 ? Colors.green : Colors.red),
+          )),
           if (isVerified)
             PasswordFieldWidget(
                 "New Password",

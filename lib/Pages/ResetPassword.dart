@@ -25,8 +25,6 @@ class ResetPasswordWidget extends StatefulWidget {
 class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
   late var isVerified = false;
   late var isLoading = false;
-  // late var emailId = '';
-  // late var userId = '';
   late var isVerifyingOtp = false;
   late var isNewPasswordHidden = true;
   late var isNewPasswordValid = false;

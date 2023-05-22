@@ -30,7 +30,7 @@ class RegistrationWidget extends StatefulWidget {
 enum SingingCharacter { lafayette, jefferson }
 
 class _RegistrationWidgetState extends State<RegistrationWidget> {
-  late var currentStep = 2;
+  late var currentStep = 0;
   late var statusCode = 0;
   late var isOtpSend = false;
   late var schoolId = '';
@@ -160,6 +160,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
   void clickOnSuggestion(value, controller) {
     setState(() {
+      schoolNameController.text = '';
+      schoolId = '';
       controller.text = value;
     });
   }
