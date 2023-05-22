@@ -12,19 +12,28 @@ import 'package:http/http.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/components/TextField.dart';
 import 'package:provider/provider.dart';
+import '../model/responses.dart';
 
 import '../store.dart';
+import '../constants.dart';
 
-class ResetPasswordWidget extends StatefulWidget {
-  const ResetPasswordWidget({super.key});
+class ForgetPasswordWidget extends StatefulWidget {
+  const ForgetPasswordWidget({super.key});
 
   @override
-  State<ResetPasswordWidget> createState() => _ResetPasswordWidgetState();
+  State<ForgetPasswordWidget> createState() => _ForgetPasswordWidgetState();
 }
 
-class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
+class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
   late var isVerified = false;
   late var isLoading = false;
+  // late var emailId = '';
+  // late var userId = '';
+  late String message = '';
+  late int statusCode = 0;
+  late var sendingOtp = false;
+  late var isOtpSend = false;
+  late var emailController = TextEditingController();
   late var isVerifyingOtp = false;
   late var isNewPasswordHidden = true;
   late var isNewPasswordValid = false;
@@ -53,7 +62,6 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
       );
     });
     newPasswordController.addListener(() {
-      // print("newPasswordController.text");
       setState(
         () {
           if (newPasswordController.text.length >= 8 &&
@@ -82,36 +90,63 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
     });
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    String userId = context.watch<User>().userId;
-    if (userId.isEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/', (Route<dynamic> route) => false);
+  void sendOTP() async {
+    final payload = {
+      "emailId": emailController.text.trim(),
+      "requestType": "password"
+    };
+
+    try {
+      setState(() {
+        sendingOtp = true;
+      });
+      final response = await post(Uri.https(apiHost, '/v1/validate-email'),
+          body: jsonEncode(payload));
+      print (response.body);
+       final jsonData =
+          EmailVerificationResponse.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 200) {
+        setState(() {
+          statusCode = response.statusCode;
+          isOtpSend = true;
+          message = "OTP send Successfully";
+        });
+      } else {
+        setState(() {
+          statusCode = response.statusCode;
+          message = jsonData.message;
+        });
+      }
+
+    } catch (error, stackTrace) {
+      print(stackTrace);
+    } finally {
+      setState(() {
+        sendingOtp = false;
       });
     }
   }
 
   void resetPassword() async {
     final payload = {
-      "password": newPasswordController.text,
-      "emailId": context.read<User>().emailId,
-      "userId": context.read<User>().userId
+      "password": newPasswordController.text.trim(),
+      "emailId": emailController.text.trim()
     };
-// <<<<<<< login-integration
     setState(() {
       isLoading = true;
     });
     try {
-      final response = await post(
-          Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/reset-password'),
+      final response = await post(Uri.https(apiHost, '/v1/reset-password'),
           body: jsonEncode(payload));
+      print (response.body);
       if (response.statusCode == 200) {
-        Navigator.pushNamed(context, "/app");
+        Navigator.pushNamed(context, "/login");
         // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reseted"});
+      } else {
+        setState(() {
+          statusCode = response.statusCode;
+          message = "Error while resetting password";
+        });
       }
       // print(response.statusCode);
       print(response.body);
@@ -120,16 +155,6 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
     } finally {
       setState(() {
         isLoading = false;
-// =======
-//     final response = await post(
-//         Uri.parse(
-//             'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/reset-password'),
-//         body: jsonEncode(payload));
-//     if (response.statusCode == 200) {
-//       Navigator.pushNamed(context, "/app", arguments: {
-//         "UserId": userId,
-//         "message": "Password updated successfully"
-// >>>>>>> dev
       });
     }
   }
@@ -140,20 +165,25 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
         isVerifyingOtp = true;
       });
       final payload = {
-        "emailId": context.read<User>().emailId,
-        "requestType": "reset-password",
+        "emailId": emailController.text.trim(),
+        "requestType": "password",
         "otp": otp
       };
 
-      // print(payload);
-      final response = await post(
-          Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/verify-otp'),
+      final response = await post(Uri.https(apiHost, '/v1/verify-otp'),
           body: jsonEncode(payload));
-   
+           final jsonData =
+          OTPVerificationResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         setState(() {
+          statusCode = response.statusCode;
+          message = jsonData.message;
           isVerified = true;
+        });
+      } else {
+        setState(() {
+          statusCode = response.statusCode;
+          message = jsonData.message;
         });
       }
     } catch (error) {
@@ -195,22 +225,23 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
           const SizedBox(
             height: 20,
           ),
-          const Align(
-            alignment: Alignment.center,
-            child: Text("This is used to build your profile on swiirl",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-          ),
+          // const Align(
+          //   alignment: Alignment.center,
+          //   child: Text("This is used to build your profile on swiirl",
+          //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+          // ),
           const SizedBox(
             height: 10,
           ),
-          TextFieldWidget("OTP", otpController, false, null, true),
+          TextFieldWidget(
+              "Your Email", emailController, false, null, !isOtpSend),
           TextButton(
-            onPressed: isVerified
+            onPressed: isOtpSend
                 ? null
                 : () {
-                    verifyOtpForPasswordReset(otpController.text);
+                    sendOTP();
                   },
-            child: isVerifyingOtp
+            child: sendingOtp
                 ? const SizedBox(
                     width: 20,
                     height: 20,
@@ -219,13 +250,46 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                     ),
                   )
                 : Text(
-                    "Verify OTP",
+                    "Send OTP",
                     style: TextStyle(
                         color: !isVerified
                             ? const Color.fromRGBO(54, 189, 151, 1)
                             : Colors.blueGrey),
                   ),
           ),
+          if (isOtpSend)
+            TextFieldWidget("OTP", otpController, false, null, true),
+          if (isOtpSend)
+            TextButton(
+              onPressed: isVerified
+                  ? null
+                  : () {
+                      verifyOtpForPasswordReset(otpController.text);
+                    },
+              child: isVerifyingOtp
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
+                    )
+                  : Text(
+                      "Verify OTP",
+                      style: TextStyle(
+                          color: !isVerified
+                              ? const Color.fromRGBO(54, 189, 151, 1)
+                              : Colors.blueGrey),
+                    ),
+            ),
+          if (statusCode != 0)
+      SizedBox(
+          height: 20,
+          child: Text(
+            message,
+            style:
+                TextStyle(color: statusCode == 200 ? Colors.green : Colors.red),
+          )),
           if (isVerified)
             PasswordFieldWidget(
                 "New Password",

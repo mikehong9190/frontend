@@ -99,18 +99,17 @@ Widget SearchTextFieldWidget(
               suggestionsCallback: getDistricts,
               itemBuilder: (context, SingleDistrictResponse? suggestion) {
                 final district = suggestion!;
-                print('DISTRICT ::::: ${district.district}');
                 return ListTile(
                   title: Text(
                     district.district,
                   ),
                 );
               },
-              noItemsFoundBuilder: (context) => const SizedBox(
-                  height: 100,
-                  child: Center(
-                    child: Text('No district Found'),
-                  )),
+              hideOnEmpty: true,
+              noItemsFoundBuilder: (context) => SizedBox(
+                    height: 100,
+                    child: Center(child: Text("")),
+                  ),
               onSuggestionSelected: (suggestion) {
                 final district = suggestion!;
                 clickOnSuggestion(district.district, controller);
@@ -159,11 +158,11 @@ Widget SchoolSearchFieldWidget(
                   ),
                 );
               },
-              noItemsFoundBuilder: (context) => const SizedBox(
-                  height: 100,
-                  child: Center(
-                    child: Text('No School Found'),
-                  )),
+              hideOnEmpty: true,
+              noItemsFoundBuilder: (context) => SizedBox(
+                    height: 100,
+                    child: Center(child: const Text("add new School")),
+                  ),
               onSuggestionSelected: (school) {
                 final schoolData = school!;
                 clickOnSchool(schoolData.id, schoolData.name, controller);

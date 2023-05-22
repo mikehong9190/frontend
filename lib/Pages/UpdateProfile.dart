@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:google_sign_in/google_sign_in.dart';
 import '../model/responses.dart';
 import '../store.dart';
 import '../constants.dart';
@@ -52,8 +53,6 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
     _pickedFile = (await _picker.pickImage(source: ImageSource.gallery));
     if (_pickedFile != null) {
       setState(() {
-        print(_pickedFile);
-        print(_pickedFile!.path);
         _image = File(_pickedFile!.path);
       });
     }
@@ -63,28 +62,14 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     String userId = context.watch<User>().userId;
-    print(userId);
     if (userId.isEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushNamedAndRemoveUntil(
             context, '/', (Route<dynamic> route) => false);
       });
     }
-    // if (userId.isEmpty) {
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     Navigator.pushNamed(context, '/');
-    //   });
-    //   return;
-    // } else {
     getUserDetails(userId);
-    // }
-    // final UserId = (ModalRoute.of(context)?.settings.arguments ??
-    //     <String, dynamic>{}) as Map;
-    // setState(() {
-    //   userId = UserId["UserId"];
-    //   message = UserId["message"];
-    // });
-    // put your logic from initState here
+
   }
 
   void sendOtpForPasswordReset() async {
@@ -106,6 +91,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         Navigator.pushNamed(context, "/reset-password");
       // Navigator.pushNamed(context, "/reset-password",
       //     arguments: {"emailId": email, "userId": userId});
+      else {
+        
+      }
     } catch (error) {
       print(error);
     } finally {
@@ -181,8 +169,10 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       setState(() {
         isUploadingImage = true;
       });
-      var url = Uri.https(apiHost,
-          'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile');
+
+      var url = Uri.https(apiHost, '/v1/update-profile');
+      // var url = Uri.parse(
+      //     'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile');
       final request = MultipartRequest('PUT', url);
       request.fields["id"] = context.read<User>().userId;
       final multipartFile = MultipartFile.fromBytes(
@@ -190,7 +180,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           filename: "jpg");
       request.files.add(multipartFile);
       final response = await request.send();
+      print(response.reasonPhrase);
       if (response.statusCode == 200) {
+        print("Working");
         // setState(() {
         //   _image = null;
         // });
@@ -300,101 +292,112 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                           const SizedBox(
                             height: 30,
                             width: double.infinity,
-                            child: Align(
-                                alignment: AlignmentDirectional.bottomStart,
-                                child: Text("Your Bio",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500))),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                              height: 80,
-                              width: double.infinity,
-                              child: TextField(
-                                maxLines: 10,
-                                enabled: true,
-                                controller: bioController,
-                                obscureText: false,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.zero,
-                                      borderSide:
-                                          BorderSide(color: Colors.black)),
-                                  hintText: "Bio",
-                                ),
-                              )),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      ButtonTheme(
-                        child: SizedBox(
-                            height: 50,
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      const Color.fromRGBO(54, 189, 151, 1)),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30.0)))),
-                              onPressed: () {
-                                updateUserDetails();
-                              },
-                              child: isProfileUpdating
-                                  ? const SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : const Text('Update Profile'),
+                            child: TextField(
+                              maxLines: 10,
+                              enabled: true,
+                              controller: bioController,
+                              obscureText: false,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.zero,
+                                    borderSide:
+                                        BorderSide(color: Colors.black)),
+                                hintText: "Bio",
+                              ),
                             )),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (context.watch<User>().isManuallySignedIn)
-                            TextButton(
-                                onPressed: () {
-                                  sendOtpForPasswordReset();
-                                },
-                                child: isSendingOtp
-                                    ? const SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: CircularProgressIndicator(
-                                          color: Colors.black,
-                                        ),
-                                      )
-                                    : const Text(
-                                        "Reset Password",
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    ButtonTheme(
+                      child: SizedBox(
+                          height: 50,
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromRGBO(54, 189, 151, 1)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0)))),
+                            onPressed: () {
+                              updateUserDetails();
+                            },
+                            child: isProfileUpdating
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : const Text('Update Profile'),
+                          )),
+                    ),
+
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 80),
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: context.watch<User>().isManuallySignedIn
+                                ? Row(
+                                    children: [
+                                      if (context
+                                          .watch<User>()
+                                          .isManuallySignedIn)
+                                        TextButton(
+                                            onPressed: () {
+                                              sendOtpForPasswordReset();
+                                            },
+                                            child: isSendingOtp
+                                                ? const SizedBox(
+                                                    width: 20,
+                                                    height: 20,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: Colors.black,
+                                                    ),
+                                                  )
+                                                : const Text(
+                                                    "Reset Password",
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            54, 189, 151, 1)),
+                                                  )),
+                                      TextButton(
+                                          onPressed: () {
+                                            context
+                                                .read<User>()
+                                                .clearUserDetails();
+                                            print(context
+                                                .read<User>()
+                                                .isManuallySignedIn);
+                                            Navigator.pushNamed(context, '/');
+                                          },
+                                          child: Text('Sign Out',
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      54, 189, 151, 1))))
+                                    ],
+                                  )
+                                : TextButton(
+                                    onPressed: () {
+                                      final _googleSignIn = GoogleSignIn();
+                                      _googleSignIn.signOut();
+                                      context.read<User>().clearUserDetails();
+                                      Navigator.pushNamed(context, '/');
+                                    },
+                                    child: Text('Sign Out',
                                         style: TextStyle(
                                             color: Color.fromRGBO(
-                                                54, 189, 151, 1)),
-                                      )),
-                          TextButton(
-                              onPressed: () {
-                                context.read<User>().clearUserDetails();
-                                Navigator.pushNamed(context, '/');
-                              },
-                              child: const Text('Sign Out',
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(54, 189, 151, 1))))
-                        ],
-                      ),
-                    ]),
-              ),
+                                                54, 189, 151, 1))))))
+                  ]))
               // isLoading
               //   ? Align(
               //       alignment: Alignment.center,r
