@@ -19,47 +19,49 @@ Widget TextFieldWidget(
       SizedBox(
         width: double.infinity,
         child: Align(
-            alignment: AlignmentDirectional.bottomStart,
-            child: Text(label,
-                textAlign: TextAlign.left,
-                style: const TextStyle(fontWeight: FontWeight.w500))),
+          alignment: AlignmentDirectional.bottomStart,
+          child: Text(label,
+              textAlign: TextAlign.left,
+              style: const TextStyle(fontWeight: FontWeight.w500)),
+        ),
       ),
       const SizedBox(
         height: 10,
       ),
       SizedBox(
-          height: 50,
-          width: double.infinity,
-          child: TextField(
-            enabled: isEnabled,
-            controller: controller,
-            obscureText: isPassword,
-            decoration: InputDecoration(
-              suffixIcon: isPassword
-                  ? Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween, // added line
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                          isValid
-                              ? SvgPicture.asset("assets/svg/check.svg")
-                              : Container(),
-                          IconButton(
-                              onPressed: () {},
-                              icon: SvgPicture.asset("assets/svg/Eye.svg"))
-                        ])
-                  : Container(
-                      width: 0,
-                    ),
-              border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.zero,
-                  borderSide: BorderSide(color: Colors.black)),
-              enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.zero,
-                  borderSide: BorderSide(color: Colors.black)),
-              hintText: !isPassword ? label : "**********",
-            ),
-          )),
+        height: 50,
+        width: double.infinity,
+        child: TextField(
+          enabled: isEnabled,
+          controller: controller,
+          obscureText: isPassword,
+          decoration: InputDecoration(
+            suffixIcon: isPassword
+                ? Row(
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween, // added line
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                        isValid
+                            ? SvgPicture.asset("assets/svg/check.svg")
+                            : Container(),
+                        IconButton(
+                            onPressed: () {},
+                            icon: SvgPicture.asset("assets/svg/Eye.svg"))
+                      ])
+                : Container(
+                    width: 0,
+                  ),
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.zero,
+                borderSide: BorderSide(color: Colors.black)),
+            enabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.zero,
+                borderSide: BorderSide(color: Colors.black)),
+            hintText: !isPassword ? label : "**********",
+          ),
+        ),
+      ),
     ],
   );
 }

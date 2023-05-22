@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:frontend/Pages/home.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/Pages/app.dart';
 import 'package:frontend/Pages/forgetPassword.dart';
@@ -6,16 +7,15 @@ import 'package:frontend/Pages/login.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'store.dart';
 
+import 'store.dart';
 import 'Pages/Welcome.dart';
 import 'Pages/getStarted.dart';
-// import 'components/TextField.dart';
 import 'Pages/Registration.dart';
-// import 'Pages/login.dart';
 import 'Pages/UpdateProfile.dart';
 import 'Pages/RegistrationPages.dart';
 import 'Pages/ResetPassword.dart';
+// import 'Pages/camera.dart';
 
 class CustomNavigatorObserver extends NavigatorObserver {
   @override
@@ -46,29 +46,13 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final String initialRoute;
-  const MyApp({required this.initialRoute});
+  const MyApp({super.key, required this.initialRoute});
 
   @override
   Widget build(context) {
     if (initialRoute == "/app") context.read<User>().getUserDataFromLocal();
     return MaterialApp(
-// <<<<<<< ui-changes
-//         title: 'Swirl.io',
-//         theme: ThemeData.light().copyWith(
-//             textTheme:
-//                 GoogleFonts.urbanistTextTheme(Theme.of(context).textTheme)),
-//         // home: MyStateFulWidget(),
-//         initialRoute: '/',
-//         routes: {
-//           '/': (context) => const WelcomeWidget(),
-//           '/getStarted': (context) => const GettingStartedWidget(),
-//           '/registration': (context) => const RegistrationWidget(),
-//           '/app': (context) => const MyStateFulWidget(),
-//           '/update-profile': (context) => UpdateProfileWidget(),
-//           '/google-auth-school': (context) => const GoogleAuthWidget(),
-//           '/reset-password': (context) => const ResetPasswordWidget()
-//         });
-// =======
+      debugShowCheckedModeBanner: false,
       title: 'Swirl.io',
       theme: ThemeData.light().copyWith(
           textTheme: GoogleFonts.urbanistTextTheme(Theme.of(context).textTheme),
@@ -89,7 +73,5 @@ class MyApp extends StatelessWidget {
         // Add more routes as needed
       },
     );
-// >>>>>>> dev
   }
 }
-
