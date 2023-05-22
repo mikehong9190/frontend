@@ -69,7 +69,6 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       });
     }
     getUserDetails(userId);
-
   }
 
   void sendOtpForPasswordReset() async {
@@ -91,9 +90,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         Navigator.pushNamed(context, "/reset-password");
       // Navigator.pushNamed(context, "/reset-password",
       //     arguments: {"emailId": email, "userId": userId});
-      else {
-        
-      }
+      else {}
     } catch (error) {
       print(error);
     } finally {
@@ -224,72 +221,71 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           : Container(
               margin: const EdgeInsets.symmetric(horizontal: 30),
               child: Center(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      ClipOval(
-                          child: (_image != null
-                              ? Image.file(
-                                  _image!,
-                                  fit: BoxFit.cover,
-                                  width: 80,
-                                  height: 80,
-                                )
-                              : profilePicture.isNotEmpty
-                                  ? Image.network(
-                                      profilePicture,
-                                      fit: BoxFit.cover,
-                                      width: 80.0,
-                                      height: 80.0,
-                                    )
-                                  : Image.asset(
-                                      "assets/images/defaultImage.png",
-                                      fit: BoxFit.cover,
-                                      width: 80.0,
-                                      height: 80.0,
-                                    ))),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ClipOval(
+                        child: (_image != null
+                            ? Image.file(
+                                _image!,
+                                fit: BoxFit.cover,
+                                width: 80,
+                                height: 80,
+                              )
+                            : profilePicture.isNotEmpty
+                                ? Image.network(
+                                    profilePicture,
+                                    fit: BoxFit.cover,
+                                    width: 80.0,
+                                    height: 80.0,
+                                  )
+                                : Image.asset(
+                                    "assets/images/defaultImage.png",
+                                    fit: BoxFit.cover,
+                                    width: 80.0,
+                                    height: 80.0,
+                                  ))),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                      child: const Text('Update Profile Picture',
+                          style: TextStyle(
+                              color: Color.fromRGBO(54, 189, 151, 1))),
+                      onTap: () => _pickImage(),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (_image != null)
                       GestureDetector(
-                        child: const Text('Update Profile Picture',
-                            style: TextStyle(
-                                color: Color.fromRGBO(54, 189, 151, 1))),
-                        onTap: () => _pickImage(),
+                        onTap:
+                            isUploadingImage ? null : () => uploadProfilePic(),
+                        child: isUploadingImage
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.black,
+                                ),
+                              )
+                            : const Text('Save'),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      if (_image != null)
-                        GestureDetector(
-                          onTap: isUploadingImage
-                              ? null
-                              : () => uploadProfilePic(),
-                          child: isUploadingImage
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.black,
-                                  ),
-                                )
-                              : const Text('Save'),
-                        ),
-                      TextFieldWidget(
-                          "First Name", firstNameController, false, null, true),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      TextFieldWidget(
-                          "Last Name", lastNameController, false, null, true),
-                      // TextFieldWidget("Bio", bioController, false, null, true),
-                      Column(
-                        children: [
-                          const SizedBox(
+                    TextFieldWidget(
+                        "First Name", firstNameController, false, null, true),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFieldWidget(
+                        "Last Name", lastNameController, false, null, true),
+                    // TextFieldWidget("Bio", bioController, false, null, true),
+                    Column(
+                      children: [
+                        SizedBox(
                             height: 30,
                             width: double.infinity,
                             child: TextField(
@@ -380,7 +376,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                                 .isManuallySignedIn);
                                             Navigator.pushNamed(context, '/');
                                           },
-                                          child: Text('Sign Out',
+                                          child: const Text('Sign Out',
                                               style: TextStyle(
                                                   color: Color.fromRGBO(
                                                       54, 189, 151, 1))))
@@ -393,7 +389,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                       context.read<User>().clearUserDetails();
                                       Navigator.pushNamed(context, '/');
                                     },
-                                    child: Text('Sign Out',
+                                    child: const Text('Sign Out',
                                         style: TextStyle(
                                             color: Color.fromRGBO(
                                                 54, 189, 151, 1))))))
@@ -426,7 +422,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
               //     currentIndex: _currentIndex,
               //     selectedItemColor: Color.fromRGBO(116, 231, 199, 1),
               //     onTap: changeIndex)
-            ),
+              ),
     );
   }
 }

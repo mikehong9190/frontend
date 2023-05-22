@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:frontend/Pages/Initiative.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +60,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
     //     <String, dynamic>{}) as Map;
     final _body = [
       HomeWidget(),
-      InitiativeWidget(),
+      const Initiative(),
       const FAQWidget(
         questions: [
           QuestionWidget(question: "This is FIRST QUESTION", answers: [
@@ -143,9 +144,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
 
 //HOME WIDGET
 
-
 //ACCOUNT WIDGET
-
 
 // INTIATIVE WIDGET
 class InitiativeWidget extends StatefulWidget {

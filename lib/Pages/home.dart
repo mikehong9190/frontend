@@ -1,18 +1,18 @@
-import 'dart:convert';
+// import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:frontend/Pages/camera.dart';
-import 'package:frontend/Pages/gallery.dart';
-import 'package:frontend/Pages/setup_initiative.dart';
+// import 'package:flutter/services.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:frontend/Pages/camera.dart';
+// import 'package:frontend/Pages/gallery.dart';
+// import 'package:frontend/Pages/setup_initiative.dart';
 // import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart';
-import 'package:provider/provider.dart';
-import 'package:camera/camera.dart';
+// import 'package:http/http.dart';
+// import 'package:provider/provider.dart';
+// import 'package:camera/camera.dart';
 
-import '../model/responses.dart';
-import '../store.dart';
+// import '../model/responses.dart';
+// import '../store.dart';
 
 class HomeWidget extends StatefulWidget {
   HomeWidget({super.key});
@@ -31,7 +31,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       alignment: Alignment.topCenter,
       heightFactor: 0.5,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(children: [
           Image.asset(
             'assets/images/schoolDefault.jpg',
