@@ -3,7 +3,15 @@ class EmailVerificationResponse {
   const EmailVerificationResponse({required this.message});
 
   factory EmailVerificationResponse.fromJson(Map<String, dynamic> json) {
-    return EmailVerificationResponse(message: json['message']);
+    return EmailVerificationResponse(message: json['message'] ?? 'OTP cant be send to the user');
+  }
+}
+class OTPVerificationResponse {
+  final String message;
+  const OTPVerificationResponse({required this.message});
+
+  factory OTPVerificationResponse.fromJson(Map<String, dynamic> json) {
+    return OTPVerificationResponse(message: json['message'] ?? 'Incorrect OTP');
   }
 }
 
@@ -224,7 +232,7 @@ class Welcome {
 
   factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
         message: json["message"],
-        data: Data.fromJson(json["data"]),
+        data: Data.fromJson(json["data"] ?? null),
       );
 
   Map<String, dynamic> toJson() => {

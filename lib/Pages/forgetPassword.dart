@@ -12,6 +12,7 @@ import 'package:http/http.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/components/TextField.dart';
 import 'package:provider/provider.dart';
+import '../model/responses.dart';
 
 import '../store.dart';
 import '../constants.dart';
@@ -29,6 +30,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
   // late var emailId = '';
   // late var userId = '';
   late String message = '';
+  late int statusCode = 0;
   late var sendingOtp = false;
   late var isOtpSend = false;
   late var emailController = TextEditingController();
@@ -98,17 +100,24 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       setState(() {
         sendingOtp = true;
       });
-      final response = await post(Uri.https(apiHost, '/v1/send-otp'),
+      final response = await post(Uri.https(apiHost, '/v1/validate-email'),
           body: jsonEncode(payload));
+      print (response.body);
+       final jsonData =
+          EmailVerificationResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         setState(() {
+          statusCode = response.statusCode;
           isOtpSend = true;
+          message = "OTP send Successfully";
         });
       } else {
         setState(() {
-          message = "OTP can't be send to the Email";
+          statusCode = response.statusCode;
+          message = jsonData.message;
         });
       }
+
     } catch (error, stackTrace) {
       print(stackTrace);
     } finally {
@@ -123,18 +132,19 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       "password": newPasswordController.text.trim(),
       "emailId": emailController.text.trim()
     };
-// <<<<<<< login-integration
     setState(() {
       isLoading = true;
     });
     try {
       final response = await post(Uri.https(apiHost, '/v1/reset-password'),
           body: jsonEncode(payload));
+      print (response.body);
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/login");
         // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reseted"});
       } else {
         setState(() {
+          statusCode = response.statusCode;
           message = "Error while resetting password";
         });
       }
@@ -145,16 +155,6 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
     } finally {
       setState(() {
         isLoading = false;
-// =======
-//     final response = await post(
-//         Uri.parse(
-//             'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/reset-password'),
-//         body: jsonEncode(payload));
-//     if (response.statusCode == 200) {
-//       Navigator.pushNamed(context, "/app", arguments: {
-//         "UserId": userId,
-//         "message": "Password updated successfully"
-// >>>>>>> dev
       });
     }
   }
@@ -172,14 +172,18 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
 
       final response = await post(Uri.https(apiHost, '/v1/verify-otp'),
           body: jsonEncode(payload));
-
+           final jsonData =
+          OTPVerificationResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         setState(() {
+          statusCode = response.statusCode;
+          message = jsonData.message;
           isVerified = true;
         });
       } else {
         setState(() {
-          message = "Wrong OTP";
+          statusCode = response.statusCode;
+          message = jsonData.message;
         });
       }
     } catch (error) {
@@ -278,6 +282,14 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                               : Colors.blueGrey),
                     ),
             ),
+          if (statusCode != 0)
+      SizedBox(
+          height: 20,
+          child: Text(
+            message,
+            style:
+                TextStyle(color: statusCode == 200 ? Colors.green : Colors.red),
+          )),
           if (isVerified)
             PasswordFieldWidget(
                 "New Password",

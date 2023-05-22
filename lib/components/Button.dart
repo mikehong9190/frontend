@@ -171,21 +171,22 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
                   final response = await post(Uri.https(apiHost, '/v1/signup'),
                       body: jsonEncode(
                           {"idToken": token, "platform": "android"}));
-                  final jsonData = Welcome.fromJson(jsonDecode(response.body));
-
-                  if (response.statusCode == 200 &&
-                      jsonData.message == 'Account created successfully!') {
-                    context.read<User>().setUserDetails(
-                        userId: jsonData.data.id,
-                        emailId: '',
-                        message: "created account using google");
-                    Navigator.pushNamed(context, "/google-auth-school");
-                  } else {
-                    context.read<User>().setUserDetails(
-                        userId: jsonData.data.id,
-                        emailId: '',
-                        message: "logged in using google");
-                    Navigator.pushNamed(context, "/app");
+                  if (response.statusCode == 200) {
+                    final jsonData =
+                        Welcome.fromJson(jsonDecode(response.body));
+                    if (jsonData.message == 'Account created successfully!') {
+                      context.read<User>().setUserDetails(
+                          userId: jsonData.data.id,
+                          emailId: '',
+                          message: "created account using google");
+                      Navigator.pushNamed(context, "/google-auth-school");
+                    } else {
+                      context.read<User>().setUserDetails(
+                          userId: jsonData.data.id,
+                          emailId: '',
+                          message: "logged in using google");
+                      Navigator.pushNamed(context, "/app");
+                    }
                   }
                 } catch (error, stackTrace) {
                   print(stackTrace);

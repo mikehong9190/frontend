@@ -16,6 +16,7 @@ import 'package:frontend/Pages/RegistrationPages.dart';
 // import 'package:im_stepper/main.dart';
 import 'package:http/http.dart';
 import '../components/RadioButton.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../store.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
@@ -109,7 +110,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     try {
       final queryParameters = {
         "text": "",
-        "district": schoolDistrictController
+        "district": schoolDistrictController.text
       };
       final response =
           await get(Uri.https(apiHost, '/v1/school/search', queryParameters));
@@ -119,7 +120,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       } else {
         return [];
       }
-    } catch (error) {
+    } catch (error,stackTrace) {
+      print(stackTrace);
       print(error);
       return [];
     }
@@ -159,6 +161,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
   void clickOnSuggestion(value, controller) {
     setState(() {
+      schoolNameController.text = '';
+      schoolId = '';
       controller.text = value;
     });
   }
