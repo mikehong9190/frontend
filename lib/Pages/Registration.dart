@@ -16,6 +16,7 @@ import 'package:frontend/Pages/RegistrationPages.dart';
 // import 'package:im_stepper/main.dart';
 import 'package:http/http.dart';
 import '../components/RadioButton.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../store.dart';
 // import 'package:fluttertoast/fluttertoast.dart';

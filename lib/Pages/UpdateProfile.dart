@@ -92,7 +92,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       // Navigator.pushNamed(context, "/reset-password",
       //     arguments: {"emailId": email, "userId": userId});
       else {
-
+        
       }
     } catch (error) {
       print(error);

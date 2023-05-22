@@ -138,6 +138,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
     try {
       final response = await post(Uri.https(apiHost, '/v1/reset-password'),
           body: jsonEncode(payload));
+      print (response.body);
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/login");
         // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reseted"});
