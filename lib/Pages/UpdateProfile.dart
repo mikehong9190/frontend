@@ -53,8 +53,6 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
     _pickedFile = (await _picker.pickImage(source: ImageSource.gallery));
     if (_pickedFile != null) {
       setState(() {
-        print(_pickedFile);
-        print(_pickedFile!.path);
         _image = File(_pickedFile!.path);
       });
     }
@@ -64,28 +62,14 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     String userId = context.watch<User>().userId;
-    print('----------${context.watch<User>().isManuallySignedIn}-----------');
     if (userId.isEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushNamedAndRemoveUntil(
             context, '/', (Route<dynamic> route) => false);
       });
     }
-    // if (userId.isEmpty) {
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     Navigator.pushNamed(context, '/');
-    //   });
-    //   return;
-    // } else {
     getUserDetails(userId);
-    // }
-    // final UserId = (ModalRoute.of(context)?.settings.arguments ??
-    //     <String, dynamic>{}) as Map;
-    // setState(() {
-    //   userId = UserId["UserId"];
-    //   message = UserId["message"];
-    // });
-    // put your logic from initState here
+
   }
 
   void sendOtpForPasswordReset() async {
@@ -107,6 +91,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         Navigator.pushNamed(context, "/reset-password");
       // Navigator.pushNamed(context, "/reset-password",
       //     arguments: {"emailId": email, "userId": userId});
+      else {
+
+      }
     } catch (error) {
       print(error);
     } finally {

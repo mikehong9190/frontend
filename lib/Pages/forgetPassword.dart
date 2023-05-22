@@ -12,6 +12,7 @@ import 'package:http/http.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/components/TextField.dart';
 import 'package:provider/provider.dart';
+import '../model/responses.dart';
 
 import '../store.dart';
 import '../constants.dart';
@@ -102,6 +103,8 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       final response = await post(Uri.https(apiHost, '/v1/validate-email'),
           body: jsonEncode(payload));
       print (response.body);
+       final jsonData =
+          EmailVerificationResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         setState(() {
           statusCode = response.statusCode;
@@ -111,7 +114,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       } else {
         setState(() {
           statusCode = response.statusCode;
-          message = "OTP can't be send to the Email";
+          message = jsonData.message ?? 'OTP cant be send to the user';
         });
       }
 
@@ -129,7 +132,6 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       "password": newPasswordController.text.trim(),
       "emailId": emailController.text.trim()
     };
-// <<<<<<< login-integration
     setState(() {
       isLoading = true;
     });
