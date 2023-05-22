@@ -283,10 +283,23 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                     TextFieldWidget(
                         "Last Name", lastNameController, false, null, true),
                     // TextFieldWidget("Bio", bioController, false, null, true),
-                    Column(
+                  Column(
                       children: [
+                        const SizedBox(
+                          height: 30,
+                          width: double.infinity,
+                          child: Align(
+                              alignment: AlignmentDirectional.bottomStart,
+                              child: Text("Your Bio",
+                                  textAlign: TextAlign.left,
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.w500))),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         SizedBox(
-                            height: 30,
+                            height: 80,
                             width: double.infinity,
                             child: TextField(
                               maxLines: 10,
