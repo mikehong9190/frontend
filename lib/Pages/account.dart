@@ -114,19 +114,24 @@ class _AccountWidgetState extends State<AccountWidget> {
                           ClipOval(
                               child: profilePicture.isNotEmpty
                                   ? CachedNetworkImage(
-                                      width: 150,
-                                      height: 150,
+                                      width: 80,
+                                      height: 80,
                                       fit: BoxFit.cover,
                                       imageUrl: profilePicture,
                                       progressIndicatorBuilder: (context, url,
                                               downloadProgress) =>
-                                          CircularProgressIndicator(
-                                              valueColor:
-                                                  const AlwaysStoppedAnimation<
-                                                          Color>(
-                                                      Color.fromRGBO(
-                                                          54, 189, 151, 1)),
-                                              value: downloadProgress.progress))
+                                          SizedBox(
+                                            height: 50,
+                                            width: 50,
+                                            child: CircularProgressIndicator(
+                                                valueColor:
+                                                    const AlwaysStoppedAnimation<
+                                                            Color>(
+                                                        Color.fromRGBO(
+                                                            54, 189, 151, 1)),
+                                                value:
+                                                    downloadProgress.progress),
+                                          ))
                                   // Image.network(
                                   //     profilePicture,
                                   //     fit: BoxFit.cover,
