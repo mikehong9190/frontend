@@ -152,244 +152,245 @@ class _GalleryState extends State<Gallery> {
     }
 
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          leading: IconButton(
-              onPressed: () {
-                onWillPop().then((shouldDiscard) {
-                  if (shouldDiscard) {
-                    Navigator.of(context).pop();
-                  }
-                });
-              },
-              icon: SvgPicture.asset("assets/svg/Vector.svg")),
-          backgroundColor: Colors.white,
-          title: const Text(
-            'Upload to Cloud',
-            style: TextStyle(
-              color: Colors.black87,
-            ),
+      resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        leading: IconButton(
+            onPressed: () {
+              onWillPop().then((shouldDiscard) {
+                if (shouldDiscard) {
+                  Navigator.of(context).pop();
+                }
+              });
+            },
+            icon: SvgPicture.asset("assets/svg/Vector.svg")),
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Upload to Cloud',
+          style: TextStyle(
+            color: Colors.black87,
           ),
         ),
-        body: WillPopScope(
-            onWillPop: onWillPop,
-            child: Container(
-              margin: const EdgeInsets.only(top: 20, right: 30, left: 30),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    child: Row(
-                      children: const [
-                        Text("New Collection",
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.w800))
-                      ],
-                    ),
-                  ),
-                  isLoading
-                      ? Column(children: const [
-                          SizedBox(height: 70),
-                          Align(
-                            alignment: Alignment.center,
-                            child: CircularProgressIndicator(
-                              color: Color.fromRGBO(54, 189, 151, 1),
-                            ),
-                          ),
-                        ])
-                      : Container(
-                          margin: const EdgeInsets.only(top: 50),
-                          width: double.infinity,
-                          child: imageModel.images.isNotEmpty
-                              ? GridView.count(
-                                  padding: const EdgeInsets.only(top: 10),
-                                  primary: false,
-                                  crossAxisSpacing: 15,
-                                  mainAxisSpacing: 15,
-                                  crossAxisCount: 2,
-                                  children: <Widget>[
-                                    ...imageModel.images.map((image) => Stack(
-                                          children: <Widget>[
-                                            Container(
-                                              padding: const EdgeInsets.only(
-                                                top: 35,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(10)),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.grey
-                                                        .withOpacity(
-                                                            0.5), // Shadow color
-                                                    spreadRadius:
-                                                        1, // Spread radius
-                                                    blurRadius:
-                                                        3, // Blur radius
-                                                    offset: const Offset(0,
-                                                        2), // Offset in x and y direction
-                                                  ),
-                                                ],
-                                              ),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.0),
-                                                    child: Image.file(
-                                                      File(image.path),
-                                                      fit: BoxFit.cover,
-                                                      width: double.infinity,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              0.15,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Positioned(
-                                              right: 0,
-                                              child: IconButton(
-                                                onPressed: () => imageModel
-                                                    .removeImage(image),
-                                                iconSize: 25,
-                                                padding:
-                                                    const EdgeInsets.all(5.0),
-                                                constraints:
-                                                    const BoxConstraints(),
-                                                icon: const Icon(
-                                                    Icons.remove_circle_sharp,
-                                                    color: Colors.black),
-                                              ),
-                                            ),
-                                          ],
-                                        )),
-                                  ],
-                                )
-                              : const Center(
-                                  child: Text(
-                                    "No artworks added yet",
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                        ),
-                  Positioned(
-                    bottom: 16.0,
-                    left: 0,
-                    child: SizedBox(
-                      // width: 80,
-                      height: 55,
-                      width: 370,
-                      child: FittedBox(
-                        child: FloatingActionButton.extended(
-                          label: const Text("Click to Upload"),
-                          backgroundColor:
-                              const Color.fromRGBO(54, 189, 151, 1),
-                          onPressed: () {
-                            uploadImages(context, imageModel.images);
-                          },
+      ),
+      body: WillPopScope(
+        onWillPop: onWillPop,
+        child: Container(
+          margin: const EdgeInsets.only(top: 20, right: 30, left: 30),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                left: 0,
+                child: Row(
+                  children: const [
+                    Text("New Collection",
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.w800))
+                  ],
+                ),
+              ),
+              isLoading
+                  ? Column(children: const [
+                      SizedBox(height: 70),
+                      Align(
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(
+                          color: Color.fromRGBO(54, 189, 151, 1),
                         ),
                       ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 16.0,
-                    right: 0,
-                    child: FloatingActionButton(
-                      backgroundColor: const Color.fromRGBO(54, 189, 151, 1),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("Add Artworks"),
-                              content: SizedBox(
-                                height: 98,
-                                child: Column(
-                                  children: [
-                                    ButtonTheme(
-                                      child: SizedBox(
-                                        // height: 10,
-                                        width: double.infinity,
-                                        child: ElevatedButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    const Color.fromRGBO(
-                                                        54, 189, 151, 1)),
+                    ])
+                  : Container(
+                      margin: const EdgeInsets.only(top: 50),
+                      width: double.infinity,
+                      child: imageModel.images.isNotEmpty
+                          ? GridView.count(
+                              padding: const EdgeInsets.only(top: 10),
+                              primary: false,
+                              crossAxisSpacing: 15,
+                              mainAxisSpacing: 15,
+                              crossAxisCount: 2,
+                              children: <Widget>[
+                                ...imageModel.images.map((image) => Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          padding: const EdgeInsets.only(
+                                            top: 35,
                                           ),
-                                          onPressed: openImages,
-                                          child:
-                                              const Text("Choose From Gallery"),
-                                        ),
-                                      ),
-                                    ),
-                                    ButtonTheme(
-                                      child: SizedBox(
-                                        // height: 10,
-                                        width: double.infinity,
-                                        child: ElevatedButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    const Color.fromRGBO(
-                                                        54, 189, 151, 1)),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10)),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey.withOpacity(
+                                                    0.5), // Shadow color
+                                                spreadRadius:
+                                                    1, // Spread radius
+                                                blurRadius: 3, // Blur radius
+                                                offset: const Offset(0,
+                                                    2), // Offset in x and y direction
+                                              ),
+                                            ],
                                           ),
-                                          onPressed: () async {
-                                            await availableCameras().then(
-                                              (value) => Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (_) => ICamera(
-                                                      initiativeTypeId: id,
-                                                      initiativeType: name,
-                                                      target: target,
-                                                      grade: grade,
-                                                      noOfStudents:
-                                                          noOfStudents,
-                                                      cameras: value,
-                                                      context: context),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                child: Image.file(
+                                                  File(image.path),
+                                                  fit: BoxFit.cover,
+                                                  width: double.infinity,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.15,
                                                 ),
                                               ),
-                                            );
-                                          },
-                                          child: const Text("Take a photo"),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text('Close',
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromRGBO(54, 189, 151, 1))),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
+                                        Positioned(
+                                          right: 0,
+                                          child: IconButton(
+                                            onPressed: () =>
+                                                imageModel.removeImage(image),
+                                            iconSize: 25,
+                                            padding: const EdgeInsets.all(5.0),
+                                            constraints: const BoxConstraints(),
+                                            icon: const Icon(
+                                                Icons.remove_circle_sharp,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
                               ],
-                            );
-                          },
-                        );
-                      },
-                      child: const Icon(Icons.add),
+                            )
+                          : const Center(
+                              child: Text(
+                                "No artworks added yet",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                    ),
+              Positioned(
+                bottom: 16.0,
+                left: 0,
+                child: SizedBox(
+                  // width: 80,
+                  height: 55,
+                  width: 370,
+                  child: FittedBox(
+                    child: FloatingActionButton.extended(
+                      label: Text(
+                        "Click to Upload",
+                        style: TextStyle(
+                          color: imageModel.images.isNotEmpty
+                              ? Colors.white
+                              : const Color.fromARGB(255, 212, 211, 211),
+                        ),
+                      ),
+                      backgroundColor: const Color.fromRGBO(54, 189, 151, 1),
+                      onPressed: imageModel.images.isNotEmpty
+                          ? () {
+                              uploadImages(context, imageModel.images);
+                            }
+                          : null,
                     ),
                   ),
-                ],
+                ),
               ),
-            )));
+              Positioned(
+                bottom: 16.0,
+                right: 0,
+                child: FloatingActionButton(
+                  backgroundColor: const Color.fromRGBO(54, 189, 151, 1),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text("Add Artworks"),
+                          content: SizedBox(
+                            height: 98,
+                            child: Column(
+                              children: [
+                                ButtonTheme(
+                                  child: SizedBox(
+                                    // height: 10,
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                const Color.fromRGBO(
+                                                    54, 189, 151, 1)),
+                                      ),
+                                      onPressed: openImages,
+                                      child: const Text("Choose From Gallery"),
+                                    ),
+                                  ),
+                                ),
+                                ButtonTheme(
+                                  child: SizedBox(
+                                    // height: 10,
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                const Color.fromRGBO(
+                                                    54, 189, 151, 1)),
+                                      ),
+                                      onPressed: () async {
+                                        await availableCameras().then(
+                                          (value) => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => ICamera(
+                                                  initiativeTypeId: id,
+                                                  initiativeType: name,
+                                                  target: target,
+                                                  grade: grade,
+                                                  noOfStudents: noOfStudents,
+                                                  cameras: value,
+                                                  context: context),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text("Take a photo"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('Close',
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(54, 189, 151, 1))),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: const Icon(Icons.add),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

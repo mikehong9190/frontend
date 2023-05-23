@@ -63,26 +63,37 @@ class _InitiativeTargetState extends State<SetupInitiativeTarget> {
             ),
             const SizedBox(height: 10),
             for (var tgt in targets)
-              ListTile(
-                title: Row(
-                  children: [
-                    Expanded(
-                        child: Text(
-                            tgt == 'Enter Custom Amount' ? '$tgt' : '\$ $tgt')),
-                    Radio(
-                      value: tgt,
-                      groupValue: selectedItem,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedItem = tgt;
-                          if (tgt != 'Enter Custom Amount') {
-                            target = tgt;
-                          }
-                        });
-                      },
-                      activeColor: Colors.black,
-                    ),
-                  ],
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedItem = tgt;
+                    if (tgt != 'Enter Custom Amount') {
+                      target = tgt;
+                    }
+                  });
+                },
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Expanded(
+                          child: Text(tgt == 'Enter Custom Amount'
+                              ? '$tgt'
+                              : '\$ $tgt')),
+                      Radio(
+                        value: tgt,
+                        groupValue: selectedItem,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedItem = tgt;
+                            if (tgt != 'Enter Custom Amount') {
+                              target = tgt;
+                            }
+                          });
+                        },
+                        activeColor: Colors.black,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             if (selectedItem == 'Enter Custom Amount')

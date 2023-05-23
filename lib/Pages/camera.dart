@@ -182,11 +182,37 @@ class _CameraState extends State<ICamera> {
             },
             icon: SvgPicture.asset("assets/svg/Vector.svg")),
         backgroundColor: Colors.white,
-        title: const Text(
-          'Take a Picture',
-          style: TextStyle(
-            color: Colors.black87,
-          ),
+        title: Row(
+          children: [
+            const Spacer(),
+            const Text(
+              'Take a Picture',
+              style: TextStyle(
+                color: Colors.black87,
+              ),
+            ),
+            const Spacer(),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => Gallery(
+                        initiativeTypeId: id,
+                        initiativeType: name,
+                        target: target,
+                        grade: grade,
+                        noOfStudents: noOfStudents),
+                  ),
+                );
+              },
+              icon: const Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 25,
+                color: Color.fromRGBO(54, 189, 151, 1),
+              ),
+            ),
+          ],
         ),
       ),
       body: Column(children: [
