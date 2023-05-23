@@ -107,26 +107,38 @@ class _InitiativeState extends State<SetupInitiative> {
                 : Column(
                     children: [
                       for (var initiativeType in initiativeTypes)
-                        ListTile(
-                          title: Row(
-                            children: [
-                              Expanded(child: Text(initiativeType['name'])),
-                              Radio(
-                                value: initiativeType['name'],
-                                groupValue: selectedOption,
-                                onChanged: (value) {
-                                  setState(() {
-                                    id = initiativeType['id'];
-                                    selectedOption = value;
-                                    if (initiativeType['name'] !=
-                                        'Other (enter below)') {
-                                      name = initiativeType['name'];
-                                    }
-                                  });
-                                },
-                                activeColor: Colors.black,
-                              ),
-                            ],
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              id = initiativeType['id'];
+                              selectedOption = initiativeType['name'];
+                              if (initiativeType['name'] !=
+                                  'Other (enter below)') {
+                                name = initiativeType['name'];
+                              }
+                            });
+                          },
+                          child: ListTile(
+                            title: Row(
+                              children: [
+                                Expanded(child: Text(initiativeType['name'])),
+                                Radio(
+                                  value: initiativeType['name'],
+                                  groupValue: selectedOption,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      id = initiativeType['id'];
+                                      selectedOption = value;
+                                      if (initiativeType['name'] !=
+                                          'Other (enter below)') {
+                                        name = initiativeType['name'];
+                                      }
+                                    });
+                                  },
+                                  activeColor: Colors.black,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                     ],
