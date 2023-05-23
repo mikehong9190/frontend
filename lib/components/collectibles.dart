@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:frontend/Pages/home.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
@@ -21,12 +22,23 @@ class CollectiblesWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: collectibleImage.isNotEmpty
-                  ? Image.network(
-                      collectibleImage,
+                  ? CachedNetworkImage(
                       width: 150,
                       height: 150,
                       fit: BoxFit.cover,
-                    )
+                      imageUrl: collectibleImage,
+                      progressIndicatorBuilder: (context, url,
+                              downloadProgress) =>
+                          CircularProgressIndicator(
+                              valueColor: const AlwaysStoppedAnimation<Color>(
+                                  Color.fromRGBO(54, 189, 151, 1)),
+                              value: downloadProgress.progress))
+                  // Image.network(
+                  //     collectibleImage,
+                  //     width: 150,
+                  //     height: 150,
+                  //     fit: BoxFit.cover,
+                  //   )
                   : Image.asset(
                       "assets/images/defaultImage.png",
                       width: 150,

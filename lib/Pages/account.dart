@@ -11,6 +11,7 @@ import '../store.dart';
 import './home.dart';
 import '../constants.dart';
 import '../components/collectibles.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AccountWidget extends StatefulWidget {
   // final String message;
@@ -112,12 +113,26 @@ class _AccountWidgetState extends State<AccountWidget> {
                         children: [
                           ClipOval(
                               child: profilePicture.isNotEmpty
-                                  ? Image.network(
-                                      profilePicture,
+                                  ? CachedNetworkImage(
+                                      width: 150,
+                                      height: 150,
                                       fit: BoxFit.cover,
-                                      width: 80.0,
-                                      height: 80.0,
-                                    )
+                                      imageUrl: profilePicture,
+                                      progressIndicatorBuilder: (context, url,
+                                              downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              valueColor:
+                                                  const AlwaysStoppedAnimation<
+                                                          Color>(
+                                                      Color.fromRGBO(
+                                                          54, 189, 151, 1)),
+                                              value: downloadProgress.progress))
+                                  // Image.network(
+                                  //     profilePicture,
+                                  //     fit: BoxFit.cover,
+                                  //     width: 80.0,
+                                  //     height: 80.0,
+                                  //   )
                                   : Image.asset(
                                       "assets/images/defaultImage.png",
                                       fit: BoxFit.cover,
