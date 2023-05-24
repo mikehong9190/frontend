@@ -87,6 +87,7 @@ class _GalleryState extends State<Gallery> {
       if (response.statusCode == 200) {
         _showAlertDialog(context);
         imageModel.clearImages();
+        imageModel.clearFinalImages();
         print('Initiative uploaded successfully');
         setState(() {
           isLoading = false;

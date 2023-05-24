@@ -47,6 +47,11 @@ class User with ChangeNotifier {
     }
   }
 
+  void clearFinalImages() {
+    _finalimages.clear();
+    notifyListeners();
+  }
+
   void setUserDetails(
       {required String userId,
       required String emailId,
