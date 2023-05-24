@@ -303,15 +303,15 @@ class _GalleryState extends State<Gallery> {
                       label: Text(
                         "Click to Upload",
                         style: TextStyle(
-                          color: imageModel.images.isNotEmpty
+                          color: imageModel.finalImages.isNotEmpty
                               ? Colors.white
                               : const Color.fromARGB(255, 212, 211, 211),
                         ),
                       ),
                       backgroundColor: const Color.fromRGBO(54, 189, 151, 1),
-                      onPressed: imageModel.images.isNotEmpty
+                      onPressed: imageModel.finalImages.isNotEmpty
                           ? () {
-                              uploadImages(context, imageModel.images);
+                              uploadImages(context, imageModel.finalImages);
                             }
                           : null,
                     ),
