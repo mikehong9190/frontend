@@ -225,9 +225,13 @@ class _GalleryState extends State<Gallery> {
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
+                                                const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(10),
+                                                    bottomLeft:
+                                                        Radius.circular(10),
+                                                    bottomRight:
+                                                        Radius.circular(10)),
                                             boxShadow: [
                                               BoxShadow(
                                                 color: Colors.grey
@@ -269,13 +273,19 @@ class _GalleryState extends State<Gallery> {
                                           ),
                                         ),
                                         if (imageModel.isImageExists(image))
-                                          const Positioned(
-                                            top: 3,
-                                            right: 3,
-                                            child: Icon(
-                                              Icons.check_circle,
-                                              color: Colors.green,
-                                              size: 30,
+                                          Positioned(
+                                            top: 0,
+                                            right: 0,
+                                            // child: Icon(
+                                            //   Icons.check_circle,
+                                            //   color: Colors.green,
+                                            //   size: 30,
+                                            // ),
+                                            child: Image.asset(
+                                              "assets/images/select.png",
+                                              // width: 30,
+                                              // height: 150,
+                                              // fit: BoxFit.cover,
                                             ),
                                           ),
                                       ],
