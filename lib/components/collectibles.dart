@@ -15,9 +15,8 @@ class CollectiblesWidget extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return SizedBox(
-        width: 200,
-        child: Column(
+    return 
+      Column(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
@@ -58,6 +57,6 @@ class CollectiblesWidget extends StatelessWidget {
             //   children: [Text("Price"), Text("50")],
             // )
           ],
-        ));
+        );
   }
 }
