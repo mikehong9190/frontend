@@ -32,29 +32,37 @@ class SingleInitiativeWidget extends StatelessWidget {
           children: [
             Text(
               "$firstName $lastName",
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
             ),
-            TextButton(onPressed: () {}, child: Text("View all"))
+            TextButton(onPressed: () {}, child: const Text("View all"))
           ],
         ),
         Align(
-          child: Text("${images.length} works",style: TextStyle(fontSize: 14)),
+          child: Text("${images.length} works", style: TextStyle(fontSize: 12)),
           alignment: Alignment.centerLeft,
         ),
-        Expanded(
-            child: ListView.builder(
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.only(right: 20,top: 20),
-              child: CollectiblesWidget(
-                collectibleImage: images[index],
-              ),
-            );
-          },
-          itemCount: images.length,
+        SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-        ))
+          child: Row(children: [
+            ...images.map((e) => Padding(
+                  padding: const EdgeInsets.only(right: 20, top: 20),
+                  child: CollectiblesWidget(collectibleImage: e),
+                ))
+          ]),
+        )
+        // ListView.builder(
+        //   shrinkWrap: true,
+        //   itemBuilder: (context, index) {
+        //     return Padding(
+        //       padding: const EdgeInsets.only(right: 20, top: 20),
+        //       child: CollectiblesWidget(
+        //         collectibleImage: images[index],
+        //       ),
+        //     );
+        //   },
+        //   itemCount: images.length,
+        //   scrollDirection: Axis.horizontal,
+        // )
       ],
     );
   }

@@ -47,28 +47,44 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                       value: downloadProgress.progress),
                 )),
         Padding(
-          padding: EdgeInsets.only(left: 30),
-          child: Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: Column(
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w700),
-                ),
-                Padding(
-                  child: Text("by ${grade} Grade"),
-                  padding: EdgeInsets.only(top : 10),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text("Amount Raised"), Text(target.toString())],
-                ),
-              ],
-            ),
+          padding: EdgeInsets.only(left: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                name,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+              ),
+              Text("${grade} Grade"),
+              Row(
+                children: [
+                  const Text("Amount Raised"),
+                  Padding(
+                      padding: const EdgeInsets.only(left: 50),
+                      child: Text(
+                        target.toString(),
+                        style: const TextStyle(fontWeight: FontWeight.w700),
+                      )),
+                ],
+              ),
+              Center(
+                child: ElevatedButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(30.0)))),
+                    child: Text("Add More Art")),
+              ),
+            ],
           ),
-        )
+        ),
       ],
     );
   }

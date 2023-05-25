@@ -23,7 +23,8 @@ import '../components/single_initiative.dart';
 
 class HomeWidget extends StatefulWidget {
   String schoolId;
-  HomeWidget({super.key, required this.schoolId});
+  dynamic schoolName;
+  HomeWidget({super.key, required this.schoolId, this.schoolName});
 
   @override
   State<HomeWidget> createState() => _HomeWidgetState();
@@ -54,9 +55,13 @@ class _HomeWidgetState extends State<HomeWidget> {
       print(response.body);
       if (response.statusCode == 200) {
         final jsonData = SchoolData.fromJson(jsonDecode(response.body));
-        print(jsonData.data[0].userFirstName);
         setState(() {
-          initiatives = jsonData.data;
+          initiatives = [
+            ...jsonData.data,
+            ...jsonData.data,
+            ...jsonData.data,
+            ...jsonData.data
+          ];
         });
       }
     } catch (error, stackTrace) {
@@ -76,13 +81,69 @@ class _HomeWidgetState extends State<HomeWidget> {
             child: CircularProgressIndicator(
               color: Color.fromRGBO(54, 189, 151, 1),
             ))
-        : SizedBox(
-            child: Container(
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 4,
+                width: MediaQuery.of(context).size.width,
+                child: Image.asset(
+                  "assets/images/schoolDefault.jpg",
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Column(
+                  children: [
+                    Text(
+                      schoolName,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 20),
+                    ),
+                    const Text("About the corporate sponsor",
+                        style: TextStyle(fontSize: 14))
+                  ],
+                ),
+              ),
+              Expanded(
+                  child: SizedBox(
+                      child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Expanded(
-                    child: SingleInitiativeWidget(
-                        images: initiatives[0].images,
-                        firstName: "Aadesh",
-                        lastName: "Kamble"))));
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: initiatives.length,
+                  itemBuilder: (context, index) {
+                    return SingleInitiativeWidget(
+                        images: initiatives[index].images,
+                        firstName: initiatives[index].userFirstName,
+                        lastName: initiatives[index].userLastName);
+                  },
+                ),
+              )))
+            ],
+          );
+    SizedBox(
+        child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: initiatives.length,
+        itemBuilder: (context, index) {
+          return SingleInitiativeWidget(
+              images: initiatives[index].images,
+              firstName: initiatives[index].userFirstName,
+              lastName: initiatives[index].userLastName);
+        },
+      ),
+    )
+        // Expanded(
+        // child: SingleInitiativeWidget(
+        //         images: initiatives[0].images,
+        //         firstName: "Aadesh",
+        //         lastName: "Kamble")
+        //         )
+        );
   }
 }

@@ -21,6 +21,7 @@ class MyStateFulWidget extends StatefulWidget {
 }
 
 class _MyStateWidgetState extends State<MyStateFulWidget> {
+  bool isLoading = false;
   int _currentIndex = 3;
   String schoolId = '';
   static final _TopBar = [
@@ -29,7 +30,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
     "Frequently Asked Questions",
     "My Profile"
   ];
-@override
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     String userId = context.watch<User>().userId;
@@ -41,7 +42,9 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
 
   void getUserDetails(id) async {
     try {
-
+      setState(() {
+        isLoading = true;
+      });
       final queryParameters = {"id": id};
       final response =
           await get(Uri.https(apiHost, '/v1/users', queryParameters));
@@ -53,10 +56,16 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
           schoolId = jsonData.schoolId;
         });
       }
-    } catch (error) {
+    } catch (error, stackTrace) {
+      print(stackTrace);
       print(error);
-    } 
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
+
   static final _bottomNavigationBar = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
       icon: SvgPicture.asset("assets/svg/Home.svg"),
@@ -85,7 +94,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   @override
   Widget build(context) {
     final _body = [
-      HomeWidget(schoolId : schoolId ?? ''),
+      HomeWidget(schoolId: schoolId ?? ''),
       const Initiative(),
       const FAQWidget(
         questions: [
@@ -150,7 +159,13 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
                   style: const TextStyle(
                     color: Colors.black87,
                   ))),
-          body: _body[_currentIndex],
+          body: isLoading
+              ? const Align(
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator(
+                    color: Color.fromRGBO(54, 189, 151, 1),
+                  ))
+              : _body[_currentIndex],
           bottomNavigationBar: BottomNavigationBar(
               iconSize: 20.0,
               type: BottomNavigationBarType.fixed,

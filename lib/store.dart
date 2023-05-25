@@ -59,11 +59,6 @@ class User with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // prefs.setString('profilePicture', profilePicture);
 
-    print(userId);
-    print(emailId);
-    print(message);
-    print(!message.toString().toLowerCase().contains("google"));
-
     prefs.setString('userId', userId);
     prefs.setString('emailId', emailId);
     prefs.setBool('userLoggedIn', userId.isNotEmpty);

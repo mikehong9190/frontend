@@ -137,13 +137,16 @@ class _InitiativeState extends State<Initiative> {
                       child: ListView.builder(
                           itemCount: initiatives.length,
                           itemBuilder: (context, index) {
-                            return InitiativesForInitiativeWidget(
-                                images: initiatives[index].images,
-                                target: initiatives[index].target,
-                                numberOfStudents:
-                                    initiatives[index].numberOfStudents,
-                                grade: initiatives[index].grade,
-                                name: initiatives[index].name);
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 20),
+                              child: InitiativesForInitiativeWidget(
+                                  images: initiatives[index].images,
+                                  target: initiatives[index].target,
+                                  numberOfStudents:
+                                      initiatives[index].numberOfStudents,
+                                  grade: initiatives[index].grade,
+                                  name: initiatives[index].name),
+                            );
                           }),
                     ),
                     Image.asset("assets/images/swiirl-black.png"),
