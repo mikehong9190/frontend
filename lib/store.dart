@@ -14,7 +14,9 @@ class User with ChangeNotifier {
 
   //storing images
   final List<XFile> _images = [];
+  final List<XFile> _finalimages = [];
   List<XFile> get images => _images;
+  List<XFile> get finalImages => _finalimages;
 
   void addImage(XFile image) {
     _images.add(image);
@@ -31,7 +33,24 @@ class User with ChangeNotifier {
     notifyListeners();
   }
 
-  //initiative setup
+  bool isImageExists(XFile image) {
+    return _finalimages.contains(image);
+  }
+
+  void toggleImage(XFile image) {
+    if (isImageExists(image)) {
+      _finalimages.remove(image);
+      notifyListeners();
+    } else {
+      _finalimages.add(image);
+      notifyListeners();
+    }
+  }
+
+  void clearFinalImages() {
+    _finalimages.clear();
+    notifyListeners();
+  }
 
   void setUserDetails(
       {required String userId,
@@ -40,11 +59,11 @@ class User with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // prefs.setString('profilePicture', profilePicture);
 
-    print (userId);
-    print (emailId);
-    print (message);
-    print (!message.toString().toLowerCase().contains("google"));
-    
+    print(userId);
+    print(emailId);
+    print(message);
+    print(!message.toString().toLowerCase().contains("google"));
+
     prefs.setString('userId', userId);
     prefs.setString('emailId', emailId);
     prefs.setBool('userLoggedIn', userId.isNotEmpty);

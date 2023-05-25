@@ -87,6 +87,7 @@ class _GalleryState extends State<Gallery> {
       if (response.statusCode == 200) {
         _showAlertDialog(context);
         imageModel.clearImages();
+        imageModel.clearFinalImages();
         print('Initiative uploaded successfully');
         setState(() {
           isLoading = false;
@@ -211,7 +212,12 @@ class _GalleryState extends State<Gallery> {
                               mainAxisSpacing: 15,
                               crossAxisCount: 2,
                               children: <Widget>[
-                                ...imageModel.images.map((image) => Stack(
+                                ...imageModel.images.map(
+                                  (image) => GestureDetector(
+                                    onTap: () {
+                                      imageModel.toggleImage(image);
+                                    },
+                                    child: Stack(
                                       children: <Widget>[
                                         Container(
                                           padding: const EdgeInsets.only(
@@ -220,22 +226,24 @@ class _GalleryState extends State<Gallery> {
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(10)),
+                                                const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(10),
+                                                    bottomLeft:
+                                                        Radius.circular(10),
+                                                    bottomRight:
+                                                        Radius.circular(10)),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Colors.grey.withOpacity(
-                                                    0.5), // Shadow color
-                                                spreadRadius:
-                                                    1, // Spread radius
-                                                blurRadius: 3, // Blur radius
-                                                offset: const Offset(0,
-                                                    2), // Offset in x and y direction
+                                                color: Colors.grey
+                                                    .withOpacity(0.5),
+                                                spreadRadius: 1,
+                                                blurRadius: 3,
+                                                offset: const Offset(0, 2),
                                               ),
                                             ],
                                           ),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
+                                          child: Stack(
                                             children: [
                                               ClipRRect(
                                                 borderRadius:
@@ -250,24 +258,41 @@ class _GalleryState extends State<Gallery> {
                                                       0.15,
                                                 ),
                                               ),
+                                              if (imageModel
+                                                  .isImageExists(image))
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                      Radius.circular(10),
+                                                    ),
+                                                  ),
+                                                ),
                                             ],
                                           ),
                                         ),
-                                        Positioned(
-                                          right: 0,
-                                          child: IconButton(
-                                            onPressed: () =>
-                                                imageModel.removeImage(image),
-                                            iconSize: 25,
-                                            padding: const EdgeInsets.all(5.0),
-                                            constraints: const BoxConstraints(),
-                                            icon: const Icon(
-                                                Icons.remove_circle_sharp,
-                                                color: Colors.black),
+                                        if (imageModel.isImageExists(image))
+                                          Positioned(
+                                            top: 0,
+                                            right: 0,
+                                            // child: Icon(
+                                            //   Icons.check_circle,
+                                            //   color: Colors.green,
+                                            //   size: 30,
+                                            // ),
+                                            child: Image.asset(
+                                              "assets/images/select.png",
+                                              // width: 30,
+                                              // height: 150,
+                                              // fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
                                       ],
-                                    )),
+                                    ),
+                                  ),
+                                ),
                               ],
                             )
                           : const Center(
@@ -289,15 +314,15 @@ class _GalleryState extends State<Gallery> {
                       label: Text(
                         "Click to Upload",
                         style: TextStyle(
-                          color: imageModel.images.isNotEmpty
+                          color: imageModel.finalImages.isNotEmpty
                               ? Colors.white
                               : const Color.fromARGB(255, 212, 211, 211),
                         ),
                       ),
                       backgroundColor: const Color.fromRGBO(54, 189, 151, 1),
-                      onPressed: imageModel.images.isNotEmpty
+                      onPressed: imageModel.finalImages.isNotEmpty
                           ? () {
-                              uploadImages(context, imageModel.images);
+                              uploadImages(context, imageModel.finalImages);
                             }
                           : null,
                     ),
