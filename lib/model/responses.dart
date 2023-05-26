@@ -114,6 +114,7 @@ class UserDetails {
   dynamic goalsMet;
   dynamic moneyRaised;
   dynamic collectibles;
+  dynamic schoolId;
 
   UserDetails(
       {required this.firstName,
@@ -125,6 +126,7 @@ class UserDetails {
       this.goalsMet,
       this.moneyRaised,
       this.collectibles,
+      this.schoolId,
       required this.email});
 
   factory UserDetails.fromJson(Map<String, dynamic> json) => UserDetails(
@@ -135,6 +137,7 @@ class UserDetails {
         profilePicture: json["profilePicture"] ?? '',
         schoolName: json["schoolName"],
         schoolDistrict: json["schoolDistrict"],
+        schoolId: json['schoolId'] ?? '',
         goalsMet: json["goalsMet"],
         moneyRaised: json["moneyRaised"],
         collectibles: json["collectibles"],
@@ -259,4 +262,48 @@ class Data {
         "id": id,
         "token": token,
       };
+}
+
+class SchoolData {
+    String message;
+    List<SingleInitiative> data;
+
+    SchoolData({
+        required this.message,
+        required this.data,
+    });
+
+    factory SchoolData.fromJson(Map<String, dynamic> json) => SchoolData(
+        message: json["message"],
+        data: List<SingleInitiative>.from(json["data"].map((x) => SingleInitiative.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "message": message,
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    };
+}
+
+class SingleInitiative {
+    String userFirstName;
+    String userLastName;
+    List<String> images;
+
+    SingleInitiative({
+        required this.userFirstName,
+        required this.userLastName,
+        required this.images,
+    });
+
+    factory SingleInitiative.fromJson(Map<String, dynamic> json) => SingleInitiative(
+        userFirstName: json["user_first_name"],
+        userLastName: json["user_last_name"],
+        images: List<String>.from(json["images"].map((x) => x)),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "user_first_name": userFirstName,
+        "user_last_name": userLastName,
+        "images": List<dynamic>.from(images.map((x) => x)),
+    };
 }

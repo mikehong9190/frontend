@@ -106,7 +106,7 @@ Widget SearchTextFieldWidget(
                 );
               },
               hideOnEmpty: true,
-              noItemsFoundBuilder: (context) => SizedBox(
+              noItemsFoundBuilder: (context) => const SizedBox(
                     height: 100,
                     child: Center(child: Text("")),
                   ),
@@ -159,9 +159,9 @@ Widget SchoolSearchFieldWidget(
                 );
               },
               hideOnEmpty: true,
-              noItemsFoundBuilder: (context) => SizedBox(
+              noItemsFoundBuilder: (context) => const SizedBox(
                     height: 100,
-                    child: Center(child: const Text("add new School")),
+                    child: Center(child: Text("add new School")),
                   ),
               onSuggestionSelected: (school) {
                 final schoolData = school!;

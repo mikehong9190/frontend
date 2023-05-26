@@ -14,8 +14,6 @@ import '../components/collectibles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class AccountWidget extends StatefulWidget {
-  // final String message;
-  // final String UserId;
   const AccountWidget({
     super.key,
     // required this.UserId,
@@ -63,7 +61,6 @@ class _AccountWidgetState extends State<AccountWidget> {
       final queryParameters = {"id": id};
       final response =
           await get(Uri.https(apiHost, '/v1/users', queryParameters));
-      print(response.body);
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
