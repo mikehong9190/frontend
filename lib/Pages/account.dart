@@ -249,13 +249,13 @@ class _AccountWidgetState extends State<AccountWidget> {
                                     content: collectibles[index].isNotEmpty
                                         ? Image.network(
                                             collectibles[index],
-                                            width: 300,
-                                            height: 300,
+                                            width: 500,
+                                            height: 500,
                                           )
                                         : Image.asset(
                                             "assets/images/defaultImage.png",
-                                            width: 300,
-                                            height: 300,
+                                            width: 500,
+                                            height: 500,
                                           ),
                                   );
                                 });
