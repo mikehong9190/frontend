@@ -138,7 +138,7 @@ class _InitiativeState extends State<Initiative> {
                           itemCount: initiatives.length,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: EdgeInsets.only(bottom: 20),
+                              padding: const EdgeInsets.only(bottom: 20),
                               child: InitiativesForInitiativeWidget(
                                   images: initiatives[index].images,
                                   target: initiatives[index].target,

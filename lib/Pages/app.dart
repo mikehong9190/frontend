@@ -24,6 +24,8 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   bool isLoading = false;
   int _currentIndex = 3;
   String schoolId = '';
+  String schoolName = '';
+  String schoolLocation = '';
   static final _TopBar = [
     "Home",
     "Initiative",
@@ -54,6 +56,8 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
         setState(() {
           schoolId = jsonData.schoolId;
+          schoolName = jsonData.schoolName;
+          schoolLocation = jsonData.schoolDistrict;
         });
       }
     } catch (error, stackTrace) {
@@ -94,7 +98,10 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   @override
   Widget build(context) {
     final _body = [
-      HomeWidget(schoolId: schoolId ?? ''),
+      HomeWidget(
+          schoolId: schoolId,
+          schoolName: schoolName,
+          schoolLocation: schoolLocation),
       const Initiative(),
       const FAQWidget(
         questions: [
