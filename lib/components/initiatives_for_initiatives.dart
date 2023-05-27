@@ -33,8 +33,8 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
     return Row(
       children: [
         CachedNetworkImage(
-            width: 100,
-            height: 100,
+            width: 120,
+            height: 120,
             fit: BoxFit.cover,
             imageUrl: images[0],
             progressIndicatorBuilder: (context, url, downloadProgress) =>
@@ -47,7 +47,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                       value: downloadProgress.progress),
                 )),
         Padding(
-          padding: EdgeInsets.only(left: 20),
+          padding: const EdgeInsets.only(left: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +58,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text("${grade} Grade"),
               ),
               // Row(
@@ -85,7 +85,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                                   RoundedRectangleBorder(
                                       borderRadius:
                                           BorderRadius.circular(30.0)))),
-                      child: Text("Add More Art")),
+                      child: const Text("Add More Art")),
                 ),
               ),
             ],

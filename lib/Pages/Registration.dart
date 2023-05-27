@@ -79,7 +79,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         return [];
       }
     } catch (error) {
-      print(error);
+      log(error);
       return [];
     }
   }
@@ -121,8 +121,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         return [];
       }
     } catch (error,stackTrace) {
-      print(stackTrace);
-      print(error);
+      log(stackTrace);
+      log(error);
       return [];
     }
   }
@@ -150,8 +150,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         });
       }
     } catch (err, stackTrace) {
-      print(StackTrace);
-      print(err);
+      log(StackTrace);
+      log(err);
     } finally {
       setState(() {
         isLoading = false;
@@ -199,7 +199,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       }
       otpController.text = '';
     } catch (error) {
-      print(error);
+      log(error);
     } finally {
       setState(() {
         isLoading = false;
@@ -223,7 +223,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   }
 
   googleLogin() async {
-    print("googleLogin method Called");
+    log("googleLogin method Called");
     final _googleSignIn = GoogleSignIn(
       scopes: [
         'email',
@@ -234,24 +234,24 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     try {
       final result = await _googleSignIn.signIn();
       final ggAuth = await result?.authentication;
-      print('ID TOKEN');
+      log('ID TOKEN');
       var token = ggAuth?.idToken;
-      // print(ggAuth?.idToken);
-      // print(ggAuth?.accessToken);
+      // log(ggAuth?.idToken);
+      // log(ggAuth?.accessToken);
       while (token!.isNotEmpty) {
         int initLength = (token.length >= 500 ? 500 : token.length);
-        print(token.substring(0, initLength));
+        log(token.substring(0, initLength));
         int endLength = token.length;
         token = token.substring(initLength, endLength);
       }
     } catch (error) {
-      print(error);
+      log(error);
     }
   }
 
   void registerUser() async {
     try {
-      print("Hello");
+      log("Hello");
       setState(() {
         isLoading = true;
       });
@@ -285,11 +285,11 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         //   "message": jsonData.message
         // });
       }
-      print(jsonDecode(response.body));
+      log(jsonDecode(response.body));
     } catch (error, stackTrace) {
-      print(stackTrace);
+      log(stackTrace);
 
-      print(error);
+      log(error);
     } finally {
       setState(() {
         schoolId = '';
@@ -367,7 +367,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       );
     });
     firstNameController.addListener(() {
-      print(isRegisterButtonEnabled);
+      log(isRegisterButtonEnabled);
       setState(() {
         isRegisterButtonEnabled = firstNameController.text.isNotEmpty &&
             lastNameController.text.isNotEmpty &&

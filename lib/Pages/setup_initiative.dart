@@ -44,11 +44,11 @@ class _InitiativeState extends State<SetupInitiative> {
           });
         }
       } else {
-        print('Failed to fetch data: ${response.statusCode}');
+        log('Failed to fetch data: ${response.statusCode}');
         isLoading = false;
       }
     } catch (error) {
-      print('Failed to fetch data: $error');
+      log('Failed to fetch data: $error');
     }
   }
 

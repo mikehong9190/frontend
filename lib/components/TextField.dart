@@ -151,7 +151,7 @@ Widget SchoolSearchFieldWidget(
               suggestionsCallback: getSchools,
               itemBuilder: (context, School? school) {
                 final schoolData = school!;
-                // print('DISTRICT ::::: ${district.district}');
+                // log('DISTRICT ::::: ${district.district}');
                 return ListTile(
                   title: Text(
                     schoolData.name,

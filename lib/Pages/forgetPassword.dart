@@ -102,7 +102,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       });
       final response = await post(Uri.https(apiHost, '/v1/validate-email'),
           body: jsonEncode(payload));
-      print (response.body);
+      log (response.body);
        final jsonData =
           EmailVerificationResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
@@ -119,7 +119,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       }
 
     } catch (error, stackTrace) {
-      print(stackTrace);
+      log(stackTrace);
     } finally {
       setState(() {
         sendingOtp = false;
@@ -138,7 +138,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
     try {
       final response = await post(Uri.https(apiHost, '/v1/reset-password'),
           body: jsonEncode(payload));
-      print (response.body);
+      log (response.body);
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/login");
         // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reseted"});
@@ -148,10 +148,10 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
           message = "Error while resetting password";
         });
       }
-      // print(response.statusCode);
-      print(response.body);
+      // log(response.statusCode);
+      log(response.body);
     } catch (error) {
-      print(error);
+      log(error);
     } finally {
       setState(() {
         isLoading = false;
@@ -187,7 +187,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
         });
       }
     } catch (error) {
-      print(error);
+      log(error);
     } finally {
       setState(() {
         isVerifyingOtp = false;

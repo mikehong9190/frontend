@@ -90,7 +90,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         });
       }
     } catch (error) {
-      print(error);
+      log(error);
     } finally {
       setState(() {
         isLoading = false;

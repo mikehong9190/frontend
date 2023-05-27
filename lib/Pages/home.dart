@@ -1,7 +1,7 @@
 // import 'dart:convert';
 
 import 'dart:convert';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../constants.dart';
@@ -58,7 +58,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       final queryParameters = {"schoolId": widget.schoolId};
       final response =
           await get(Uri.https(apiHost, '/v1/school', queryParameters));
-      print(response.body);
+      log(response.body);
       if (response.statusCode == 200) {
         final jsonData = SchoolData.fromJson(jsonDecode(response.body));
         setState(() {
@@ -72,7 +72,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         });
       }
     } catch (error, stackTrace) {
-      print(stackTrace);
+      log(stackTrace.toString());
     } finally {
       setState(() {
         isLoading = false;
