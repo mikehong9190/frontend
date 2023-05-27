@@ -105,10 +105,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.schoolName ?? "NAME",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 20),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        widget.schoolName ?? "NAME",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20),
+                      ),
                     ),
                     Row(children: [
                       SvgPicture.asset("assets/svg/location.svg"),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'dart:developer';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:frontend/Pages/RegistrationPages.dart';
 // import 'package:frontend/Pages/login.dart';
@@ -116,7 +117,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
       // log(response.statusCode);
       log(response.body);
     } catch (error) {
-      log(error);
+      log(error.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -157,7 +158,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
         });
       }
     } catch (error) {
-      log(error);
+      log(error.toString());
     } finally {
       setState(() {
         isVerifyingOtp = false;

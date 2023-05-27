@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'dart:developer';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:frontend/Pages/RegistrationPages.dart';
 // import 'package:frontend/Pages/login.dart';
@@ -119,7 +120,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       }
 
     } catch (error, stackTrace) {
-      log(stackTrace);
+      log(stackTrace.toString());
     } finally {
       setState(() {
         sendingOtp = false;
@@ -151,7 +152,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       // log(response.statusCode);
       log(response.body);
     } catch (error) {
-      log(error);
+      log(error.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -187,7 +188,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
         });
       }
     } catch (error) {
-      log(error);
+      log(error.toString());
     } finally {
       setState(() {
         isVerifyingOtp = false;

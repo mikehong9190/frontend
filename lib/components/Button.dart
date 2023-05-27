@@ -1,5 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/constants.dart';
@@ -85,8 +85,8 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
         Navigator.pushNamed(context, "/app");
       }
     } catch (error, stackTrace) {
-      log(stackTrace);
-      log(error);
+      log(stackTrace.toString());
+      log(error.toString());
     }
   }
 
@@ -189,8 +189,8 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
                     }
                   }
                 } catch (error, stackTrace) {
-                  log(stackTrace);
-                  log(error);
+                  log(stackTrace.toString());
+                  log(error.toString());
                 } finally {
                   setState(() {
                     isLoading = false;

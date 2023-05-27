@@ -2,7 +2,7 @@
 // import 'dart:html';
 // import 'dart:io';
 import 'dart:io';
-
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';

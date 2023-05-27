@@ -6,7 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../model/responses.dart';
-
+import 'dart:developer';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
@@ -79,7 +79,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         return [];
       }
     } catch (error) {
-      log(error);
+      log(error.toString());
       return [];
     }
   }
@@ -121,8 +121,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         return [];
       }
     } catch (error,stackTrace) {
-      log(stackTrace);
-      log(error);
+      log(stackTrace.toString());
+      log(error.toString());
       return [];
     }
   }
@@ -150,8 +150,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         });
       }
     } catch (err, stackTrace) {
-      log(StackTrace);
-      log(err);
+      log(stackTrace.toString());
+      log(err.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -199,7 +199,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       }
       otpController.text = '';
     } catch (error) {
-      log(error);
+      log(error.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -245,7 +245,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         token = token.substring(initLength, endLength);
       }
     } catch (error) {
-      log(error);
+      log(error.toString());
     }
   }
 
@@ -287,9 +287,9 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       }
       log(jsonDecode(response.body));
     } catch (error, stackTrace) {
-      log(stackTrace);
+      log(stackTrace.toString());
 
-      log(error);
+      log(error.toString());
     } finally {
       setState(() {
         schoolId = '';
@@ -367,7 +367,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       );
     });
     firstNameController.addListener(() {
-      log(isRegisterButtonEnabled);
+      log(isRegisterButtonEnabled.toString());
       setState(() {
         isRegisterButtonEnabled = firstNameController.text.isNotEmpty &&
             lastNameController.text.isNotEmpty &&
