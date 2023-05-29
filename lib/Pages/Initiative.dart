@@ -135,8 +135,18 @@ class _InitiativeState extends State<Initiative> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // const Spacer(),
+                    const Text(
+                      'Update Initiatives',
+                      style: TextStyle(
+                        fontSize: 23,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     Expanded(
                       child: ListView.builder(
                           itemCount: initiatives.length,
@@ -157,7 +167,7 @@ class _InitiativeState extends State<Initiative> {
                             );
                           }),
                     ),
-                    Image.asset("assets/images/swiirl-black.png"),
+                    // Image.asset("assets/images/swiirl-black.png"),
                     const SizedBox(
                       height: 30,
                     ),
