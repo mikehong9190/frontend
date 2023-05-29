@@ -119,7 +119,7 @@ class _InitiativeTargetState extends State<SetupInitiativeTarget> {
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                     ],
                     onChanged: (value) {
-                      // print(value);
+                      // log(value);
                       setState(() {
                         target = value;
                       });

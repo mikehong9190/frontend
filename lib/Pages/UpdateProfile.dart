@@ -1,7 +1,7 @@
 import 'dart:convert';
 // import 'dart:html';
 import 'dart:io';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/components/TextField.dart';
@@ -92,7 +92,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       //     arguments: {"emailId": email, "userId": userId});
       else {}
     } catch (error) {
-      print(error);
+      log(error.toString());
     } finally {
       setState(
         () {
@@ -117,14 +117,14 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile'),
           body: payload);
-      // print(response.body);
+      // log(response.body);
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/app");
         // Navigator.pushNamed(context, "/app",
         //     arguments: {"UserId": id, "message": "User updated Successfully"});
       }
     } catch (error) {
-      print(error);
+      log(error.toString());
     } finally {
       setState(() {
         isProfileUpdating = false;
@@ -152,8 +152,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         });
       }
     } catch (error, stackTrace) {
-      print(stackTrace);
-      print(error);
+      log(stackTrace.toString());
+      log(error.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -177,15 +177,14 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           filename: "jpg");
       request.files.add(multipartFile);
       final response = await request.send();
-      print(response.reasonPhrase);
       if (response.statusCode == 200) {
-        print("Working");
+        log("Working");
         // setState(() {
         //   _image = null;
         // });
       }
     } catch (error) {
-      print(error);
+      log(error.toString());
     } finally {
       setState(() {
         isUploadingImage = false;
@@ -283,7 +282,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                     TextFieldWidget(
                         "Last Name", lastNameController, false, null, true),
                     // TextFieldWidget("Bio", bioController, false, null, true),
-                  Column(
+                    Column(
                       children: [
                         const SizedBox(
                           height: 30,
@@ -384,9 +383,10 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                             context
                                                 .read<User>()
                                                 .clearUserDetails();
-                                            print(context
+                                            log(context
                                                 .read<User>()
-                                                .isManuallySignedIn);
+                                                .isManuallySignedIn
+                                                .toString());
                                             Navigator.pushNamed(context, '/');
                                           },
                                           child: const Text('Sign Out',

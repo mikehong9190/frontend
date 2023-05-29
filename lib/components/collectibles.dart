@@ -15,48 +15,50 @@ class CollectiblesWidget extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return 
-      Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: collectibleImage.isNotEmpty
-                  ? CachedNetworkImage(
-                      width: 150,
-                      height: 150,
-                      fit: BoxFit.cover,
-                      imageUrl: collectibleImage,
-                      progressIndicatorBuilder: (context, url,
-                              downloadProgress) =>
-                          CircularProgressIndicator(
-                              valueColor: const AlwaysStoppedAnimation<Color>(
-                                  Color.fromRGBO(54, 189, 151, 1)),
-                              value: downloadProgress.progress))
-                  // Image.network(
-                  //     collectibleImage,
-                  //     width: 150,
-                  //     height: 150,
-                  //     fit: BoxFit.cover,
-                  //   )
-                  : Image.asset(
-                      "assets/images/defaultImage.png",
-                      width: 150,
-                      height: 150,
-                      fit: BoxFit.cover,
-                    ),
-            ),
-            // Align(
-            //   alignment: Alignment.center,
-            //   child: Text(
-            //     "Collectibles Names",
-            //     style: TextStyle(fontWeight: FontWeight.w700,fontSize: 15),
-            //   ),
-            // ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: [Text("Price"), Text("50")],
-            // )
-          ],
-        );
+    return Column(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: collectibleImage.isNotEmpty
+              ? CachedNetworkImage(
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
+                  imageUrl: collectibleImage,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      SizedBox(
+                        width: 80,
+                        height: 80,
+                        child: CircularProgressIndicator(
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                                Color.fromRGBO(54, 189, 151, 1)),
+                            value: downloadProgress.progress),
+                      ))
+              // Image.network(
+              //     collectibleImage,
+              //     width: 150,
+              //     height: 150,
+              //     fit: BoxFit.cover,
+              //   )
+              : Image.asset(
+                  "assets/images/defaultImage.png",
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
+                ),
+        ),
+        // Align(
+        //   alignment: Alignment.center,
+        //   child: Text(
+        //     "Collectibles Names",
+        //     style: TextStyle(fontWeight: FontWeight.w700,fontSize: 15),
+        //   ),
+        // ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //   children: [Text("Price"), Text("50")],
+        // )
+      ],
+    );
   }
 }

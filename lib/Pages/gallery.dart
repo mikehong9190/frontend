@@ -2,7 +2,7 @@
 // import 'dart:html';
 // import 'dart:io';
 import 'dart:io';
-
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
@@ -88,19 +88,19 @@ class _GalleryState extends State<Gallery> {
         _showAlertDialog(context);
         imageModel.clearImages();
         imageModel.clearFinalImages();
-        print('Initiative uploaded successfully');
+        log('Initiative uploaded successfully');
         setState(() {
           isLoading = false;
         });
       } else {
-        // print(response.body);
-        print('Error uploading file: ${response.reasonPhrase}');
+        // log(response.body);
+        log('Error uploading file: ${response.reasonPhrase}');
         setState(() {
           isLoading = false;
         });
       }
     } catch (e) {
-      print("Error: ${e}");
+      log("Error: ${e}");
     }
   }
 
@@ -145,10 +145,10 @@ class _GalleryState extends State<Gallery> {
             imageModel.addImage(pickedfiles[i]);
           }
         } else {
-          print("no image selected");
+          log("no image selected");
         }
       } catch (e) {
-        print("error while picking file. $e");
+        log("error while picking file. $e");
       }
     }
 

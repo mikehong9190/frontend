@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,7 +40,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   void initState() {
     super.initState();
     // context.watch<User>().userId;
-    // print ('By Counter ::::: ${context.watch<User>().userId}');
+    // log ('By Counter ::::: ${context.watch<User>().userId}');
     // getUserDetails(widget.UserId);
   }
 
@@ -47,7 +48,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     String userId = context.watch<User>().userId;
-    print("From Inside $userId");
+    log("From Inside $userId");
     if (userId.isNotEmpty) getUserDetails(context.watch<User>().userId);
     // }
     // put your logic from initState here
@@ -76,7 +77,7 @@ class _AccountWidgetState extends State<AccountWidget> {
         });
       }
     } catch (error) {
-      print(error);
+      log(error.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -87,7 +88,7 @@ class _AccountWidgetState extends State<AccountWidget> {
   @override
   Widget build(context) {
     // String profilePicture = context.read<User>().profilePicture;
-    // print( 'IMAGE $profilePicture');
+    // log( 'IMAGE $profilePicture');
     return isLoading
         ? const Align(
             alignment: Alignment.center,
@@ -228,43 +229,46 @@ class _AccountWidgetState extends State<AccountWidget> {
                     ]),
               )),
               Expanded(
-                  child: GridView.builder(
-                      itemCount: collectibles.length,
-                      scrollDirection: Axis.vertical,
-                      // shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                              // crossAxisSpacing: 10,
-                              // mainAxisSpacing: 10,
-                              maxCrossAxisExtent: 220),
-                      itemBuilder: (_, index) {
-                        return Center(
-                            child: GestureDetector(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text("Collectibles"),
-                                    content: collectibles[index].isNotEmpty
-                                        ? Image.network(
-                                            collectibles[index],
-                                            width: 300,
-                                            height: 300,
-                                          )
-                                        : Image.asset(
-                                            "assets/images/defaultImage.png",
-                                            width: 300,
-                                            height: 300,
-                                          ),
-                                  );
-                                });
-                          },
-                          child: CollectiblesWidget(
-                            collectibleImage: collectibles[index],
-                          ),
-                        ));
-                      }))
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: GridView.builder(
+                    itemCount: collectibles.length,
+                    scrollDirection: Axis.vertical,
+                    // shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                            // crossAxisSpacing: 10,
+                            // mainAxisSpacing: 10,
+                            maxCrossAxisExtent: 220),
+                    itemBuilder: (_, index) {
+                      return Center(
+                          child: GestureDetector(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text("Collectibles"),
+                                  content: collectibles[index].isNotEmpty
+                                      ? Image.network(
+                                          collectibles[index],
+                                          width: 500,
+                                          height: 500,
+                                        )
+                                      : Image.asset(
+                                          "assets/images/defaultImage.png",
+                                          width: 500,
+                                          height: 500,
+                                        ),
+                                );
+                              });
+                        },
+                        child: CollectiblesWidget(
+                          collectibleImage: collectibles[index],
+                        ),
+                      ));
+                    }),
+              ))
             ],
           );
     ;

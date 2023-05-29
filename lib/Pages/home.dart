@@ -1,12 +1,13 @@
 // import 'dart:convert';
 
 import 'dart:convert';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../constants.dart';
 import '../model/responses.dart';
 import '../components/single_initiative.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 // import 'package:flutter/services.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
@@ -24,7 +25,12 @@ import '../components/single_initiative.dart';
 class HomeWidget extends StatefulWidget {
   String schoolId;
   dynamic schoolName;
-  HomeWidget({super.key, required this.schoolId, this.schoolName});
+  dynamic schoolLocation;
+  HomeWidget(
+      {super.key,
+      required this.schoolId,
+      this.schoolName,
+      this.schoolLocation});
 
   @override
   State<HomeWidget> createState() => _HomeWidgetState();
@@ -52,20 +58,21 @@ class _HomeWidgetState extends State<HomeWidget> {
       final queryParameters = {"schoolId": widget.schoolId};
       final response =
           await get(Uri.https(apiHost, '/v1/school', queryParameters));
-      print(response.body);
+      log(response.body);
       if (response.statusCode == 200) {
         final jsonData = SchoolData.fromJson(jsonDecode(response.body));
         setState(() {
-          initiatives = [
-            ...jsonData.data,
-            ...jsonData.data,
-            ...jsonData.data,
-            ...jsonData.data
-          ];
+          initiatives = jsonData.data;
+          // initiatives = [
+          //   ...jsonData.data,
+          //   ...jsonData.data,
+          //   ...jsonData.data,
+          //   ...jsonData.data
+          // ];
         });
       }
     } catch (error, stackTrace) {
-      print(stackTrace);
+      log(stackTrace.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -96,14 +103,24 @@ class _HomeWidgetState extends State<HomeWidget> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      schoolName,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 20),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        widget.schoolName ?? "NAME",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20),
+                      ),
                     ),
-                    const Text("About the corporate sponsor",
-                        style: TextStyle(fontSize: 14))
+                    Row(children: [
+                      SvgPicture.asset("assets/svg/location.svg"),
+                      Text(
+                        widget.schoolLocation ?? 'LOCATION',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 14),
+                      )
+                    ])
                   ],
                 ),
               ),
@@ -124,26 +141,5 @@ class _HomeWidgetState extends State<HomeWidget> {
               )))
             ],
           );
-    SizedBox(
-        child: Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: initiatives.length,
-        itemBuilder: (context, index) {
-          return SingleInitiativeWidget(
-              images: initiatives[index].images,
-              firstName: initiatives[index].userFirstName,
-              lastName: initiatives[index].userLastName);
-        },
-      ),
-    )
-        // Expanded(
-        // child: SingleInitiativeWidget(
-        //         images: initiatives[0].images,
-        //         firstName: "Aadesh",
-        //         lastName: "Kamble")
-        //         )
-        );
   }
 }

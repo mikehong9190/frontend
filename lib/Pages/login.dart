@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:developer';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -90,7 +91,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         });
       }
     } catch (error) {
-      print(error);
+      log(error.toString());
     } finally {
       setState(() {
         isLoading = false;

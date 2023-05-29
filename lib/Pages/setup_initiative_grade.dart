@@ -131,7 +131,7 @@ class _InitiativeGradeState extends State<SetupInitiativeGrade> {
                   ),
                   onPressed: grade.isNotEmpty && noOfStudents != 0
                       ? () {
-                          // print('$id $name $target $grade $noOfStudents');
+                          // log('$id $name $target $grade $noOfStudents');
                           Navigator.push(
                             context,
                             MaterialPageRoute(

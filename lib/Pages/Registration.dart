@@ -6,7 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../model/responses.dart';
-
+import 'dart:developer';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
@@ -79,7 +79,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         return [];
       }
     } catch (error) {
-      print(error);
+      log(error.toString());
       return [];
     }
   }
@@ -121,8 +121,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         return [];
       }
     } catch (error,stackTrace) {
-      print(stackTrace);
-      print(error);
+      log(stackTrace.toString());
+      log(error.toString());
       return [];
     }
   }
@@ -150,8 +150,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         });
       }
     } catch (err, stackTrace) {
-      print(StackTrace);
-      print(err);
+      log(stackTrace.toString());
+      log(err.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -199,7 +199,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       }
       otpController.text = '';
     } catch (error) {
-      print(error);
+      log(error.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -223,7 +223,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   }
 
   googleLogin() async {
-    print("googleLogin method Called");
+    log("googleLogin method Called");
     final _googleSignIn = GoogleSignIn(
       scopes: [
         'email',
@@ -234,24 +234,24 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     try {
       final result = await _googleSignIn.signIn();
       final ggAuth = await result?.authentication;
-      print('ID TOKEN');
+      log('ID TOKEN');
       var token = ggAuth?.idToken;
-      // print(ggAuth?.idToken);
-      // print(ggAuth?.accessToken);
+      // log(ggAuth?.idToken);
+      // log(ggAuth?.accessToken);
       while (token!.isNotEmpty) {
         int initLength = (token.length >= 500 ? 500 : token.length);
-        print(token.substring(0, initLength));
+        log(token.substring(0, initLength));
         int endLength = token.length;
         token = token.substring(initLength, endLength);
       }
     } catch (error) {
-      print(error);
+      log(error.toString());
     }
   }
 
   void registerUser() async {
     try {
-      print("Hello");
+      log("Hello");
       setState(() {
         isLoading = true;
       });
@@ -285,11 +285,11 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         //   "message": jsonData.message
         // });
       }
-      print(jsonDecode(response.body));
+      log(jsonDecode(response.body));
     } catch (error, stackTrace) {
-      print(stackTrace);
+      log(stackTrace.toString());
 
-      print(error);
+      log(error.toString());
     } finally {
       setState(() {
         schoolId = '';
@@ -367,7 +367,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       );
     });
     firstNameController.addListener(() {
-      print(isRegisterButtonEnabled);
+      log(isRegisterButtonEnabled.toString());
       setState(() {
         isRegisterButtonEnabled = firstNameController.text.isNotEmpty &&
             lastNameController.text.isNotEmpty &&

@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,6 +24,8 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   bool isLoading = false;
   int _currentIndex = 3;
   String schoolId = '';
+  String schoolName = '';
+  String schoolLocation = '';
   static final _TopBar = [
     "Home",
     "Initiative",
@@ -34,7 +36,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     String userId = context.watch<User>().userId;
-    print("From Inside $userId");
+    log("From Inside $userId");
     if (userId.isNotEmpty) getUserDetails(context.watch<User>().userId);
     // }
     // put your logic from initState here
@@ -48,17 +50,19 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       final queryParameters = {"id": id};
       final response =
           await get(Uri.https(apiHost, '/v1/users', queryParameters));
-      print(response.body);
+      log(response.body);
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
         setState(() {
           schoolId = jsonData.schoolId;
+          schoolName = jsonData.schoolName;
+          schoolLocation = jsonData.schoolDistrict;
         });
       }
     } catch (error, stackTrace) {
-      print(stackTrace);
-      print(error);
+      log(stackTrace.toString());
+      log(error.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -94,7 +98,10 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   @override
   Widget build(context) {
     final _body = [
-      HomeWidget(schoolId: schoolId ?? ''),
+      HomeWidget(
+          schoolId: schoolId,
+          schoolName: schoolName,
+          schoolLocation: schoolLocation),
       const Initiative(),
       const FAQWidget(
         questions: [
@@ -176,7 +183,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       onWillPop: () async {
         String currentRoute = ModalRoute.of(context)!.settings.name!;
         if (currentRoute == '/app') SystemNavigator.pop();
-        print("BackButton");
+        log("BackButton");
         return true;
       },
     );
