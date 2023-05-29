@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:frontend/Pages/setup_initiative.dart';
 import 'package:provider/provider.dart';
@@ -78,7 +78,7 @@ class _InitiativeState extends State<Initiative> {
   void initState() {
     super.initState();
     // context.watch<User>().userId;
-    // print ('By Counter ::::: ${context.watch<User>().userId}');
+    // log ('By Counter ::::: ${context.watch<User>().userId}');
     // getUserDetails(widget.UserId);
   }
 
@@ -86,7 +86,7 @@ class _InitiativeState extends State<Initiative> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     String userId = context.read<User>().userId;
-    print("From Inside $userId");
+    log("From Inside $userId");
     if (userId.isNotEmpty) getInitiatives(userId);
     // }
     // put your logic from initState here
@@ -106,11 +106,11 @@ class _InitiativeState extends State<Initiative> {
         setState(() {
           initiatives = jsonData.data;
         });
-        print(jsonData.data);
+        log(jsonData.data.toString());
       }
-      print(response.body);
+      log(response.body);
     } catch (error, stackTrace) {
-      print(stackTrace);
+      log(stackTrace.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -138,7 +138,7 @@ class _InitiativeState extends State<Initiative> {
                           itemCount: initiatives.length,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: EdgeInsets.only(bottom: 20),
+                              padding: const EdgeInsets.only(bottom: 20),
                               child: InitiativesForInitiativeWidget(
                                   images: initiatives[index].images,
                                   target: initiatives[index].target,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'dart:developer';
 class WelcomeWidget extends StatelessWidget {
   const WelcomeWidget({super.key});
 
@@ -31,7 +31,7 @@ class WelcomeWidget extends StatelessWidget {
                       width: 120,
                       child: IconButton(
                           onPressed: () {
-                            print("Working");
+                            log("Working");
                             Navigator.pushNamed(context, "/getStarted");
                           },
                           icon: SizedBox(

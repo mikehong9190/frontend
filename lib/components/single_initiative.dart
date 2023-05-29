@@ -38,8 +38,10 @@ class SingleInitiativeWidget extends StatelessWidget {
           ],
         ),
         Align(
-          child: Text("${images.length} works", style: TextStyle(fontSize: 12)),
           alignment: Alignment.centerLeft,
+          child: Text(
+              "${images.length} ${images.length > 1 ? 'works' : 'work'}",
+              style: const TextStyle(fontSize: 12)),
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,

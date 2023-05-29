@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:developer';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:textfield_search/textfield_search.dart';
@@ -208,8 +209,8 @@ Widget SecondPageWidget(
                 onPressed: isPasswordValid && arePasswordsEqual
                     ? () {
                         onNext();
-                        // print(controller1.text);
-                        // print(controller2.text);
+                        // log(controller1.text);
+                        // log(controller2.text);
                       }
                     : null,
                 child: const Text("Next"),
@@ -371,7 +372,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
         return [];
       }
     } catch (error) {
-      print(error);
+      log(error.toString());
       return [];
     }
   }
@@ -387,7 +388,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
         return [];
       }
     } catch (error) {
-      print(error);
+      log(error.toString());
       return [];
     }
   }
@@ -399,7 +400,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
   }
 
   void clickOnSchool(id, name, controller) {
-    print(id);
+    log(id);
     setState(() {
       controller.text = name;
       schoolId = id;
@@ -408,7 +409,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
 
   void createUser() async {
     try {
-      // print("Hello");
+      // log("Hello");
       setState(() {
         isLoading = true;
       });
@@ -423,18 +424,18 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
       } else {
         payload["schoolId"] = schoolId;
       }
-      // print(payload);
+      // log(payload);
       final response = await put(
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-school-details'),
           body: jsonEncode(payload));
-      // print(response.body);
+      // log(response.body);
       if (response.statusCode == 200) Navigator.pushNamed(context, '/app');
       // Navigator.pushNamed(context, '/app',
       //     arguments: {"UserId": userId, "message": "Google Sign in"});
-      // print(jsonDecode(response.body));
+      // log(jsonDecode(response.body));
     } catch (error) {
-      print(error);
+      log(error.toString());
     } finally {
       setState(() {
         schoolId = '';

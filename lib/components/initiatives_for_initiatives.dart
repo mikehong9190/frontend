@@ -33,8 +33,8 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
     return Row(
       children: [
         CachedNetworkImage(
-            width: 100,
-            height: 100,
+            width: 120,
+            height: 120,
             fit: BoxFit.cover,
             imageUrl: images[0],
             progressIndicatorBuilder: (context, url, downloadProgress) =>
@@ -47,9 +47,9 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                       value: downloadProgress.progress),
                 )),
         Padding(
-          padding: EdgeInsets.only(left: 20),
+          padding: const EdgeInsets.only(left: 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -57,30 +57,36 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
               ),
-              Text("${grade} Grade"),
-              Row(
-                children: [
-                  const Text("Amount Raised"),
-                  Padding(
-                      padding: const EdgeInsets.only(left: 50),
-                      child: Text(
-                        target.toString(),
-                        style: const TextStyle(fontWeight: FontWeight.w700),
-                      )),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Text("${grade} Grade"),
               ),
-              Center(
-                child: ElevatedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.black),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(30.0)))),
-                    child: Text("Add More Art")),
+              // Row(
+              //   children: [
+              //     const Text("Amount Raised"),
+              //     Padding(
+              //         padding: const EdgeInsets.only(left: 50),
+              //         child: Text(
+              //           target.toString(),
+              //           style: const TextStyle(fontWeight: FontWeight.w700),
+              //         )),
+              //   ],
+              // ),
+              ButtonTheme(
+                child: SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.black),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)))),
+                      child: const Text("Add More Art")),
+                ),
               ),
             ],
           ),

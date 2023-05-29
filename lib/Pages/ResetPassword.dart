@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'dart:developer';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:frontend/Pages/RegistrationPages.dart';
 // import 'package:frontend/Pages/login.dart';
@@ -53,7 +54,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
       );
     });
     newPasswordController.addListener(() {
-      // print("newPasswordController.text");
+      // log("newPasswordController.text");
       setState(
         () {
           if (newPasswordController.text.length >= 8 &&
@@ -113,10 +114,10 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
         Navigator.pushNamed(context, "/app");
         // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reseted"});
       }
-      // print(response.statusCode);
-      print(response.body);
+      // log(response.statusCode);
+      log(response.body);
     } catch (error) {
-      print(error);
+      log(error.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -145,7 +146,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
         "otp": otp
       };
 
-      // print(payload);
+      // log(payload);
       final response = await post(
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/verify-otp'),
@@ -157,7 +158,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
         });
       }
     } catch (error) {
-      print(error);
+      log(error.toString());
     } finally {
       setState(() {
         isVerifyingOtp = false;
