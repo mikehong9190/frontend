@@ -1,9 +1,11 @@
 // import 'dart:convert';
 // import 'dart:html';
 // import 'dart:io';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:frontend/Pages/camera.dart';
-import 'package:http/http.dart' as http;
 
 import '../store.dart';
 
@@ -21,6 +22,7 @@ class Gallery extends StatefulWidget {
   final dynamic target;
   final dynamic grade;
   final dynamic noOfStudents;
+
   const Gallery(
       {super.key,
       required this.initiativeTypeId,
@@ -39,9 +41,30 @@ class _GalleryState extends State<Gallery> {
   late dynamic target = widget.target;
   late dynamic grade = widget.grade;
   late dynamic noOfStudents = widget.noOfStudents;
+  dynamic initiativeId = '';
+  List<dynamic> imageKeys = [];
+
   bool isLoading = false;
 
-  void _showAlertDialog(BuildContext context) {
+  String getContentType(XFile file) {
+    final contentTypeMap = {
+      'jpg': 'image/jpeg',
+      'jpeg': 'image/jpeg',
+      'png': 'image/png',
+      'gif': 'image/gif',
+      'webp': 'image/webp',
+    };
+
+    final fileExtension = file.path.split('.').last.toLowerCase();
+    return contentTypeMap[fileExtension] ?? 'application/octet-stream';
+  }
+
+  String getImageExtension(XFile file) {
+    final fileExtension = file.path.split('.').last.toLowerCase();
+    return fileExtension;
+  }
+
+  void _showSuccessDialog(BuildContext context) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -57,44 +80,137 @@ class _GalleryState extends State<Gallery> {
     );
   }
 
-  void uploadImages(context, List<XFile> images) async {
-    if (images.isEmpty) return;
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text("Failure"),
+        content: const Text("Unable to upload, Please try again"),
+        actions: [
+          CupertinoDialogAction(
+              child: const Text("Okay"),
+              onPressed: () => {Navigator.of(context).pop()}),
+        ],
+      ),
+    );
+  }
+
+  //upload images to s3 bucket using pre-signed urls
+  void uploadImages(context, List<dynamic> urls, List<XFile> images) async {
     try {
-      setState(() {
-        isLoading = true;
-      });
+      for (var i = 0; i < urls.length; i++) {
+        print('url-----');
+        print(urls[i]);
+        String contentType = getContentType(images[i]);
+        Uri uri = Uri.parse(urls[i]);
+        var response = await put(
+          uri,
+          body: await images[i].readAsBytes(),
+          headers: {"Content-Type": contentType},
+        );
+        if (response.statusCode != 200) {
+          print(response.reasonPhrase);
+          throw Exception('Failed to upload image at index $i');
+        }
+      }
+      print("Step 2 --------- done");
+      print("Images uploaded successfully");
+      createInitiative(context);
+    } catch (error) {
+      print('Error while uploading images: $error');
+    }
+  }
+
+  //Get pre signed urls for all images from backend
+  void getPresignedUrls(context, List<XFile> images) async {
+    setState(() {
+      isLoading = true;
+    });
+    var imageModel = Provider.of<User>(context, listen: false);
+    var userId = imageModel.userId;
+    List<dynamic> imageContentTypes = [];
+
+    for (final image in images) {
+      String contentType = getContentType(image);
+      imageContentTypes.add(contentType);
+    }
+    final payload = {
+      "contentTypes": imageContentTypes,
+      "userId": userId,
+      "initiative": name
+    };
+    try {
+      final response = await post(
+          Uri.parse(
+              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/get-presigned-urls'),
+          body: jsonEncode(payload));
+
+      if (response.statusCode == 200) {
+        final res = jsonDecode(response.body);
+        initiativeId = res['id'];
+        imageKeys = res['keys'];
+        print("Step 1---------done");
+        uploadImages(context, res['urls'], images);
+      } else {
+        print("inside error");
+        print(response);
+      }
+    } catch (error) {
+      print("ERRROR");
+      print(error);
+    }
+  }
+
+  //create initiative once all images are uploaded using presigned urls
+  void createInitiative(context) async {
+    try {
       var user = Provider.of<User>(context, listen: false);
       var imageModel = Provider.of<User>(context, listen: false);
 
-      final url = Uri.parse(
-          "https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/create-initiative");
-      final request = http.MultipartRequest('POST', url);
-      for (final image in images) {
-        final multipartFile = http.MultipartFile.fromBytes(
-            'files', await image.readAsBytes(),
-            filename: image.name);
-        request.files.add(multipartFile);
-      }
-      request.fields['userId'] = user.userId;
-      request.fields['initiativeTypeId'] = id;
-      request.fields['name'] = name;
-      request.fields['target'] = '$target';
-      request.fields['grade'] = grade;
-      request.fields['numberOfStudents'] = '$noOfStudents';
+      final payload = {
+        "userId": user.userId,
+        "initiativeTypeId": id,
+        "initiativeId": initiativeId,
+        "name": name,
+        "target": '$target',
+        "grade": grade,
+        "numberOfStudents": '$noOfStudents',
+        "imageKeys": imageKeys
+      };
+      final response = await post(
+          Uri.parse(
+              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/create-initiative'),
+          body: jsonEncode(payload));
 
-      final response = await request.send();
+      // for (final image in images) {
+      //   final multipartFile = http.MultipartFile.fromBytes(
+      //       'files', await image.readAsBytes(),
+      //       filename: image.name);
+      //   request.files.add(multipartFile);
+      // }
+      // request.fields['userId'] = user.userId;
+      // request.fields['initiativeTypeId'] = id;
+      // request.fields['initiativeId'] = initiativeId;
+      // request.fields['name'] = name;
+      // request.fields['target'] = '$target';
+      // request.fields['grade'] = grade;
+      // request.fields['numberOfStudents'] = '$noOfStudents';
+      // request.fields['imageKeys'] = imageKeys;
+      // final response = await request.send();
 
       if (response.statusCode == 200) {
-        _showAlertDialog(context);
+        print("Step 3---------done");
+        _showSuccessDialog(context);
         imageModel.clearImages();
         imageModel.clearFinalImages();
-        print('Initiative uploaded successfully');
+        print('Initiative created successfully');
         setState(() {
           isLoading = false;
         });
       } else {
-        // print(response.body);
-        print('Error uploading file: ${response.reasonPhrase}');
+        _showAlertDialog(context);
+
         setState(() {
           isLoading = false;
         });
@@ -127,6 +243,8 @@ class _GalleryState extends State<Gallery> {
                 child: const Text('Yes'),
                 onPressed: () {
                   imageModel.clearImages();
+                  imageModel.clearFinalImages();
+
                   Navigator.of(context).pop(true);
                 },
               ),
@@ -322,7 +440,7 @@ class _GalleryState extends State<Gallery> {
                       backgroundColor: const Color.fromRGBO(54, 189, 151, 1),
                       onPressed: imageModel.finalImages.isNotEmpty
                           ? () {
-                              uploadImages(context, imageModel.finalImages);
+                              getPresignedUrls(context, imageModel.finalImages);
                             }
                           : null,
                     ),
