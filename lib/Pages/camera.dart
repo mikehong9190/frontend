@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:camera/camera.dart';
+import 'package:frontend/Pages/preview_image.dart';
 import 'package:provider/provider.dart';
 
 import '../store.dart';
@@ -84,75 +87,85 @@ class _CameraState extends State<ICamera> {
     var imageModel = Provider.of<User>(context);
 
     void goToPreview(XFile picture) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Preview"),
-            content: SizedBox(
-              height: 610,
-              child: Column(
-                children: [
-                  Image.file(
-                    File(picture.path),
-                    fit: BoxFit.cover,
-                    // height: MediaQuery.of(context).size.width * 0.9,
-                    width: MediaQuery.of(context).size.width * 0.7,
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ButtonTheme(
-                        child: SizedBox(
-                          height: 40,
-                          width: MediaQuery.of(context).size.width * 0.30,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromRGBO(0, 0, 0, 1)),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)))),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text("Retake"),
-                          ),
-                        ),
-                      ),
-                      ButtonTheme(
-                        child: SizedBox(
-                          height: 40,
-                          width: MediaQuery.of(context).size.width * 0.30,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromRGBO(54, 189, 151, 1)),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)))),
-                            onPressed: () {
-                              imageModel.addImage(picture);
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Confirm"),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          );
-        },
+      // await _cameraController.stopImageStream();
+      // _cameraController.stopImageStream();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ImagePreview(picture),
+        ),
       );
     }
+    // void goToPreview(XFile picture) {
+    //   showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         title: const Text("Preview"),
+    //         content: SizedBox(
+    //           height: 610,
+    //           child: Column(
+    //             children: [
+    //               Image.file(
+    //                 File(picture.path),
+    //                 fit: BoxFit.cover,
+    //                 // height: MediaQuery.of(context).size.width * 0.9,
+    //                 width: MediaQuery.of(context).size.width * 0.7,
+    //               ),
+    //               const SizedBox(height: 20),
+    //               Row(
+    //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                 children: [
+    //                   ButtonTheme(
+    //                     child: SizedBox(
+    //                       height: 40,
+    //                       width: MediaQuery.of(context).size.width * 0.30,
+    //                       child: ElevatedButton(
+    //                         style: ButtonStyle(
+    //                             backgroundColor: MaterialStateProperty.all(
+    //                                 const Color.fromRGBO(0, 0, 0, 1)),
+    //                             shape: MaterialStateProperty.all<
+    //                                     RoundedRectangleBorder>(
+    //                                 RoundedRectangleBorder(
+    //                                     borderRadius:
+    //                                         BorderRadius.circular(5.0)))),
+    //                         onPressed: () {
+    //                           Navigator.of(context).pop();
+    //                         },
+    //                         child: const Text("Retake"),
+    //                       ),
+    //                     ),
+    //                   ),
+    //                   ButtonTheme(
+    //                     child: SizedBox(
+    //                       height: 40,
+    //                       width: MediaQuery.of(context).size.width * 0.30,
+    //                       child: ElevatedButton(
+    //                         style: ButtonStyle(
+    //                             backgroundColor: MaterialStateProperty.all(
+    //                                 const Color.fromRGBO(54, 189, 151, 1)),
+    //                             shape: MaterialStateProperty.all<
+    //                                     RoundedRectangleBorder>(
+    //                                 RoundedRectangleBorder(
+    //                                     borderRadius:
+    //                                         BorderRadius.circular(5.0)))),
+    //                         onPressed: () {
+    //                           imageModel.addImage(picture);
+    //                           Navigator.pop(context);
+    //                         },
+    //                         child: const Text("Confirm"),
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ],
+    //               )
+    //             ],
+    //           ),
+    //         ),
+    //       );
+    //     },
+    //   );
+    // }
 
     Future takePicture() async {
       if (!_cameraController.value.isInitialized) {

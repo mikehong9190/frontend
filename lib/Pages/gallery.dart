@@ -1,6 +1,5 @@
-// import 'dart:convert';
-// import 'dart:html';
-// import 'dart:io';
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
@@ -22,6 +21,8 @@ class Gallery extends StatefulWidget {
   final dynamic target;
   final dynamic grade;
   final dynamic noOfStudents;
+  final String? updateInitiativeId;
+  final bool? isUpdate;
 
   const Gallery(
       {super.key,
@@ -29,7 +30,9 @@ class Gallery extends StatefulWidget {
       required this.initiativeType,
       required this.target,
       required this.grade,
-      required this.noOfStudents});
+      required this.noOfStudents,
+      this.updateInitiativeId,
+      this.isUpdate = false});
 
   @override
   State<Gallery> createState() => _GalleryState();
@@ -37,10 +40,12 @@ class Gallery extends StatefulWidget {
 
 class _GalleryState extends State<Gallery> {
   late dynamic id = widget.initiativeTypeId;
+  late dynamic updateInitiativeId = widget.updateInitiativeId;
   late dynamic name = widget.initiativeType;
   late dynamic target = widget.target;
   late dynamic grade = widget.grade;
   late dynamic noOfStudents = widget.noOfStudents;
+  late dynamic isUpdate = widget.isUpdate;
   dynamic initiativeId = '';
   List<dynamic> imageKeys = [];
 
@@ -100,8 +105,6 @@ class _GalleryState extends State<Gallery> {
   void uploadImages(context, List<dynamic> urls, List<XFile> images) async {
     try {
       for (var i = 0; i < urls.length; i++) {
-        print('url-----');
-        print(urls[i]);
         String contentType = getContentType(images[i]);
         Uri uri = Uri.parse(urls[i]);
         var response = await put(
@@ -114,11 +117,11 @@ class _GalleryState extends State<Gallery> {
           throw Exception('Failed to upload image at index $i');
         }
       }
-      print("Step 2 --------- done");
-      print("Images uploaded successfully");
+      log("Step 2 --------- done");
+      log("Images uploaded successfully");
       createInitiative(context);
     } catch (error) {
-      print('Error while uploading images: $error');
+      log('Error while uploading images: $error');
     }
   }
 
@@ -148,16 +151,14 @@ class _GalleryState extends State<Gallery> {
 
       if (response.statusCode == 200) {
         final res = jsonDecode(response.body);
-        initiativeId = res['id'];
+        initiativeId = updateInitiativeId ?? res['id'];
         imageKeys = res['keys'];
-        print("Step 1---------done");
+        log("Step 1---------done");
         uploadImages(context, res['urls'], images);
       } else {
-        print("inside error");
         print(response);
       }
     } catch (error) {
-      print("ERRROR");
       print(error);
     }
   }
@@ -178,10 +179,20 @@ class _GalleryState extends State<Gallery> {
         "numberOfStudents": '$noOfStudents',
         "imageKeys": imageKeys
       };
-      final response = await post(
-          Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/create-initiative'),
-          body: jsonEncode(payload));
+      final updatePayload = {
+        "userId": user.userId,
+        "initiativeId": initiativeId,
+        "imageKeys": imageKeys
+      };
+      String url = isUpdate
+          ? 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-initiative'
+          : 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/create-initiative';
+      final response;
+      if (isUpdate) {
+        response = await put(Uri.parse(url), body: jsonEncode(updatePayload));
+      } else {
+        response = await post(Uri.parse(url), body: jsonEncode(payload));
+      }
 
       // for (final image in images) {
       //   final multipartFile = http.MultipartFile.fromBytes(
@@ -200,7 +211,7 @@ class _GalleryState extends State<Gallery> {
       // final response = await request.send();
 
       if (response.statusCode == 200) {
-        print("Step 3---------done");
+        log("Step 3---------done");
         _showSuccessDialog(context);
         imageModel.clearImages();
         imageModel.clearFinalImages();
@@ -210,13 +221,17 @@ class _GalleryState extends State<Gallery> {
         });
       } else {
         _showAlertDialog(context);
-        log('Error uploading file: ${response.reasonPhrase}');
+        if (isUpdate) {
+          log('Error updating initiative: ${response.reasonPhrase}');
+        } else {
+          log('Error creating initiative: ${response.reasonPhrase}');
+        }
         setState(() {
           isLoading = false;
         });
       }
     } catch (e) {
-      log("Error: ${e}");
+      log("Error: $e");
     }
   }
 
@@ -301,11 +316,19 @@ class _GalleryState extends State<Gallery> {
               Positioned(
                 top: 0,
                 left: 0,
-                child: Row(
-                  children: const [
-                    Text("New Collection",
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.w800))
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "$name",
+                      style: const TextStyle(
+                          fontSize: 22, fontWeight: FontWeight.w800),
+                    ),
+                    Text(
+                      "$grade",
+                      style: const TextStyle(
+                          fontSize: 17, fontWeight: FontWeight.w400),
+                    )
                   ],
                 ),
               ),
@@ -413,10 +436,12 @@ class _GalleryState extends State<Gallery> {
                                 ),
                               ],
                             )
-                          : const Center(
+                          : Center(
                               child: Text(
-                                "No artworks added yet",
-                                style: TextStyle(fontSize: 16),
+                                isUpdate
+                                    ? "Add more artworks"
+                                    : "No artworks added yet",
+                                style: const TextStyle(fontSize: 16),
                               ),
                             ),
                     ),
