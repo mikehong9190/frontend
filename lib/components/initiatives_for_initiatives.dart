@@ -1,5 +1,6 @@
 // import 'dart:convert';
 
+import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:frontend/Pages/Initiative.dart';
@@ -10,10 +11,12 @@
 // import '../store.dart';
 // import '../constants.dart';
 // import 'collectibles.dart';
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:frontend/Pages/gallery.dart';
 
 class InitiativesForInitiativeWidget extends StatelessWidget {
+  String id;
+  String initiativeTypeId;
   int target;
   int numberOfStudents;
   String grade;
@@ -22,6 +25,8 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
 
   InitiativesForInitiativeWidget(
       {super.key,
+      required this.initiativeTypeId,
+      required this.id,
       required this.images,
       required this.target,
       required this.numberOfStudents,
@@ -59,7 +64,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text("${grade} Grade"),
+                child: Text("$grade Grade"),
               ),
               // Row(
               //   children: [
@@ -76,7 +81,22 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                 child: SizedBox(
                   width: 200,
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // log('$id $name $target $grade $noOfStudents');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => Gallery(
+                                isUpdate: true,
+                                updateInitiativeId: id,
+                                initiativeTypeId: initiativeTypeId,
+                                initiativeType: name,
+                                target: target,
+                                grade: grade,
+                                noOfStudents: numberOfStudents),
+                          ),
+                        );
+                      },
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.black),

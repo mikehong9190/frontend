@@ -31,6 +31,7 @@ class Welcome {
 class Datum {
   String id;
   int target;
+  String initiativeTypeId;
   int numberOfStudents;
   String grade;
   String name;
@@ -40,6 +41,7 @@ class Datum {
     required this.id,
     required this.target,
     required this.numberOfStudents,
+    required this.initiativeTypeId,
     required this.grade,
     required this.name,
     required this.images,
@@ -51,6 +53,7 @@ class Datum {
         numberOfStudents: json["numberOfStudents"],
         grade: json["grade"],
         name: json["name"],
+        initiativeTypeId: json['initiativeTypeId'],
         images: List<String>.from(json["images"].map((x) => x)),
       );
 
@@ -60,6 +63,7 @@ class Datum {
         "numberOfStudents": numberOfStudents,
         "grade": grade,
         "name": name,
+        "initiativeId": initiativeTypeId,
         "images": List<dynamic>.from(images.map((x) => x)),
       };
 }
@@ -137,11 +141,15 @@ class _InitiativeState extends State<Initiative> {
                       child: ListView.builder(
                           itemCount: initiatives.length,
                           itemBuilder: (context, index) {
+                            print(initiatives[index]);
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 20),
                               child: InitiativesForInitiativeWidget(
                                   images: initiatives[index].images,
                                   target: initiatives[index].target,
+                                  id: initiatives[index].id,
+                                  initiativeTypeId:
+                                      initiatives[index].initiativeTypeId,
                                   numberOfStudents:
                                       initiatives[index].numberOfStudents,
                                   grade: initiatives[index].grade,

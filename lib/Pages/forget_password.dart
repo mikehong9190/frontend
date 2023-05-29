@@ -141,7 +141,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       log (response.body);
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/login");
-        // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reseted"});
+        // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reset"});
       } else {
         setState(() {
           statusCode = response.statusCode;

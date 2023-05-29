@@ -91,7 +91,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         : SingleChildScrollView(
             child: ConstrainedBox(
             constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height,
+              maxHeight: MediaQuery.of(context).size.height + 1000,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
