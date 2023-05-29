@@ -33,8 +33,8 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
     return Row(
       children: [
         CachedNetworkImage(
-            width: 120,
-            height: 120,
+            width: 140,
+            height: 140,
             fit: BoxFit.cover,
             imageUrl: images[0],
             progressIndicatorBuilder: (context, url, downloadProgress) =>
