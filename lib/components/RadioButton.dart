@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 enum InitiativeTypeEnum { computer, science, art }
 
 class MyRadioButton extends StatelessWidget {
-  String title;
-  InitiativeTypeEnum value;
-  InitiativeTypeEnum? initiativeTypeEnum;
-  Function(InitiativeTypeEnum?)? onChanged;
+  final String title;
+  final InitiativeTypeEnum value;
+  final InitiativeTypeEnum? initiativeTypeEnum;
+  final Function(InitiativeTypeEnum?)? onChanged;
 
-  MyRadioButton(
+  const MyRadioButton(
       {Key? key,
       required this.title,
       required this.value,

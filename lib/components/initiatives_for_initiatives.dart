@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 // import '../model/responses.dart';
 // import '../store.dart';
 // import '../constants.dart';
-// import 'collectibles.dart';
+import 'collectibles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:frontend/Pages/gallery.dart';
 
@@ -37,20 +37,21 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
   Widget build(context) {
     return Row(
       children: [
-        CachedNetworkImage(
-            width: 120,
-            height: 120,
-            fit: BoxFit.cover,
-            imageUrl: images[0],
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                SizedBox(
-                  height: 100,
-                  width: 100,
-                  child: CircularProgressIndicator(
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                          Color.fromRGBO(54, 189, 151, 1)),
-                      value: downloadProgress.progress),
-                )),
+        CollectiblesWidget(collectibleImage: images[0],dimension: 140,),
+        // CachedNetworkImage(
+        //     width: 140,
+        //     height: 140,
+        //     fit: BoxFit.cover,
+        //     imageUrl: images[0],
+        //     progressIndicatorBuilder: (context, url, downloadProgress) =>
+        //         SizedBox(
+        //           height: 100,
+        //           width: 100,
+        //           child: CircularProgressIndicator(
+        //               valueColor: const AlwaysStoppedAnimation<Color>(
+        //                   Color.fromRGBO(54, 189, 151, 1)),
+        //               value: downloadProgress.progress),
+        //         )),
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Column(

@@ -1,15 +1,15 @@
 import 'dart:convert';
 
+// import 'package:flutter/services.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:frontend/Pages/Initiative.dart';
+// // import 'package:google_fonts/google_fonts.dart';
+// import 'package:http/http.dart';
+// import 'package:provider/provider.dart';
+// import '../model/responses.dart';
+// import '../store.dart';
+// import '../constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:frontend/Pages/Initiative.dart';
-// import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart';
-import 'package:provider/provider.dart';
-import '../model/responses.dart';
-import '../store.dart';
-import '../constants.dart';
 import 'collectibles.dart';
 
 class SingleInitiativeWidget extends StatelessWidget {
@@ -43,15 +43,25 @@ class SingleInitiativeWidget extends StatelessWidget {
               "${images.length} ${images.length > 1 ? 'works' : 'work'}",
               style: const TextStyle(fontSize: 12)),
         ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(children: [
-            ...images.map((e) => Padding(
-                  padding: const EdgeInsets.only(right: 20, top: 20),
-                  child: CollectiblesWidget(collectibleImage: e),
-                ))
-          ]),
+        Align(
+          alignment: Alignment.topLeft,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(children: [
+              ...images.map((e) => Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 20, top: 20),
+                      child: CollectiblesWidget(
+                        collectibleImage: e,
+                        dimension: 150,
+                      ),
+                    ),
+                  ))
+            ]),
+          ),
         )
+
         // ListView.builder(
         //   shrinkWrap: true,
         //   itemBuilder: (context, index) {

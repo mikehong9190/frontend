@@ -49,8 +49,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   }
 
   Future<void> _pickImage() async {
-    final _picker = ImagePicker();
-    _pickedFile = (await _picker.pickImage(source: ImageSource.gallery));
+    final picker = ImagePicker();
+    _pickedFile = (await picker.pickImage(source: ImageSource.gallery));
     if (_pickedFile != null) {
       setState(() {
         _image = File(_pickedFile!.path);
@@ -86,8 +86,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/send-otp'),
           body: jsonEncode(payload));
-      if (response.statusCode == 200)
+      if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/reset-password");
+      }
       // Navigator.pushNamed(context, "/reset-password",
       //     arguments: {"emailId": email, "userId": userId});
       else {}
@@ -397,8 +398,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                   )
                                 : TextButton(
                                     onPressed: () {
-                                      final _googleSignIn = GoogleSignIn();
-                                      _googleSignIn.signOut();
+                                      final googleSignIn = GoogleSignIn();
+                                      googleSignIn.signOut();
                                       context.read<User>().clearUserDetails();
                                       Navigator.pushNamed(context, '/');
                                     },

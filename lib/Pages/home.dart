@@ -88,58 +88,66 @@ class _HomeWidgetState extends State<HomeWidget> {
             child: CircularProgressIndicator(
               color: Color.fromRGBO(54, 189, 151, 1),
             ))
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 4,
-                width: MediaQuery.of(context).size.width,
-                child: Image.asset(
-                  "assets/images/schoolDefault.jpg",
-                  fit: BoxFit.cover,
+        : SingleChildScrollView(
+            child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height + 1000,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 4,
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.asset(
+                    "assets/images/schoolDefault.jpg",
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        widget.schoolName ?? "NAME",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 20),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          widget.schoolName ?? "NAME",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 20),
+                        ),
                       ),
-                    ),
-                    Row(children: [
-                      SvgPicture.asset("assets/svg/location.svg"),
-                      Text(
-                        widget.schoolLocation ?? 'LOCATION',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 14),
-                      )
-                    ])
-                  ],
+                      Row(children: [
+                        SvgPicture.asset("assets/svg/location.svg"),
+                        Text(
+                          widget.schoolLocation ?? 'LOCATION',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 14),
+                        )
+                      ])
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                  child: SizedBox(
-                      child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: initiatives.length,
-                  itemBuilder: (context, index) {
-                    return SingleInitiativeWidget(
-                        images: initiatives[index].images,
-                        firstName: initiatives[index].userFirstName,
-                        lastName: initiatives[index].userLastName);
-                  },
-                ),
-              )))
-            ],
-          );
+                Expanded(
+                    child: SizedBox(
+                        child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount: initiatives.length,
+                    itemBuilder: (context, index) {
+                      return SingleInitiativeWidget(
+                          images: initiatives[index].images,
+                          firstName: initiatives[index].userFirstName,
+                          lastName: initiatives[index].userLastName);
+                    },
+                  ),
+                )))
+              ],
+            ),
+          ));
+    ;
   }
 }

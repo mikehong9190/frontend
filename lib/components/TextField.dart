@@ -172,7 +172,7 @@ Widget SchoolSearchFieldWidget(
 }
 
 Widget PasswordFieldWidget(
-    label, controller, isPassword, isValid, isEnabled, changeVisiblity) {
+    label, controller, isPassword, isValid, isEnabled, changeVisibility) {
   // final String label;
   // TextFieldWidget ({super.key,required this.label,});
   return Column(
@@ -207,7 +207,7 @@ Widget PasswordFieldWidget(
                         : Container(),
                     IconButton(
                         onPressed: () {
-                          changeVisiblity();
+                          changeVisibility();
                         },
                         icon: SvgPicture.asset("assets/svg/Eye.svg"))
                   ]),

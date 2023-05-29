@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 // import 'package:frontend/Pages/home.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/Pages/app.dart';
-import 'package:frontend/Pages/forgetPassword.dart';
+// import 'package:frontend/Pages/forget_password.dart';
+import 'Pages/forget_password.dart';
 import 'package:frontend/Pages/login.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'store.dart';
-import 'Pages/Welcome.dart';
-import 'Pages/getStarted.dart';
+import 'Pages/welcome.dart';
+import 'Pages/get_started.dart';
 import 'Pages/Registration.dart';
-import 'Pages/UpdateProfile.dart';
-import 'Pages/RegistrationPages.dart';
-import 'Pages/ResetPassword.dart';
+import 'Pages/update_profile.dart';
+import 'Pages/registration_pages.dart';
+import 'Pages/reset_password.dart';
 // import 'Pages/camera.dart';
 
 class CustomNavigatorObserver extends NavigatorObserver {
