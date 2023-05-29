@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:developer';
 // import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -14,26 +13,26 @@ import '../constants.dart';
 
 class LoginResponse {
   final String message;
-  final idResponse data;
+  final IdResponse data;
   const LoginResponse({required this.message, required this.data});
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-        message: json['message'], data: idResponse.fromJson(json["data"]));
+        message: json['message'], data: IdResponse.fromJson(json["data"]));
   }
 }
 
-class idResponse {
+class IdResponse {
   final String id;
   final String token;
 
-  const idResponse({
+  const IdResponse({
     required this.id,
     required this.token,
   });
 
-  factory idResponse.fromJson(Map<String, dynamic> json) =>
-      idResponse(id: json["id"], token: json["token"]);
+  factory IdResponse.fromJson(Map<String, dynamic> json) =>
+      IdResponse(id: json["id"], token: json["token"]);
 }
 
 class LoginWidget extends StatefulWidget {
@@ -159,7 +158,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   true,
                   changePasswordVisibility),
               Padding(
-                padding: EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: SizedBox(
@@ -167,7 +166,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                           onPressed: () {
                             Navigator.pushNamed(context, "/forget-password");
                           },
-                          child: Text(
+                          child: const Text(
                             'forget password ?',
                             style: TextStyle(
                                 color: Color.fromRGBO(54, 189, 151, 1)),

@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/services.dart';
-import 'package:frontend/Pages/Initiative.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import '../constants.dart';
@@ -9,17 +8,16 @@ import '../model/responses.dart';
 import 'dart:developer';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:frontend/Pages/registration_pages.dart';
+import 'package:http/http.dart';
+import '../components/RadioButton.dart';
+// import 'package:frontend/Pages/Initiative.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
-import 'package:frontend/Pages/RegistrationPages.dart';
 // import 'package:frontend/Pages/login.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:im_stepper/main.dart';
-import 'package:http/http.dart';
-import '../components/RadioButton.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../store.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 
 class RegistrationWidget extends StatefulWidget {
   const RegistrationWidget({super.key});
@@ -63,8 +61,6 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       });
     }
   }
-
-  SingingCharacter? _character = SingingCharacter.jefferson;
 
   Future<List<SingleDistrictResponse>> getDistrict(String query) async {
     try {
@@ -224,7 +220,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
   googleLogin() async {
     log("googleLogin method Called");
-    final _googleSignIn = GoogleSignIn(
+    final googleSignIn = GoogleSignIn(
       scopes: [
         'email',
         "https://www.googleapis.com/auth/userinfo.profile",
@@ -232,7 +228,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       ],
     );
     try {
-      final result = await _googleSignIn.signIn();
+      final result = await googleSignIn.signIn();
       final ggAuth = await result?.authentication;
       log('ID TOKEN');
       var token = ggAuth?.idToken;

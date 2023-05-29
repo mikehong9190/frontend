@@ -10,12 +10,12 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'store.dart';
-import 'Pages/Welcome.dart';
+import 'Pages/welcome.dart';
 import 'Pages/getStarted.dart';
 import 'Pages/Registration.dart';
-import 'Pages/UpdateProfile.dart';
-import 'Pages/RegistrationPages.dart';
-import 'Pages/ResetPassword.dart';
+import 'Pages/update_profile.dart';
+import 'Pages/registration_pages.dart';
+import 'Pages/reset_password.dart';
 // import 'Pages/camera.dart';
 
 class CustomNavigatorObserver extends NavigatorObserver {

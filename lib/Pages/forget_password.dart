@@ -1,21 +1,20 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'dart:developer';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:frontend/Pages/RegistrationPages.dart';
 // import 'package:frontend/Pages/login.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:im_stepper/main.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
-
 // import '../model/responses.dart';
+// import '../store.dart';
+// import 'package:provider/provider.dart';
+
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'dart:developer';
 import 'package:http/http.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/components/TextField.dart';
-import 'package:provider/provider.dart';
 import '../model/responses.dart';
 
-import '../store.dart';
 import '../constants.dart';
 
 class ForgetPasswordWidget extends StatefulWidget {

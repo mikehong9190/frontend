@@ -121,8 +121,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                         // shrinkWrap: true,
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
-                                // crossAxisSpacing: 10,
-                                // mainAxisSpacing: 10,
+                                crossAxisSpacing: 1,
+                                mainAxisSpacing: 1,
                                 maxCrossAxisExtent: 220),
                         itemBuilder: (_, index) {
                           return Center(
