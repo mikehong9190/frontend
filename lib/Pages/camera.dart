@@ -20,7 +20,6 @@ class ICamera extends StatefulWidget {
       {Key? key,
       required this.cameras,
       required this.context,
-      required,
       required this.initiativeTypeId,
       required this.initiativeType,
       required this.target,
@@ -92,7 +91,13 @@ class _CameraState extends State<ICamera> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ImagePreview(picture),
+          builder: (context) => ImagePreview(
+              picture: picture,
+              initiativeTypeId: id,
+              initiativeType: name,
+              target: target,
+              grade: grade,
+              noOfStudents: noOfStudents),
         ),
       );
     }
@@ -187,25 +192,9 @@ class _CameraState extends State<ICamera> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, "/app");
-            },
-            icon: SvgPicture.asset("assets/svg/Vector.svg")),
-        backgroundColor: Colors.white,
-        title: Row(
-          children: [
-            const Spacer(),
-            const Text(
-              'Take a Picture',
-              style: TextStyle(
-                color: Colors.black87,
-              ),
-            ),
-            const Spacer(),
-            IconButton(
+          elevation: 0,
+          centerTitle: true,
+          leading: IconButton(
               onPressed: () {
                 Navigator.push(
                   context,
@@ -219,15 +208,14 @@ class _CameraState extends State<ICamera> {
                   ),
                 );
               },
-              icon: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 25,
-                color: Color.fromRGBO(54, 189, 151, 1),
-              ),
+              icon: SvgPicture.asset("assets/svg/Vector.svg")),
+          backgroundColor: Colors.white,
+          title: const Text(
+            'Take a Picture',
+            style: TextStyle(
+              color: Colors.black87,
             ),
-          ],
-        ),
-      ),
+          )),
       body: Column(children: [
         // const Spacer(),
         Expanded(

@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:frontend/Pages/gallery.dart';
 import 'package:provider/provider.dart';
 
 import '../store.dart';
@@ -8,8 +9,21 @@ import 'dart:io';
 
 class ImagePreview extends StatelessWidget {
   final XFile picture;
+  final String initiativeTypeId;
+  final String initiativeType;
+  final dynamic target;
+  final dynamic grade;
+  final dynamic noOfStudents;
 
-  const ImagePreview(this.picture, {super.key});
+  const ImagePreview(
+      {Key? key,
+      required this.picture,
+      required this.initiativeTypeId,
+      required this.initiativeType,
+      required this.target,
+      required this.grade,
+      required this.noOfStudents})
+      : super(key: key);
 
   void goBack(BuildContext context) {
     Navigator.pop(context);
@@ -18,6 +32,11 @@ class ImagePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var imageModel = Provider.of<User>(context);
+    late dynamic id = initiativeTypeId;
+    late dynamic name = initiativeType;
+    late dynamic initiative_target = target;
+    late dynamic initiative_grade = grade;
+    late dynamic initiative_noOfStudents = noOfStudents;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -66,7 +85,17 @@ class ImagePreview extends StatelessWidget {
                   IconButton(
                     onPressed: () {
                       imageModel.addImage(picture);
-                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => Gallery(
+                              initiativeTypeId: id,
+                              initiativeType: name,
+                              target: initiative_target,
+                              grade: initiative_grade,
+                              noOfStudents: initiative_noOfStudents),
+                        ),
+                      );
                     },
                     icon: Transform.scale(
                       scale: 1.4,
