@@ -150,10 +150,8 @@ class _GalleryState extends State<Gallery> {
         final res = jsonDecode(response.body);
         initiativeId = res['id'];
         imageKeys = res['keys'];
-        print("Step 1---------done");
         uploadImages(context, res['urls'], images);
       } else {
-        print("inside error");
         print(response);
       }
     } catch (error) {

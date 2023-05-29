@@ -3,15 +3,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AccountDetailWidget extends StatelessWidget {
-  String profilePicture;
-  int collectiblesLength;
-  String location;
-  String bio;
-  int moneyRaised;
-  String name;
-  int goalsMets;
-  
-  AccountDetailWidget(
+  final String profilePicture;
+  final int collectiblesLength;
+  final String location;
+  final String bio;
+  final int moneyRaised;
+  final String name;
+  final int goalsMets;
+
+  const AccountDetailWidget(
       {super.key,
       required this.profilePicture,
       required this.collectiblesLength,

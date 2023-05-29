@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // import 'package:frontend/Pages/home.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/Pages/app.dart';
-import 'package:frontend/Pages/forgetPassword.dart';
+import 'package:frontend/Pages/forget_password.dart';
 import 'package:frontend/Pages/login.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';

@@ -26,7 +26,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   String schoolId = '';
   String schoolName = '';
   String schoolLocation = '';
-  static final _TopBar = [
+  static final topBar = [
     "Home",
     "Initiative",
     "Frequently Asked Questions",
@@ -97,7 +97,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
 
   @override
   Widget build(context) {
-    final _body = [
+    final body = [
       HomeWidget(
           schoolId: schoolId,
           schoolName: schoolName,
@@ -162,7 +162,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
                   },
                   icon: SvgPicture.asset("assets/svg/Vector.svg")),
               backgroundColor: Colors.white,
-              title: Text(_TopBar[_currentIndex],
+              title: Text(topBar[_currentIndex],
                   style: const TextStyle(
                     color: Colors.black87,
                   ))),
@@ -172,7 +172,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
                   child: CircularProgressIndicator(
                     color: Color.fromRGBO(54, 189, 151, 1),
                   ))
-              : _body[_currentIndex],
+              : body[_currentIndex],
           bottomNavigationBar: BottomNavigationBar(
               iconSize: 20.0,
               type: BottomNavigationBarType.fixed,
@@ -194,9 +194,8 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
 
 //ACCOUNT WIDGET
 
-// INTIATIVE WIDGET
 class InitiativeWidget extends StatefulWidget {
-  InitiativeWidget({super.key});
+  const InitiativeWidget({super.key});
 
   @override
   State<InitiativeWidget> createState() => _InitiativeWidgetState();

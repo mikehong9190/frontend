@@ -2,17 +2,17 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:flutter/services.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import '../model/responses.dart';
 import '../store.dart';
-import './home.dart';
+// import './home.dart';
 import '../constants.dart';
 import '../components/collectibles.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 import '../components/account_details.dart';
 
 class AccountWidget extends StatefulWidget {
@@ -115,7 +115,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                       child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 0),
                     child: GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: collectibles.length,
                         scrollDirection: Axis.vertical,
                         // shrinkWrap: true,
@@ -157,6 +157,5 @@ class _AccountWidgetState extends State<AccountWidget> {
               ),
             ),
           );
-    ;
   }
 }

@@ -32,12 +32,12 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
   // }
 
   googleLogin(context) async {
-    dynamic _googleSignIn;
+    dynamic googleSignIn;
 
     // log("googleLogin method Called");
     try {
       if (Platform.isAndroid) {
-        _googleSignIn = GoogleSignIn(
+        googleSignIn = GoogleSignIn(
           scopes: [
             'email',
             "https://www.googleapis.com/auth/userinfo.profile",
@@ -45,7 +45,7 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
           ],
         );
       } else {
-        _googleSignIn = GoogleSignIn(
+        googleSignIn = GoogleSignIn(
           clientId:
               "566550290119-ke7vuiphb33c5jjl3168klvj9jum2sr5.apps.googleusercontent.com",
           scopes: [
@@ -55,7 +55,7 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
           ],
         );
       }
-      final result = await _googleSignIn.signIn();
+      final result = await googleSignIn.signIn();
       final ggAuth = await result?.authentication;
       log('ID TOKEN');
       var token = ggAuth?.idToken;
@@ -135,11 +135,11 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
                 setState(() {
                   isLoading = true;
                 });
-                dynamic _googleSignIn;
+                dynamic googleSignIn;
                 // log("googleLogin method Called");
                 try {
                   if (Platform.isAndroid) {
-                    _googleSignIn = GoogleSignIn(
+                    googleSignIn = GoogleSignIn(
                       scopes: [
                         'email',
                         "https://www.googleapis.com/auth/userinfo.profile",
@@ -147,7 +147,7 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
                       ],
                     );
                   } else {
-                    _googleSignIn = GoogleSignIn(
+                    googleSignIn = GoogleSignIn(
                       clientId:
                           "566550290119-ke7vuiphb33c5jjl3168klvj9jum2sr5.apps.googleusercontent.com",
                       scopes: [
@@ -157,7 +157,7 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
                       ],
                     );
                   }
-                  final result = await _googleSignIn.signIn();
+                  final result = await googleSignIn.signIn();
                   final ggAuth = await result?.authentication;
                   log('ID TOKEN');
                   var token = ggAuth?.idToken;
