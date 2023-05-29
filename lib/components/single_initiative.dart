@@ -43,15 +43,25 @@ class SingleInitiativeWidget extends StatelessWidget {
               "${images.length} ${images.length > 1 ? 'works' : 'work'}",
               style: const TextStyle(fontSize: 12)),
         ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(children: [
-            ...images.map((e) => Padding(
-                  padding: const EdgeInsets.only(right: 20, top: 20),
-                  child: CollectiblesWidget(collectibleImage: e),
-                ))
-          ]),
+        Align(
+          alignment: Alignment.topLeft,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(children: [
+              ...images.map((e) => Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 20, top: 20),
+                      child: CollectiblesWidget(
+                        collectibleImage: e,
+                        dimension: 150,
+                      ),
+                    ),
+                  ))
+            ]),
+          ),
         )
+
         // ListView.builder(
         //   shrinkWrap: true,
         //   itemBuilder: (context, index) {
