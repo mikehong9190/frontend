@@ -27,6 +27,7 @@ class SingleInitiativeWidget extends StatelessWidget {
   Widget build(context) {
     return Column(
       children: [
+        const SizedBox(height: 25),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -34,7 +35,8 @@ class SingleInitiativeWidget extends StatelessWidget {
               "$firstName $lastName",
               style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
             ),
-            TextButton(onPressed: () {}, child: const Text("View all"))
+            // TextButton(onPressed: () {}, child: const Text("View all")
+            // )
           ],
         ),
         Align(

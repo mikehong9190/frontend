@@ -37,7 +37,10 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
   Widget build(context) {
     return Row(
       children: [
-        CollectiblesWidget(collectibleImage: images[0],dimension: 140,),
+        CollectiblesWidget(
+          collectibleImage: images[0],
+          dimension: 140,
+        ),
         // CachedNetworkImage(
         //     width: 140,
         //     height: 140,
@@ -80,7 +83,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
               // ),
               ButtonTheme(
                 child: SizedBox(
-                  width: 200,
+                  width: 220,
                   child: ElevatedButton(
                       onPressed: () {
                         // log('$id $name $target $grade $noOfStudents');

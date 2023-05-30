@@ -168,6 +168,7 @@ class _GalleryState extends State<Gallery> {
     try {
       var user = Provider.of<User>(context, listen: false);
       var imageModel = Provider.of<User>(context, listen: false);
+      var token = user.token;
 
       final payload = {
         "userId": user.userId,
@@ -189,9 +190,13 @@ class _GalleryState extends State<Gallery> {
           : 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/create-initiative';
       final response;
       if (isUpdate) {
-        response = await put(Uri.parse(url), body: jsonEncode(updatePayload));
+        response = await put(Uri.parse(url),
+            body: jsonEncode(updatePayload),
+            headers: {'Authorization': 'Bearer $token'});
       } else {
-        response = await post(Uri.parse(url), body: jsonEncode(payload));
+        response = await post(Uri.parse(url),
+            body: jsonEncode(payload),
+            headers: {'Authorization': 'Bearer $token'});
       }
 
       // for (final image in images) {

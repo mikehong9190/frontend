@@ -123,11 +123,11 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       final response = await put(Uri.https(apiHost, '/v1/update-profile'),
           body: payload,
           headers: {
-            HttpHeaders.authorizationHeader : token
-            // 'Authorization': 'Bearer $token'
+            // HttpHeaders.authorizationHeader : token
+            'Authorization': 'Bearer $token'
           });
-      print(response.statusCode);
-      print(response.headers);
+      // print(response.statusCode);
+      // print(response.headers);
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/app");
       }
