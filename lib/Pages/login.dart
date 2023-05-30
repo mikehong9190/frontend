@@ -74,8 +74,10 @@ class _LoginWidgetState extends State<LoginWidget> {
           }));
       if (response.statusCode == 200) {
         final jsonData = LoginResponse.fromJson(jsonDecode(response.body));
+        print (jsonData.data.token);
         context.read<User>().setUserDetails(
             userId: jsonData.data.id,
+            token: jsonData.data.token,
             emailId: emailController.text,
             message: jsonData.message);
         Navigator.pushNamedAndRemoveUntil(

@@ -177,12 +177,14 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
                     if (jsonData.message == 'Account created successfully!') {
                       context.read<User>().setUserDetails(
                           userId: jsonData.data.id,
+                          token : jsonData.data.token,
                           emailId: '',
                           message: "created account using google");
                       Navigator.pushNamed(context, "/google-auth-school");
                     } else {
                       context.read<User>().setUserDetails(
                           userId: jsonData.data.id,
+                          token: jsonData.data.token,
                           emailId: '',
                           message: "logged in using google");
                       Navigator.pushNamed(context, "/app");

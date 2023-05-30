@@ -5,12 +5,15 @@ import 'package:camera/camera.dart';
 class User with ChangeNotifier {
   bool userLoggedIn = false;
   String _userId = '';
+  String _token = '';
   String _emailId = '';
   bool isManuallySignedIn = true;
   String _profilePicture = '';
+
   String get userId => _userId;
   String get emailId => _emailId;
   String get profilePicture => _profilePicture;
+  String get token => _token;
 
   //storing images
   final List<XFile> _images = [];
@@ -55,16 +58,19 @@ class User with ChangeNotifier {
   void setUserDetails(
       {required String userId,
       required String emailId,
-      required String message}) async {
+      required String message,
+      required String token}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    print ("Token $token");
     // prefs.setString('profilePicture', profilePicture);
-
+    prefs.setString('token', token);
     prefs.setString('userId', userId);
     prefs.setString('emailId', emailId);
     prefs.setBool('userLoggedIn', userId.isNotEmpty);
     prefs.setBool('isManuallySignedIn',
         !message.toString().toLowerCase().contains("google"));
 
+    _token = token;
     _profilePicture = profilePicture;
     _userId = userId;
     userLoggedIn = userId.isNotEmpty;
@@ -75,11 +81,13 @@ class User with ChangeNotifier {
 
   void clearUserDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
     await prefs.remove('userId');
     await prefs.remove('emailId');
     await prefs.remove('userLoggedIn');
     await prefs.remove('isManuallySignedIn');
 
+    _token = '';
     _userId = '';
     userLoggedIn = false;
     _emailId = '';
@@ -89,6 +97,7 @@ class User with ChangeNotifier {
 
   void getUserDataFromLocal() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    _token = prefs.getString('token')!;
     _userId = prefs.getString('userId')!;
     // _profilePicture = prefs.getString('profilePicture');
     userLoggedIn = prefs.getBool('userLoggedIn')!;
