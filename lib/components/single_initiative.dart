@@ -1,5 +1,5 @@
-import 'dart:convert';
 
+// import 'dart:convert';
 // import 'package:flutter/services.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:frontend/Pages/Initiative.dart';
@@ -13,11 +13,11 @@ import 'package:flutter/material.dart';
 import 'collectibles.dart';
 
 class SingleInitiativeWidget extends StatelessWidget {
-  List<String> images;
-  String firstName;
-  String lastName;
+  final List<String> images;
+  final String firstName;
+  final String lastName;
 
-  SingleInitiativeWidget(
+  const SingleInitiativeWidget(
       {super.key,
       required this.images,
       required this.firstName,

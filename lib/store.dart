@@ -61,7 +61,6 @@ class User with ChangeNotifier {
       required String message,
       required String token}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print ("Token $token");
     // prefs.setString('profilePicture', profilePicture);
     prefs.setString('token', token);
     prefs.setString('userId', userId);

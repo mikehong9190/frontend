@@ -10,7 +10,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/Pages/registration_pages.dart';
 import 'package:http/http.dart';
-import '../components/RadioButton.dart';
+import '../components/radio_button.dart';
 // import 'package:frontend/Pages/Initiative.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:frontend/Pages/login.dart';
@@ -83,7 +83,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   void changeState(value) => setState(() {
         _initiativeTypeEnum = value;
       });
-  void checkPasswordVisiblity() async {
+  void checkPasswordVisibility() async {
     setState(() {
       isPasswordHidden = !isPasswordHidden;
     });
@@ -311,7 +311,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   List<Step> getSteps() => [
         Step(
             title: const Text(''),
-            content: FirstPageWidget(
+            content: firstPageWidget(
                 emailController,
                 checkEmailAndChangeStep,
                 message,
@@ -323,7 +323,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
             isActive: currentStep >= 0),
         Step(
             title: const Text(''),
-            content: SecondPageWidget(
+            content: secondPageWidget(
                 passwordController,
                 confirmPasswordController,
                 checkPasswordAndChangeStep,
@@ -332,12 +332,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                 arePasswordsEqual,
                 isPasswordHidden,
                 isConfirmPasswordHidden,
-                checkPasswordVisiblity,
+                checkPasswordVisibility,
                 checkConfirmPasswordVisibility),
             isActive: currentStep >= 1),
         Step(
             title: const Text(''),
-            content: ThirdPageWidget(
+            content: thirdPageWidget(
                 firstNameController,
                 lastNameController,
                 schoolDistrictController,

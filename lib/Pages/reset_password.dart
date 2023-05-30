@@ -11,7 +11,7 @@ import 'dart:developer';
 // import '../model/responses.dart';
 import 'package:http/http.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
-import 'package:frontend/components/TextField.dart';
+import 'package:frontend/components/textField.dart';
 import 'package:provider/provider.dart';
 
 import '../store.dart';
@@ -204,7 +204,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
           const SizedBox(
             height: 10,
           ),
-          TextFieldWidget("OTP", otpController, false, null, true),
+          textFieldWidget("OTP", otpController, false, null, true),
           TextButton(
             onPressed: isVerified
                 ? null
@@ -228,7 +228,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                   ),
           ),
           if (isVerified)
-            PasswordFieldWidget(
+            passwordFieldWidget(
                 "New Password",
                 newPasswordController,
                 isNewPasswordHidden,
@@ -236,7 +236,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                 true,
                 checkPasswordVisibility),
           if (isVerified)
-            PasswordFieldWidget(
+            passwordFieldWidget(
                 "Confirm New Password",
                 confirmNewPasswordController,
                 isConfirmNewPasswordHidden,

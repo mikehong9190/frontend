@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:frontend/components/TextField.dart';
+import 'package:frontend/components/textField.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 import 'package:http/http.dart';
@@ -282,14 +282,14 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                               )
                             : const Text('Save'),
                       ),
-                    TextFieldWidget(
+                    textFieldWidget(
                         "First Name", firstNameController, false, null, true),
                     const SizedBox(
                       height: 20,
                     ),
-                    TextFieldWidget(
+                    textFieldWidget(
                         "Last Name", lastNameController, false, null, true),
-                    // TextFieldWidget("Bio", bioController, false, null, true),
+                    // textFieldWidget("Bio", bioController, false, null, true),
                     Column(
                       children: [
                         const SizedBox(
@@ -433,7 +433,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
               //                     backgroundColor: Colors.amber,
               //                     radius: 30,
               //                   ),
-              //               TextFieldWidget("Bio", bioController, false, null, true)
+              //               textFieldWidget("Bio", bioController, false, null, true)
               //             ]),
               //       )),
               // bottomNavigationBar: BottomNavigationBar(

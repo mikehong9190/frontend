@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'store.dart';
 import 'Pages/welcome.dart';
 import 'Pages/get_started.dart';
-import 'Pages/Registration.dart';
+import 'Pages/registration.dart';
 import 'Pages/update_profile.dart';
 import 'Pages/registration_pages.dart';
 import 'Pages/reset_password.dart';

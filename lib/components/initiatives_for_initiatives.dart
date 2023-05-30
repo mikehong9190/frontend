@@ -1,6 +1,5 @@
 // import 'dart:convert';
 
-import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:frontend/Pages/Initiative.dart';
@@ -10,20 +9,21 @@ import 'package:flutter/material.dart';
 // import '../model/responses.dart';
 // import '../store.dart';
 // import '../constants.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'collectibles.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:frontend/Pages/gallery.dart';
 
 class InitiativesForInitiativeWidget extends StatelessWidget {
-  String id;
-  String initiativeTypeId;
-  int target;
-  int numberOfStudents;
-  String grade;
-  String name;
-  List<String> images;
+  final String id;
+  final String initiativeTypeId;
+  final int target;
+  final int numberOfStudents;
+  final String grade;
+  final String name;
+  final List<String> images;
 
-  InitiativesForInitiativeWidget(
+  const InitiativesForInitiativeWidget(
       {super.key,
       required this.initiativeTypeId,
       required this.id,

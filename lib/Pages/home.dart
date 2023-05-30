@@ -23,10 +23,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 // import '../store.dart';
 
 class HomeWidget extends StatefulWidget {
-  String schoolId;
-  dynamic schoolName;
-  dynamic schoolLocation;
-  HomeWidget(
+  final String schoolId;
+  final dynamic schoolName;
+  final dynamic schoolLocation;
+  const HomeWidget(
       {super.key,
       required this.schoolId,
       this.schoolName,
@@ -148,6 +148,5 @@ class _HomeWidgetState extends State<HomeWidget> {
               ],
             ),
           ));
-    ;
   }
 }

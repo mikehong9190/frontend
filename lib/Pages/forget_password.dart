@@ -12,7 +12,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'package:http/http.dart';
-import 'package:frontend/components/TextField.dart';
+import 'package:frontend/components/textField.dart';
 import '../model/responses.dart';
 
 import '../constants.dart';
@@ -233,7 +233,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
           const SizedBox(
             height: 10,
           ),
-          TextFieldWidget(
+          textFieldWidget(
               "Your Email", emailController, false, null, !isOtpSend),
           TextButton(
             onPressed: isOtpSend
@@ -258,7 +258,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                   ),
           ),
           if (isOtpSend)
-            TextFieldWidget("OTP", otpController, false, null, true),
+            textFieldWidget("OTP", otpController, false, null, true),
           if (isOtpSend)
             TextButton(
               onPressed: isVerified
@@ -291,7 +291,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                 TextStyle(color: statusCode == 200 ? Colors.green : Colors.red),
           )),
           if (isVerified)
-            PasswordFieldWidget(
+            passwordFieldWidget(
                 "New Password",
                 newPasswordController,
                 isNewPasswordHidden,
@@ -299,7 +299,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                 true,
                 checkPasswordVisibility),
           if (isVerified)
-            PasswordFieldWidget(
+            passwordFieldWidget(
                 "Confirm New Password",
                 confirmNewPasswordController,
                 isConfirmNewPasswordHidden,
