@@ -272,6 +272,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
             RegisteredUserResponse.fromJson(jsonDecode(response.body));
         context.read<User>().setUserDetails(
             userId: jsonData.data.id,
+            token : jsonData.data.token,
             emailId: emailController.text,
             message: jsonData.message);
         Navigator.pushNamedAndRemoveUntil(

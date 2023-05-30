@@ -110,19 +110,26 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       "firstName": firstNameController.text,
       "lastName": lastNameController.text
     };
+
     try {
+      final token = context.read<User>().token;
+      if (token.isEmpty) {
+        throw const FormatException('Token is empty .. not Authorized');
+      }
       setState(() {
         isProfileUpdating = true;
       });
-      final response = await put(
-          Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile'),
-          body: payload);
-      // log(response.body);
+
+      final response = await put(Uri.https(apiHost, '/v1/update-profile'),
+          body: payload,
+          headers: {
+            HttpHeaders.authorizationHeader : token
+            // 'Authorization': 'Bearer $token'
+          });
+      print(response.statusCode);
+      print(response.headers);
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/app");
-        // Navigator.pushNamed(context, "/app",
-        //     arguments: {"UserId": id, "message": "User updated Successfully"});
       }
     } catch (error) {
       log(error.toString());
