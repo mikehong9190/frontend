@@ -264,8 +264,8 @@ class _GalleryState extends State<Gallery> {
                 onPressed: () {
                   imageModel.clearImages();
                   imageModel.clearFinalImages();
-
-                  Navigator.of(context).pop(true);
+                  Navigator.pushNamed(context, '/app');
+                  // Navigator.of(context).pop(true);
                 },
               ),
             ],
