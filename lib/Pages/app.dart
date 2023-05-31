@@ -50,8 +50,6 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       final queryParameters = {"id": id};
       final response =
           await get(Uri.https(apiHost, '/v1/users', queryParameters));
-      print(response.statusCode);
-      print(response.body);
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);

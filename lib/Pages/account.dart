@@ -91,7 +91,7 @@ class _AccountWidgetState extends State<AccountWidget> {
     // String profilePicture = context.read<User>().profilePicture;
     // log( 'IMAGE $profilePicture');
     return isLoading
-        ?  Align(
+        ? Align(
             alignment: Alignment.center,
             child: CircularProgressIndicator(
               color: Theme.of(context).colorScheme.secondary,
@@ -104,64 +104,71 @@ class _AccountWidgetState extends State<AccountWidget> {
             child: Column(
               children: [
                 // Container(
-                //   child: 
-                  AccountDetailWidget(
-                      profilePicture: profilePicture,
-                      collectiblesLength: collectibles.length,
-                      location: location,
-                      bio: bio,
-                      moneyRaised: moneyRaised,
-                      name: name,
-                      goalsMets: goalsMets),
+                //   child:
+                AccountDetailWidget(
+                    profilePicture: profilePicture,
+                    collectiblesLength: collectibles.length,
+                    location: location,
+                    bio: bio,
+                    moneyRaised: moneyRaised,
+                    name: name,
+                    goalsMets: goalsMets),
                 // ),
                 // Expanded(
-                    // child: 
-                    SizedBox (
-                      child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 0),
-                  child: GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: collectibles.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                              crossAxisSpacing: 1,
-                              mainAxisSpacing: 1,
-                              maxCrossAxisExtent: 220),
-                      itemBuilder: (_, index) {
-                        return 
-                        // Center(
-                        //     child: 
-                            GestureDetector(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text("Collectibles"),
-                                    content: collectibles[index].isNotEmpty
-                                        ? Image.network(
-                                            collectibles[index],
-                                            width: 500,
-                                            height: 500,
-                                          )
-                                        : Image.asset(
-                                            "assets/images/defaultImage.png",
-                                            width: 500,
-                                            height: 500,
-                                          ),
-                                  );
-                                });
-                          },
-                          child: CollectiblesWidget(
-                            collectibleImage: collectibles[index],
-                            dimension: 160,
-                          ),
-                        );
-                        // );
-                      }),
-                ))
+                // child:
+                collectibles.isEmpty
+                    ? const Center(
+                        child: Text(
+                        "No Initiatives added yet",
+                        style: TextStyle(fontSize: 18),
+                      ))
+                    : SizedBox(
+                        child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0),
+                        child: GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: collectibles.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    crossAxisSpacing: 1,
+                                    mainAxisSpacing: 1,
+                                    maxCrossAxisExtent: 220),
+                            itemBuilder: (_, index) {
+                              return
+                                  // Center(
+                                  //     child:
+                                  GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text("Collectibles"),
+                                          content:
+                                              collectibles[index].isNotEmpty
+                                                  ? Image.network(
+                                                      collectibles[index],
+                                                      width: 500,
+                                                      height: 500,
+                                                    )
+                                                  : Image.asset(
+                                                      "assets/images/defaultImage.png",
+                                                      width: 500,
+                                                      height: 500,
+                                                    ),
+                                        );
+                                      });
+                                },
+                                child: CollectiblesWidget(
+                                  collectibleImage: collectibles[index],
+                                  dimension: 160,
+                                ),
+                              );
+                              // );
+                            }),
+                      ))
               ],
             ),
           );
