@@ -125,10 +125,10 @@ class _InitiativeState extends State<Initiative> {
   @override
   Widget build(context) {
     return isLoading
-        ? const Align(
+        ? Align(
             alignment: Alignment.center,
             child: CircularProgressIndicator(
-              color: Color.fromRGBO(54, 189, 151, 1),
+              color: Theme.of(context).colorScheme.secondary,
             ))
         : Center(
             child: Container(
@@ -152,7 +152,7 @@ class _InitiativeState extends State<Initiative> {
                           itemCount: initiatives.length,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 20),
+                              padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 10),
                               child: InitiativesForInitiativeWidget(
                                   images: initiatives[index].images,
                                   target: initiatives[index].target,

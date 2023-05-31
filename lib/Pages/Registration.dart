@@ -116,7 +116,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       } else {
         return [];
       }
-    } catch (error,stackTrace) {
+    } catch (error, stackTrace) {
       log(stackTrace.toString());
       log(error.toString());
       return [];
@@ -267,12 +267,13 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       }
       final response = await post(Uri.https(apiHost, '/v1/signup'),
           body: jsonEncode(payload));
+          print(response.statusCode);
       if (response.statusCode == 200) {
         final jsonData =
             RegisteredUserResponse.fromJson(jsonDecode(response.body));
         context.read<User>().setUserDetails(
             userId: jsonData.data.id,
-            token : jsonData.data.token,
+            token: jsonData.data.token,
             emailId: emailController.text,
             message: jsonData.message);
         Navigator.pushNamedAndRemoveUntil(
@@ -311,44 +312,65 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   List<Step> getSteps() => [
         Step(
             title: const Text(''),
-            content: firstPageWidget(
-                emailController,
-                checkEmailAndChangeStep,
-                message,
-                statusCode,
-                otpController,
-                isLoading,
-                isOtpSend,
-                goToLogin),
+            content: FirstPageWidget(
+                controller: emailController,
+                onNext: checkEmailAndChangeStep,
+                message: message,
+                statusCode: statusCode,
+                otpController: otpController,
+                isLoading: isLoading,
+                isOtpSend: isOtpSend,
+                goToLogin: goToLogin),
+            // FirstPageWidget(
+            //     emailController,
+            //     checkEmailAndChangeStep,
+            //     message,
+            //     statusCode,
+            //     otpController,
+            //     isLoading,
+            //     isOtpSend,
+            //     goToLogin),
             isActive: currentStep >= 0),
         Step(
             title: const Text(''),
-            content: secondPageWidget(
-                passwordController,
-                confirmPasswordController,
-                checkPasswordAndChangeStep,
-                message,
-                isPasswordValid,
-                arePasswordsEqual,
-                isPasswordHidden,
-                isConfirmPasswordHidden,
-                checkPasswordVisibility,
-                checkConfirmPasswordVisibility),
+            content: SecondPageWidget(
+                controller1: passwordController,
+                controller2: confirmPasswordController,
+                onNext: checkPasswordAndChangeStep,
+                message: message,
+                isPasswordValid: isPasswordValid,
+                arePasswordsEqual: arePasswordsEqual,
+                isPasswordHidden: isPasswordHidden,
+                isConfirmPasswordHidden: isConfirmPasswordHidden,
+                checkPasswordVisibility: checkPasswordVisibility,
+                checkConfirmPasswordVisibility: checkConfirmPasswordVisibility),
             isActive: currentStep >= 1),
         Step(
             title: const Text(''),
-            content: thirdPageWidget(
-                firstNameController,
-                lastNameController,
-                schoolDistrictController,
-                schoolNameController,
-                registerUser,
-                isLoading,
-                getDistrict,
-                getSchools,
-                clickOnSuggestion,
-                clickOnSchool,
-                isRegisterButtonEnabled),
+            content: ThirdPageWidget(
+                firstNameController: firstNameController,
+                lastNameController: lastNameController,
+                schoolDistrictController: schoolDistrictController,
+                schoolNameController: schoolNameController,
+                onNext: registerUser,
+                isLoading: isLoading,
+                getDistricts: getDistrict,
+                getSchools: getSchools,
+                clickOnSuggestion: clickOnSuggestion,
+                clickOnSchool: clickOnSchool,
+                isRegisterButtonEnabled: isRegisterButtonEnabled),
+            // thirdPageWidget(
+            //     firstNameController,
+            //     lastNameController,
+            //     schoolDistrictController,
+            //     schoolNameController,
+            //     registerUser,
+            //     isLoading,
+            //     getDistrict,
+            //     getSchools,
+            //     clickOnSuggestion,
+            //     clickOnSchool,
+            //     isRegisterButtonEnabled),
             isActive: currentStep >= 2),
         // Step(
         //     title: const Text(''),
@@ -372,7 +394,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
             schoolNameController.text.isNotEmpty;
       });
     });
-    
+
     lastNameController.addListener(() {
       setState(() {
         isRegisterButtonEnabled = firstNameController.text.isNotEmpty &&

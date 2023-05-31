@@ -77,10 +77,10 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(context) {
     return isLoading
-        ? const Align(
+        ?  Align(
             alignment: Alignment.center,
             child: CircularProgressIndicator(
-              color: Color.fromRGBO(54, 189, 151, 1),
+              color: Theme.of(context).colorScheme.secondary,
             ))
         : 
         SingleChildScrollView(

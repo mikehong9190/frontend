@@ -202,6 +202,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
 
   @override
   Widget build(context) {
+    final color = (Theme.of(context).colorScheme.secondary);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -220,10 +221,10 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                 color: Colors.black87,
               ))),
       body: isLoading
-          ? const Align(
+          ? Align(
               alignment: Alignment.center,
               child: CircularProgressIndicator(
-                color: Color.fromRGBO(54, 189, 151, 1),
+                color: Theme.of(context).colorScheme.secondary,
               ))
           : Container(
               margin: const EdgeInsets.symmetric(horizontal: 30),
@@ -245,21 +246,22 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                               )
                             : profilePicture.isNotEmpty
                                 ? CachedNetworkImage(
-                            width: 80,
-                            height: 80,
-                            fit: BoxFit.cover,
-                            imageUrl: profilePicture,
-                            progressIndicatorBuilder: (context, url,
-                                    downloadProgress) =>
-                                SizedBox(
-                                  height: 50,
-                                  width: 50,
-                                  child: CircularProgressIndicator(
-                                      valueColor:
-                                          const AlwaysStoppedAnimation<Color>(
-                                              Color.fromRGBO(54, 189, 151, 1)),
-                                      value: downloadProgress.progress),
-                                ))
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                    imageUrl: profilePicture,
+                                    progressIndicatorBuilder: (context, url,
+                                            downloadProgress) =>
+                                        SizedBox(
+                                          height: 50,
+                                          width: 50,
+                                          child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<
+                                                          Color>(
+                                                      Theme.of(context).colorScheme.secondary),
+                                              value: downloadProgress.progress),
+                                        ))
                                 : Image.asset(
                                     "assets/images/defaultImage.png",
                                     fit: BoxFit.cover,
@@ -270,9 +272,11 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                       height: 10,
                     ),
                     GestureDetector(
-                      child: const Text('Update Profile Picture',
+                      child: Text('Update Profile Picture',
                           style: TextStyle(
-                              color: Color.fromRGBO(54, 189, 151, 1))),
+                              color: Theme.of(context).colorScheme.secondary
+                              // Theme.of(context).colorScheme.secondary
+                              )),
                       onTap: () => _pickImage(),
                     ),
                     const SizedBox(
@@ -346,7 +350,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                           child: ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromRGBO(54, 189, 151, 1)),
+                                    Theme.of(context).colorScheme.secondary),
                                 shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
@@ -390,11 +394,10 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                                       color: Colors.black,
                                                     ),
                                                   )
-                                                : const Text(
+                                                : Text(
                                                     "Reset Password",
                                                     style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            54, 189, 151, 1)),
+                                                        color: Theme.of(context).colorScheme.secondary),
                                                   )),
                                       TextButton(
                                           onPressed: () {
@@ -407,10 +410,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                                 .toString());
                                             Navigator.pushNamed(context, '/');
                                           },
-                                          child: const Text('Sign Out',
+                                          child:  Text('Sign Out',
                                               style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      54, 189, 151, 1))))
+                                                  color: Theme.of(context).colorScheme.secondary)))
                                     ],
                                   )
                                 : TextButton(
@@ -420,16 +422,15 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                       context.read<User>().clearUserDetails();
                                       Navigator.pushNamed(context, '/');
                                     },
-                                    child: const Text('Sign Out',
+                                    child:  Text('Sign Out',
                                         style: TextStyle(
-                                            color: Color.fromRGBO(
-                                                54, 189, 151, 1))))))
+                                            color: Theme.of(context).colorScheme.secondary)))))
                   ]))
               // isLoading
               //   ? Align(
               //       alignment: Alignment.center,r
               //       child: CircularProgressIndicator(
-              //         color: Color.fromRGBO(54, 189, 151, 1),
+              //         color: Theme.of(context).colorScheme.secondary,
               //       ))
               //   : FractionallySizedBox(
               //       alignment: Alignment.topCenter,

@@ -50,7 +50,8 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       final queryParameters = {"id": id};
       final response =
           await get(Uri.https(apiHost, '/v1/users', queryParameters));
-      log(response.body);
+      print(response.statusCode);
+      print(response.body);
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
@@ -61,6 +62,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
         });
       }
     } catch (error, stackTrace) {
+      print(stackTrace);
       log(stackTrace.toString());
       log(error.toString());
     } finally {
@@ -169,10 +171,10 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
                     color: Colors.black87,
                   ))),
           body: isLoading
-              ? const Align(
+              ? Align(
                   alignment: Alignment.center,
                   child: CircularProgressIndicator(
-                    color: Color.fromRGBO(54, 189, 151, 1),
+                    color: Theme.of(context).colorScheme.secondary,
                   ))
               : body[_currentIndex],
           bottomNavigationBar: BottomNavigationBar(
@@ -180,7 +182,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
               type: BottomNavigationBarType.fixed,
               items: _bottomNavigationBar,
               currentIndex: _currentIndex,
-              selectedItemColor: const Color.fromRGBO(116, 231, 199, 1),
+              selectedItemColor: Theme.of(context).colorScheme.secondary,
               onTap: changeIndex)),
       onWillPop: () async {
         String currentRoute = ModalRoute.of(context)!.settings.name!;

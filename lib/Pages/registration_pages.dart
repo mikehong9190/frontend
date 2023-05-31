@@ -12,309 +12,373 @@ import 'package:http/http.dart';
 import '../model/responses.dart';
 import '../store.dart';
 
-Widget firstPageWidget(controller, onNext, message, statusCode, otpController,
-    isLoading, isOtpSend, goToLogin) {
-  return Center(
-      child:
-          Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-    const Align(
-      alignment: Alignment.topLeft,
-      child: Text(
-        "Enter your email address",
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-      ),
-    ),
-    const SizedBox(
-      height: 20,
-    ),
-    const SizedBox(
-      width: double.infinity,
-      child: Text(
-        "Sign in with our email. If you don’t have a swiirl account yet, we’ll get one set up.",
-        style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: Color.fromRGBO(132, 143, 172, 1)),
-      ),
-    ),
-    const SizedBox(
-      height: 20,
-    ),
-    const SizedBox(
-      height: 20,
-    ),
-    textFieldWidget("Your Email", controller, false, null, !isOtpSend),
-    const SizedBox(
-      height: 10,
-    ),
-    if (isOtpSend) textFieldWidget("OTP", otpController, false, null, true),
-    const SizedBox(
-      height: 10,
-    ),
-    if (statusCode != 0)
-      SizedBox(
-          height: 20,
-          child: Text(
-            message,
-            style:
-                TextStyle(color: statusCode == 200 ? Colors.green : Colors.red),
-          )),
-    const SizedBox(
-      height: 20,
-    ),
-    Align(
-      alignment: Alignment.center,
-      child: ButtonTheme(
-        child: SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                      const Color.fromRGBO(54, 189, 151, 1)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50.0)))),
-              onPressed: controller.text.contains("@")
-                  ? () {
-                      onNext();
-                    }
-                  : null,
-              child: !isLoading
-                  ? const Text("Next")
-                  : const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                      ),
-                    ),
-            )),
-      ),
-    ),
+class FirstPageWidget extends StatelessWidget {
+  final controller;
+  final onNext;
+  final message;
+  final statusCode;
+  final otpController;
+  final isLoading;
+  final isOtpSend;
+  final goToLogin;
 
-    const SizedBox(
-      height: 20,
-    ),
-    const Align(
-        alignment: Alignment.topCenter,
-        child: SizedBox(
-          height: 30,
-          child: Text('OR'),
-        )),
-    const OAuthButtonWidget(content: "Continue with Google", iconUrl: "Google"),
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text("Already have an account ?"),
-        TextButton(
-            onPressed: goToLogin,
-            child: const Text(
-              'Login',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
-            ))
-      ],
-    ),
-    // OAuthButtonWidget("Continue with Facebook", "Facebook"),
-    // OAuthButtonWidget("Continue with Apple", "Apple"),
-    const SizedBox(
-      height: 30,
-    ),
-    SizedBox(
-      width: double.infinity,
-      child: Align(
-        alignment: Alignment.bottomLeft,
-        child: Image.asset("assets/images/swiirl-S-Mark-Aqua-Dot 4.png"),
-      ),
-    )
-  ]));
-}
+  const FirstPageWidget({
+    super.key,
+    required this.controller,
+    required this.onNext,
+    required this.message,
+    required this.statusCode,
+    required this.otpController,
+    required this.isLoading,
+    required this.isOtpSend,
+    required this.goToLogin,
+  });
 
-Widget secondPageWidget(
-    controller1,
-    controller2,
-    onNext,
-    message,
-    isPasswordValid,
-    arePasswordsEqual,
-    isPasswordHidden,
-    isConfirmPasswordHidden,
-    checkPasswordVisibility,
-    checkConfirmPasswordVisibility) {
-  return Center(
-    child: Column(
-      children: [
-        const Align(
+  @override
+  build(context) {
+    return Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+          const Align(
             alignment: Alignment.topLeft,
             child: Text(
-              "Create Your Password",
+              "Enter your email address",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-            )),
-        const SizedBox(
-          height: 20,
-        ),
-        const Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-              "The password must be at least 8 characters long and include at least one letter, number, and symbol, and it should not contain more than 20 characters.",
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const SizedBox(
+            width: double.infinity,
+            child: Text(
+              "Sign in with our email. If you don’t have a swiirl account yet, we’ll get one set up.",
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(132, 143, 172, 1))),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        passwordFieldWidget("Password", controller1, isPasswordHidden,
-            isPasswordValid, true, checkPasswordVisibility),
-        const SizedBox(
-          height: 10,
-        ),
-        passwordFieldWidget(
-            "Confirm New Password",
-            controller2,
-            isConfirmPasswordHidden,
-            arePasswordsEqual,
-            true,
-            checkConfirmPasswordVisibility),
-        const SizedBox(
-          height: 10,
-        ),
-        SizedBox(
-            height: 20,
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.red),
-            )),
-        const SizedBox(
-          height: 20,
-        ),
-        const SizedBox(
-          height: 30,
-          child:
-              Text("Please agree to swiirl’s Term of Use and Privacy Policy,"),
-        ),
-        ButtonTheme(
-          child: SizedBox(
-              height: 50,
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        const Color.fromRGBO(54, 189, 151, 1)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0)))),
-                onPressed: isPasswordValid && arePasswordsEqual
-                    ? () {
-                        onNext();
-                        // log(controller1.text);
-                        // log(controller2.text);
-                      }
-                    : null,
-                child: const Text("Next"),
-              )),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        const SizedBox(
-          height: 180,
-        ),
-        SizedBox(
-          width: 350,
-          child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Image.asset("assets/images/swiirl-S-Mark-Aqua-Dot 4.png"),
+                  color: Color.fromRGBO(132, 143, 172, 1)),
+            ),
           ),
-        )
-      ],
-    ),
-  );
+          const SizedBox(
+            height: 20,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          textFieldWidget("Your Email", controller, false, null, !isOtpSend),
+          const SizedBox(
+            height: 10,
+          ),
+          if (isOtpSend)
+            textFieldWidget("OTP", otpController, false, null, true),
+          const SizedBox(
+            height: 10,
+          ),
+          if (statusCode != 0)
+            SizedBox(
+                height: 20,
+                child: Text(
+                  message,
+                  style: TextStyle(
+                      color: statusCode == 200 ? Colors.green : Colors.red),
+                )),
+          const SizedBox(
+            height: 20,
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: ButtonTheme(
+              child: SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context).colorScheme.secondary),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(50.0)))),
+                    onPressed: controller.text.contains("@")
+                        ? () {
+                            onNext();
+                          }
+                        : null,
+                    child: !isLoading
+                        ? const Text("Next")
+                        : const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          ),
+                  )),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                height: 30,
+                child: Text('OR'),
+              )),
+          const OAuthButtonWidget(
+              content: "Continue with Google", iconUrl: "Google"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("Already have an account ?"),
+              TextButton(
+                  onPressed: goToLogin,
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.w700),
+                  ))
+            ],
+          ),
+          // OAuthButtonWidget("Continue with Facebook", "Facebook"),
+          // OAuthButtonWidget("Continue with Apple", "Apple"),
+          const SizedBox(
+            height: 30,
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Image.asset("assets/images/swiirl-S-Mark-Aqua-Dot 4.png"),
+            ),
+          )
+        ]));
+  }
 }
 
-Widget thirdPageWidget(
-    firstNameController,
-    lastNameController,
-    schoolDistrictController,
-    schoolNameController,
-    onNext,
-    isLoading,
-    getDistricts,
-    getSchools,
-    clickOnSuggestion,
-    clickOnSchool,
-    isRegisterButtonEnabled) {
-  return Center(
-    child: Column(
-      children: [
-        const Align(
+class SecondPageWidget extends StatelessWidget {
+  final controller1;
+  final controller2;
+  final onNext;
+  final String message;
+  final bool isPasswordValid;
+  final bool arePasswordsEqual;
+  final bool isPasswordHidden;
+  final bool isConfirmPasswordHidden;
+  final checkPasswordVisibility;
+  final checkConfirmPasswordVisibility;
+
+  const SecondPageWidget({
+    super.key,
+    required this.controller1,
+    required this.controller2,
+    required this.onNext,
+    required this.message,
+    required this.isPasswordValid,
+    required this.arePasswordsEqual,
+    required this.isPasswordHidden,
+    required this.isConfirmPasswordHidden,
+    required this.checkPasswordVisibility,
+    required this.checkConfirmPasswordVisibility,
+  });
+
+  @override
+  Widget build(context) {
+    return Center(
+      child: Column(
+        children: [
+          const Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Create Your Password",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+              )),
+          const SizedBox(
+            height: 20,
+          ),
+          const Align(
             alignment: Alignment.topLeft,
             child: Text(
-              "Registration Details",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-            )),
-        const SizedBox(
-          height: 20,
-        ),
-        const Align(
-          alignment: Alignment.topLeft,
-          child: Text("This is used to build your profile on swiirl",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: Color.fromRGBO(132, 143, 172, 1),
+                "The password must be at least 8 characters long and include at least one letter, number, and symbol, and it should not contain more than 20 characters.",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromRGBO(132, 143, 172, 1))),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          passwordFieldWidget("Password", controller1, isPasswordHidden,
+              isPasswordValid, true, checkPasswordVisibility),
+          const SizedBox(
+            height: 10,
+          ),
+          passwordFieldWidget(
+              "Confirm New Password",
+              controller2,
+              isConfirmPasswordHidden,
+              arePasswordsEqual,
+              true,
+              checkConfirmPasswordVisibility),
+          const SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+              height: 20,
+              child: Text(
+                message,
+                style: const TextStyle(color: Colors.red),
               )),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        textFieldWidget("First Name", firstNameController, false, null, true),
-        const SizedBox(
-          height: 15,
-        ),
-        textFieldWidget("Last Name", lastNameController, false, null, true),
-        searchTextFieldWidget("School District", schoolDistrictController,
-            false, null, getDistricts, clickOnSuggestion),
-        schoolSearchFieldWidget("School Name", schoolNameController, false,
-            null, getSchools, clickOnSchool),
-        // textFieldWidget(
-        //     "School District", schoolDistrictController, false, null, true),
-        // textFieldWidget("School Name", schoolNameController, false, null, true),
-        const SizedBox(
-          height: 60,
-        ),
-        ButtonTheme(
-          child: SizedBox(
-              height: 50,
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        const Color.fromRGBO(54, 189, 151, 1)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0)))),
-                onPressed: isRegisterButtonEnabled
-                    ? () {
-                        onNext();
-                      }
-                    : null,
-                child: isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Text("Next"),
+          const SizedBox(
+            height: 20,
+          ),
+          const SizedBox(
+            height: 30,
+            child: Text(
+                "Please agree to swiirl’s Term of Use and Privacy Policy,"),
+          ),
+          ButtonTheme(
+            child: SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Theme.of(context).colorScheme.secondary),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)))),
+                  onPressed: isPasswordValid && arePasswordsEqual
+                      ? () {
+                          onNext();
+                          // log(controller1.text);
+                          // log(controller2.text);
+                        }
+                      : null,
+                  child: const Text("Next"),
+                )),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const SizedBox(
+            height: 180,
+          ),
+          SizedBox(
+            width: 350,
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Image.asset("assets/images/swiirl-S-Mark-Aqua-Dot 4.png"),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class ThirdPageWidget extends StatelessWidget {
+  final firstNameController;
+  final lastNameController;
+  final schoolDistrictController;
+  final schoolNameController;
+  final onNext;
+  final isLoading;
+  final getDistricts;
+  final getSchools;
+  final clickOnSuggestion;
+  final clickOnSchool;
+  final isRegisterButtonEnabled;
+
+  const ThirdPageWidget({
+    super.key,
+    required this.firstNameController,
+    required this.lastNameController,
+    required this.schoolDistrictController,
+    required this.schoolNameController,
+    required this.onNext,
+    required this.isLoading,
+    required this.getDistricts,
+    required this.getSchools,
+    required this.clickOnSuggestion,
+    required this.clickOnSchool,
+    required this.isRegisterButtonEnabled,
+  });
+
+  @override
+  build(context) {
+    return Center(
+      child: Column(
+        children: [
+          const Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Registration Details",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
               )),
-        ),
-      ],
-    ),
-  );
+          const SizedBox(
+            height: 20,
+          ),
+          const Align(
+            alignment: Alignment.topLeft,
+            child: Text("This is used to build your profile on swiirl",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Color.fromRGBO(132, 143, 172, 1),
+                )),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          textFieldWidget("First Name", firstNameController, false, null, true),
+          const SizedBox(
+            height: 15,
+          ),
+          textFieldWidget("Last Name", lastNameController, false, null, true),
+          searchTextFieldWidget("School District", schoolDistrictController,
+              false, null, getDistricts, clickOnSuggestion),
+          schoolSearchFieldWidget("School Name", schoolNameController, false,
+              null, getSchools, clickOnSchool),
+          // textFieldWidget(
+          //     "School District", schoolDistrictController, false, null, true),
+          // textFieldWidget("School Name", schoolNameController, false, null, true),
+          const SizedBox(
+            height: 60,
+          ),
+          ButtonTheme(
+            child: SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Theme.of(context).colorScheme.secondary),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)))),
+                  onPressed: isRegisterButtonEnabled
+                      ? () {
+                          onNext();
+                        }
+                      : null,
+                  child: isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text("Next"),
+                )),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class GoogleAuthWidget extends StatefulWidget {
@@ -490,7 +554,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                          const Color.fromRGBO(54, 189, 151, 1)),
+                          Theme.of(context).colorScheme.secondary),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)))),

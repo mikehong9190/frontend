@@ -253,7 +253,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                     "Send OTP",
                     style: TextStyle(
                         color: !isVerified
-                            ? const Color.fromRGBO(54, 189, 151, 1)
+                            ?  Theme.of(context).colorScheme.secondary
                             : Colors.blueGrey),
                   ),
           ),
@@ -278,7 +278,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                       "Verify OTP",
                       style: TextStyle(
                           color: !isVerified
-                              ? const Color.fromRGBO(54, 189, 151, 1)
+                              ?  Theme.of(context).colorScheme.secondary
                               : Colors.blueGrey),
                     ),
             ),
@@ -316,7 +316,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                          const Color.fromRGBO(54, 189, 151, 1)),
+                           Theme.of(context).colorScheme.secondary),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)))),

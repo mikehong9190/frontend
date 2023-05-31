@@ -223,7 +223,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                     "Verify OTP",
                     style: TextStyle(
                         color: !isVerified
-                            ? const Color.fromRGBO(54, 189, 151, 1)
+                            ?  Theme.of(context).colorScheme.secondary
                             : Colors.blueGrey),
                   ),
           ),
@@ -253,7 +253,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                          const Color.fromRGBO(54, 189, 151, 1)),
+                           Theme.of(context).colorScheme.secondary),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)))),

@@ -49,8 +49,8 @@ class AccountDetailWidget extends StatelessWidget {
                                   width: 50,
                                   child: CircularProgressIndicator(
                                       valueColor:
-                                          const AlwaysStoppedAnimation<Color>(
-                                              Color.fromRGBO(54, 189, 151, 1)),
+                                           AlwaysStoppedAnimation<Color>(
+                                              Theme.of(context).colorScheme.secondary),
                                       value: downloadProgress.progress),
                                 ))
                         // Image.network(
