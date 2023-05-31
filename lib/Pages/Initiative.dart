@@ -125,10 +125,10 @@ class _InitiativeState extends State<Initiative> {
   @override
   Widget build(context) {
     return isLoading
-        ? const Align(
+        ? Align(
             alignment: Alignment.center,
             child: CircularProgressIndicator(
-              color: Color.fromRGBO(54, 189, 151, 1),
+              color: Theme.of(context).colorScheme.secondary,
             ))
         : Center(
             child: Container(
@@ -147,25 +147,34 @@ class _InitiativeState extends State<Initiative> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Expanded(
-                      child: ListView.builder(
-                          itemCount: initiatives.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 20),
-                              child: InitiativesForInitiativeWidget(
-                                  images: initiatives[index].images,
-                                  target: initiatives[index].target,
-                                  id: initiatives[index].id,
-                                  initiativeTypeId:
-                                      initiatives[index].initiativeTypeId,
-                                  numberOfStudents:
-                                      initiatives[index].numberOfStudents,
-                                  grade: initiatives[index].grade,
-                                  name: initiatives[index].name),
-                            );
-                          }),
-                    ),
+                    initiatives.isEmpty
+                        ? const Expanded(
+                            child: Center(
+                                child: Text(
+                              'No initiatives added yet',
+                              style: TextStyle(fontSize: 18),
+                            )),
+                          )
+                        : Expanded(
+                            child: ListView.builder(
+                                itemCount: initiatives.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 10),
+                                    child: InitiativesForInitiativeWidget(
+                                        images: initiatives[index].images,
+                                        target: initiatives[index].target,
+                                        id: initiatives[index].id,
+                                        initiativeTypeId:
+                                            initiatives[index].initiativeTypeId,
+                                        numberOfStudents:
+                                            initiatives[index].numberOfStudents,
+                                        grade: initiatives[index].grade,
+                                        name: initiatives[index].name),
+                                  );
+                                }),
+                          ),
                     // Image.asset("assets/images/swiirl-black.png"),
                     const SizedBox(
                       height: 30,

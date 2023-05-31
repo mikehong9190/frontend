@@ -77,12 +77,12 @@ class _InitiativeState extends State<SetupInitiative> {
           ),
           const SizedBox(height: 10),
           isLoading
-              ? Column(children: const [
-                  SizedBox(height: 30),
+              ? Column(children:  [
+                  const SizedBox(height: 30),
                   Align(
                     alignment: Alignment.center,
                     child: CircularProgressIndicator(
-                      color: Color.fromRGBO(54, 189, 151, 1),
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 ])
@@ -164,7 +164,7 @@ class _InitiativeState extends State<SetupInitiative> {
               child: ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
-                    const Color.fromRGBO(54, 189, 151, 1),
+                     Theme.of(context).colorScheme.secondary,
                   ),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(

@@ -56,6 +56,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Swirl.io',
       theme: ThemeData.light().copyWith(
+          colorScheme: const ColorScheme.light(
+              secondary: Color.fromRGBO(54, 189, 151, 1)
+              ),
           textTheme: GoogleFonts.urbanistTextTheme(Theme.of(context).textTheme),
           inputDecorationTheme: const InputDecorationTheme(
               focusedBorder: OutlineInputBorder(
@@ -69,7 +72,7 @@ class MyApp extends StatelessWidget {
         '/update-profile': (context) => const UpdateProfileWidget(),
         '/google-auth-school': (context) => const GoogleAuthWidget(),
         '/reset-password': (context) => const ResetPasswordWidget(),
-        '/forget-password' : (context) => const ForgetPasswordWidget(),
+        '/forget-password': (context) => const ForgetPasswordWidget(),
         '/login': (context) => const LoginWidget(),
         // Add more routes as needed
       },

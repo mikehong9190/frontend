@@ -52,7 +52,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
         //           width: 100,
         //           child: CircularProgressIndicator(
         //               valueColor: const AlwaysStoppedAnimation<Color>(
-        //                   Color.fromRGBO(54, 189, 151, 1)),
+        //                   Theme.of(context).colorScheme.secondary),
         //               value: downloadProgress.progress),
         //         )),
         Padding(
@@ -86,7 +86,6 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                   width: 220,
                   child: ElevatedButton(
                       onPressed: () {
-                        // log('$id $name $target $grade $noOfStudents');
                         Navigator.push(
                           context,
                           MaterialPageRoute(

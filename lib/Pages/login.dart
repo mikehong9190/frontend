@@ -168,10 +168,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                           onPressed: () {
                             Navigator.pushNamed(context, "/forget-password");
                           },
-                          child: const Text(
+                          child: Text(
                             'forget password ?',
                             style: TextStyle(
-                                color: Color.fromRGBO(54, 189, 151, 1)),
+                                color: Theme.of(context).colorScheme.secondary),
                           ))),
                 ),
               ),
@@ -194,7 +194,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                     child: ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
-                              const Color.fromRGBO(54, 189, 151, 1)),
+                              Theme.of(context).colorScheme.secondary),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(

@@ -124,7 +124,7 @@ class _InitiativeGradeState extends State<SetupInitiativeGrade> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
-                        const Color.fromRGBO(54, 189, 151, 1)),
+                        Theme.of(context).colorScheme.secondary),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0))),

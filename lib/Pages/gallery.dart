@@ -338,12 +338,12 @@ class _GalleryState extends State<Gallery> {
                 ),
               ),
               isLoading
-                  ? Column(children: const [
-                      SizedBox(height: 70),
+                  ? Column(children:  [
+                      const SizedBox(height: 70),
                       Align(
                         alignment: Alignment.center,
                         child: CircularProgressIndicator(
-                          color: Color.fromRGBO(54, 189, 151, 1),
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ])
@@ -467,7 +467,7 @@ class _GalleryState extends State<Gallery> {
                               : const Color.fromARGB(255, 212, 211, 211),
                         ),
                       ),
-                      backgroundColor: const Color.fromRGBO(54, 189, 151, 1),
+                      backgroundColor:  Theme.of(context).colorScheme.secondary,
                       onPressed: imageModel.finalImages.isNotEmpty
                           ? () {
                               getPresignedUrls(context, imageModel.finalImages);
@@ -481,7 +481,7 @@ class _GalleryState extends State<Gallery> {
                 bottom: 16.0,
                 right: 0,
                 child: FloatingActionButton(
-                  backgroundColor: const Color.fromRGBO(54, 189, 151, 1),
+                  backgroundColor:  Theme.of(context).colorScheme.secondary,
                   onPressed: () {
                     showDialog(
                       context: context,
@@ -545,9 +545,9 @@ class _GalleryState extends State<Gallery> {
                           ),
                           actions: <Widget>[
                             TextButton(
-                              child: const Text('Close',
+                              child:  Text('Close',
                                   style: TextStyle(
-                                      color: Color.fromRGBO(54, 189, 151, 1))),
+                                      color: Theme.of(context).colorScheme.secondary)),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },

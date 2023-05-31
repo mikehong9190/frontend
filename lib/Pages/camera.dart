@@ -148,7 +148,7 @@ class _CameraState extends State<ICamera> {
     //                       child: ElevatedButton(
     //                         style: ButtonStyle(
     //                             backgroundColor: MaterialStateProperty.all(
-    //                                 const Color.fromRGBO(54, 189, 151, 1)),
+    //                                 const Theme.of(context).colorScheme.secondary),
     //                             shape: MaterialStateProperty.all<
     //                                     RoundedRectangleBorder>(
     //                                 RoundedRectangleBorder(
