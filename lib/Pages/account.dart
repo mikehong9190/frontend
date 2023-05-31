@@ -97,12 +97,14 @@ class _AccountWidgetState extends State<AccountWidget> {
               color: Color.fromRGBO(54, 189, 151, 1),
             ))
         : SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: 1000 + MediaQuery.of(context).size.height,
-              ),
-              child: Column(
-                children: [
+            // child: ConstrainedBox(
+            //   constraints: BoxConstraints(
+            //     maxHeight: 1000 + MediaQuery.of(context).size.height,
+            //   ),
+            child: Column(
+              children: [
+                // Container(
+                //   child: 
                   AccountDetailWidget(
                       profilePicture: profilePicture,
                       collectiblesLength: collectibles.length,
@@ -111,51 +113,56 @@ class _AccountWidgetState extends State<AccountWidget> {
                       moneyRaised: moneyRaised,
                       name: name,
                       goalsMets: goalsMets),
-                  Expanded(
+                // ),
+                // Expanded(
+                    // child: 
+                    SizedBox (
                       child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 0),
-                    child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: collectibles.length,
-                        scrollDirection: Axis.vertical,
-                        // shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                                crossAxisSpacing: 1,
-                                mainAxisSpacing: 1,
-                                maxCrossAxisExtent: 220),
-                        itemBuilder: (_, index) {
-                          return Center(
-                              child: GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text("Collectibles"),
-                                      content: collectibles[index].isNotEmpty
-                                          ? Image.network(
-                                              collectibles[index],
-                                              width: 500,
-                                              height: 500,
-                                            )
-                                          : Image.asset(
-                                              "assets/images/defaultImage.png",
-                                              width: 500,
-                                              height: 500,
-                                            ),
-                                    );
-                                  });
-                            },
-                            child: CollectiblesWidget(
-                              collectibleImage: collectibles[index],
-                              dimension: 170,
-                            ),
-                          ));
-                        }),
-                  )),
-                ],
-              ),
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                  child: GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: collectibles.length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                              crossAxisSpacing: 1,
+                              mainAxisSpacing: 1,
+                              maxCrossAxisExtent: 220),
+                      itemBuilder: (_, index) {
+                        return 
+                        // Center(
+                        //     child: 
+                            GestureDetector(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text("Collectibles"),
+                                    content: collectibles[index].isNotEmpty
+                                        ? Image.network(
+                                            collectibles[index],
+                                            width: 500,
+                                            height: 500,
+                                          )
+                                        : Image.asset(
+                                            "assets/images/defaultImage.png",
+                                            width: 500,
+                                            height: 500,
+                                          ),
+                                  );
+                                });
+                          },
+                          child: CollectiblesWidget(
+                            collectibleImage: collectibles[index],
+                            dimension: 170,
+                          ),
+                        );
+                        // );
+                      }),
+                ))
+              ],
             ),
           );
   }

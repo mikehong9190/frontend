@@ -5,7 +5,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 // import 'package:textfield_search/textfield_search.dart';
 import '../model/responses.dart';
 
-Widget TextFieldWidget(
+Widget textFieldWidget(
   label,
   controller,
   isPassword,
@@ -13,7 +13,7 @@ Widget TextFieldWidget(
   isEnabled,
 ) {
   // final String label;
-  // TextFieldWidget ({super.key,required this.label,});
+  // textFieldWidget ({super.key,required this.label,});
   return Column(
     children: [
       SizedBox(
@@ -66,10 +66,10 @@ Widget TextFieldWidget(
   );
 }
 
-Widget SearchTextFieldWidget(
+Widget searchTextFieldWidget(
     label, controller, isPassword, isValid, getDistricts, clickOnSuggestion) {
   // final String label;
-  // TextFieldWidget ({super.key,required this.label,});
+  // textFieldWidget ({super.key,required this.label,});
   return Column(
     children: [
       SizedBox(
@@ -118,10 +118,10 @@ Widget SearchTextFieldWidget(
   );
 }
 
-Widget SchoolSearchFieldWidget(
+Widget schoolSearchFieldWidget(
     label, controller, isPassword, isValid, getSchools, clickOnSchool) {
   // final String label;
-  // TextFieldWidget ({super.key,required this.label,});
+  // textFieldWidget ({super.key,required this.label,});
   return Column(
     children: [
       SizedBox(
@@ -171,10 +171,10 @@ Widget SchoolSearchFieldWidget(
   );
 }
 
-Widget PasswordFieldWidget(
+Widget passwordFieldWidget(
     label, controller, isPassword, isValid, isEnabled, changeVisibility) {
   // final String label;
-  // TextFieldWidget ({super.key,required this.label,});
+  // textFieldWidget ({super.key,required this.label,});
   return Column(
     children: [
       SizedBox(

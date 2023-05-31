@@ -6,7 +6,7 @@ import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
 import '../components/button.dart';
-import '../components/TextField.dart';
+import '../components/textField.dart';
 // import '../components/Button.dart';
 import '../store.dart';
 import '../constants.dart';
@@ -151,8 +151,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                   ),
                 ],
               ),
-              TextFieldWidget("Your Email", emailController, false, null, true),
-              PasswordFieldWidget(
+              textFieldWidget("Your Email", emailController, false, null, true),
+              passwordFieldWidget(
                   "Password",
                   passwordController,
                   isPasswordHidden,

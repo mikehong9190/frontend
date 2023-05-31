@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:frontend/Pages/Initiative.dart';
+import 'package:frontend/Pages/initiative.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +22,7 @@ class MyStateFulWidget extends StatefulWidget {
 
 class _MyStateWidgetState extends State<MyStateFulWidget> {
   bool isLoading = false;
-  int _currentIndex = 3;
+  int _currentIndex = 0;
   String schoolId = '';
   String schoolName = '';
   String schoolLocation = '';

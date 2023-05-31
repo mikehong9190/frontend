@@ -151,7 +151,6 @@ class _InitiativeState extends State<Initiative> {
                       child: ListView.builder(
                           itemCount: initiatives.length,
                           itemBuilder: (context, index) {
-                            print(initiatives[index]);
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 20),
                               child: InitiativesForInitiativeWidget(

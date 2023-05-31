@@ -23,10 +23,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 // import '../store.dart';
 
 class HomeWidget extends StatefulWidget {
-  String schoolId;
-  dynamic schoolName;
-  dynamic schoolLocation;
-  HomeWidget(
+  final String schoolId;
+  final dynamic schoolName;
+  final dynamic schoolLocation;
+  const HomeWidget(
       {super.key,
       required this.schoolId,
       this.schoolName,
@@ -63,12 +63,6 @@ class _HomeWidgetState extends State<HomeWidget> {
         final jsonData = SchoolData.fromJson(jsonDecode(response.body));
         setState(() {
           initiatives = jsonData.data;
-          // initiatives = [
-          //   ...jsonData.data,
-          //   ...jsonData.data,
-          //   ...jsonData.data,
-          //   ...jsonData.data
-          // ];
         });
       }
     } catch (error, stackTrace) {
@@ -88,12 +82,14 @@ class _HomeWidgetState extends State<HomeWidget> {
             child: CircularProgressIndicator(
               color: Color.fromRGBO(54, 189, 151, 1),
             ))
-        : SingleChildScrollView(
-            child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height + 1000,
-            ),
-            child: Column(
+        : 
+        SingleChildScrollView(
+        //     child: ConstrainedBox(
+        //     constraints: BoxConstraints(
+        //       maxHeight: MediaQuery.of(context).size.height + 1000,
+        //     ),
+            child: 
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
@@ -129,14 +125,16 @@ class _HomeWidgetState extends State<HomeWidget> {
                     ],
                   ),
                 ),
-                Expanded(
-                    child: SizedBox(
-                        child: Container(
+                // Expanded(
+                //     child: 
+                    SizedBox(
+                        child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     itemCount: initiatives.length,
+                    shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return SingleInitiativeWidget(
                           images: initiatives[index].images,
@@ -144,10 +142,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                           lastName: initiatives[index].userLastName);
                     },
                   ),
-                )))
+                ))
               ],
-            ),
-          ));
-    ;
+            ));
   }
 }

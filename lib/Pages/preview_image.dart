@@ -34,9 +34,9 @@ class ImagePreview extends StatelessWidget {
     var imageModel = Provider.of<User>(context);
     late dynamic id = initiativeTypeId;
     late dynamic name = initiativeType;
-    late dynamic initiative_target = target;
-    late dynamic initiative_grade = grade;
-    late dynamic initiative_noOfStudents = noOfStudents;
+    late dynamic initiativeTarget = target;
+    late dynamic initiativeGrade = grade;
+    late dynamic initiativeNoOfStudents = noOfStudents;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -91,9 +91,9 @@ class ImagePreview extends StatelessWidget {
                           builder: (_) => Gallery(
                               initiativeTypeId: id,
                               initiativeType: name,
-                              target: initiative_target,
-                              grade: initiative_grade,
-                              noOfStudents: initiative_noOfStudents),
+                              target: initiativeTarget,
+                              grade: initiativeGrade,
+                              noOfStudents: initiativeNoOfStudents),
                         ),
                       );
                     },

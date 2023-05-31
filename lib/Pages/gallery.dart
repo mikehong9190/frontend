@@ -113,7 +113,7 @@ class _GalleryState extends State<Gallery> {
           headers: {"Content-Type": contentType},
         );
         if (response.statusCode != 200) {
-          print(response.reasonPhrase);
+          log(response.reasonPhrase.toString());
           throw Exception('Failed to upload image at index $i');
         }
       }
@@ -156,10 +156,10 @@ class _GalleryState extends State<Gallery> {
         log("Step 1---------done");
         uploadImages(context, res['urls'], images);
       } else {
-        print(response);
+        log(response.toString());
       }
     } catch (error) {
-      print(error);
+      log(error.toString());
     }
   }
 
@@ -264,8 +264,8 @@ class _GalleryState extends State<Gallery> {
                 onPressed: () {
                   imageModel.clearImages();
                   imageModel.clearFinalImages();
-
-                  Navigator.of(context).pop(true);
+                  Navigator.pushNamed(context, '/app');
+                  // Navigator.of(context).pop(true);
                 },
               ),
             ],

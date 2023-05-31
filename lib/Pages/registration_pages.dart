@@ -5,14 +5,14 @@ import 'dart:developer';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:textfield_search/textfield_search.dart';
 
-import '../components/TextField.dart';
+import '../components/textField.dart';
 import '../components/button.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 import '../model/responses.dart';
 import '../store.dart';
 
-Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
+Widget firstPageWidget(controller, onNext, message, statusCode, otpController,
     isLoading, isOtpSend, goToLogin) {
   return Center(
       child:
@@ -43,11 +43,11 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
     const SizedBox(
       height: 20,
     ),
-    TextFieldWidget("Your Email", controller, false, null, !isOtpSend),
+    textFieldWidget("Your Email", controller, false, null, !isOtpSend),
     const SizedBox(
       height: 10,
     ),
-    if (isOtpSend) TextFieldWidget("OTP", otpController, false, null, true),
+    if (isOtpSend) textFieldWidget("OTP", otpController, false, null, true),
     const SizedBox(
       height: 10,
     ),
@@ -131,7 +131,7 @@ Widget FirstPageWidget(controller, onNext, message, statusCode, otpController,
   ]));
 }
 
-Widget SecondPageWidget(
+Widget secondPageWidget(
     controller1,
     controller2,
     onNext,
@@ -140,8 +140,8 @@ Widget SecondPageWidget(
     arePasswordsEqual,
     isPasswordHidden,
     isConfirmPasswordHidden,
-    checkPasswordVisiblity,
-    checkConfirmPasswordVisiblity) {
+    checkPasswordVisibility,
+    checkConfirmPasswordVisibility) {
   return Center(
     child: Column(
       children: [
@@ -166,18 +166,18 @@ Widget SecondPageWidget(
         const SizedBox(
           height: 30,
         ),
-        PasswordFieldWidget("Password", controller1, isPasswordHidden,
-            isPasswordValid, true, checkPasswordVisiblity),
+        passwordFieldWidget("Password", controller1, isPasswordHidden,
+            isPasswordValid, true, checkPasswordVisibility),
         const SizedBox(
           height: 10,
         ),
-        PasswordFieldWidget(
+        passwordFieldWidget(
             "Confirm New Password",
             controller2,
             isConfirmPasswordHidden,
             arePasswordsEqual,
             true,
-            checkConfirmPasswordVisiblity),
+            checkConfirmPasswordVisibility),
         const SizedBox(
           height: 10,
         ),
@@ -234,7 +234,7 @@ Widget SecondPageWidget(
   );
 }
 
-Widget ThirdPageWidget(
+Widget thirdPageWidget(
     firstNameController,
     lastNameController,
     schoolDistrictController,
@@ -270,18 +270,18 @@ Widget ThirdPageWidget(
         const SizedBox(
           height: 30,
         ),
-        TextFieldWidget("First Name", firstNameController, false, null, true),
+        textFieldWidget("First Name", firstNameController, false, null, true),
         const SizedBox(
           height: 15,
         ),
-        TextFieldWidget("Last Name", lastNameController, false, null, true),
-        SearchTextFieldWidget("School District", schoolDistrictController,
+        textFieldWidget("Last Name", lastNameController, false, null, true),
+        searchTextFieldWidget("School District", schoolDistrictController,
             false, null, getDistricts, clickOnSuggestion),
-        SchoolSearchFieldWidget("School Name", schoolNameController, false,
+        schoolSearchFieldWidget("School Name", schoolNameController, false,
             null, getSchools, clickOnSchool),
-        // TextFieldWidget(
+        // textFieldWidget(
         //     "School District", schoolDistrictController, false, null, true),
-        // TextFieldWidget("School Name", schoolNameController, false, null, true),
+        // textFieldWidget("School Name", schoolNameController, false, null, true),
         const SizedBox(
           height: 60,
         ),
@@ -332,15 +332,15 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
   bool isLoading = false;
   // late var userId;
 
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // final UserId = (ModalRoute.of(context)?.settings.arguments ??
-    //     <String, dynamic>{}) as Map;
-    // setState(() {
-    //   userId = UserId["id"];
-    // });
-    // put your logic from initState here
-  }
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   // final UserId = (ModalRoute.of(context)?.settings.arguments ??
+  //   //     <String, dynamic>{}) as Map;
+  //   // setState(() {
+  //   //   userId = UserId["id"];
+  //   // });
+  //   // put your logic from initState here
+  // }
 
   @override
   void initState() {
@@ -446,7 +446,6 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: implement build
     return Scaffold(
         body: Container(
       margin: const EdgeInsets.symmetric(horizontal: 30),
@@ -474,13 +473,13 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
           const SizedBox(
             height: 10,
           ),
-          SearchTextFieldWidget("School District", schoolDistrictController,
+          searchTextFieldWidget("School District", schoolDistrictController,
               false, null, getDistricts, clickOnSuggestion),
-          SchoolSearchFieldWidget("School Name", schoolNameController, false,
+          schoolSearchFieldWidget("School Name", schoolNameController, false,
               null, getSchools, clickOnSchool),
-          // TextFieldWidget(
+          // textFieldWidget(
           //     "School District", schoolDistrictController, false, null, true),
-          // TextFieldWidget("School Name", schoolNameController, false, null, true),
+          // textFieldWidget("School Name", schoolNameController, false, null, true),
           const SizedBox(
             height: 60,
           ),
