@@ -19,7 +19,7 @@ class CollectiblesWidget extends StatelessWidget {
                   imageUrl: collectibleImage,
                   width: dimension,
                   height: dimension,
-                  boxFit: BoxFit.fill)
+                  boxFit: BoxFit.cover)
               // CachedNetworkImage(
               //     width: 150,
               //     height: 150,

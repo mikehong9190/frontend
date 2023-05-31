@@ -146,18 +146,29 @@ class _AccountWidgetState extends State<AccountWidget> {
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          insetPadding: EdgeInsets.zero,
-                                          title: const Text("Collectibles"),
-                                          content: collectibles[index]
-                                                  .isNotEmpty
-                                              ? FancyShimmerImage(
-                                                  imageUrl: collectibles[index])
-                                              : Image.asset(
-                                                  "assets/images/defaultImage.png",
-                                                  width: 600,
-                                                  height: 600,
-                                                ),
-                                        );
+                                            insetPadding: EdgeInsets.zero,
+                                            title: const Text("Collectibles"),
+                                            content: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.6,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.6,
+                                                child: collectibles[index]
+                                                        .isNotEmpty
+                                                    ? FancyShimmerImage(
+                                                        imageUrl:
+                                                            collectibles[index],
+                                                            boxFit: BoxFit.contain,
+                                                            )
+                                                    : Image.asset(
+                                                        "assets/images/defaultImage.png",
+                                                        width: 600,
+                                                        height: 600,
+                                                      )));
                                       });
                                 },
                                 child: CollectiblesWidget(
