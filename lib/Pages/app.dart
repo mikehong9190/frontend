@@ -22,7 +22,7 @@ class MyStateFulWidget extends StatefulWidget {
 
 class _MyStateWidgetState extends State<MyStateFulWidget> {
   bool isLoading = false;
-  int _currentIndex = 3;
+  int _currentIndex = 0;
   String schoolId = '';
   String schoolName = '';
   String schoolLocation = '';

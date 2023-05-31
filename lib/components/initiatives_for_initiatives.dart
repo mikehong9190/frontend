@@ -39,7 +39,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
       children: [
         CollectiblesWidget(
           collectibleImage: images[0],
-          dimension: 140,
+          dimension: 120,
         ),
         // CachedNetworkImage(
         //     width: 140,
