@@ -146,16 +146,17 @@ class _AccountWidgetState extends State<AccountWidget> {
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
+                                          insetPadding: EdgeInsets.zero,
                                           title: const Text("Collectibles"),
-                                          content:
-                                              collectibles[index].isNotEmpty
-                                                  ? FancyShimmerImage(imageUrl: collectibles[index])
-                                              
-                                                  : Image.asset(
-                                                      "assets/images/defaultImage.png",
-                                                      width: 600,
-                                                      height: 600,
-                                                    ),
+                                          content: collectibles[index]
+                                                  .isNotEmpty
+                                              ? FancyShimmerImage(
+                                                  imageUrl: collectibles[index])
+                                              : Image.asset(
+                                                  "assets/images/defaultImage.png",
+                                                  width: 600,
+                                                  height: 600,
+                                                ),
                                         );
                                       });
                                 },

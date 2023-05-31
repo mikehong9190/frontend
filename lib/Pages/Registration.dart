@@ -267,7 +267,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       }
       final response = await post(Uri.https(apiHost, '/v1/signup'),
           body: jsonEncode(payload));
-          print(response.statusCode);
+      print(response.statusCode);
       if (response.statusCode == 200) {
         final jsonData =
             RegisteredUserResponse.fromJson(jsonDecode(response.body));
@@ -422,10 +422,13 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     });
 
     passwordController.addListener(() {
+      bool hasSpecialCharacters =
+          passwordController.text.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
       setState(
         () {
           if (passwordController.text.length >= 8 &&
-              passwordController.text.length < 20) {
+              passwordController.text.length < 20 &&
+              hasSpecialCharacters) {
             setState(() {
               isPasswordValid = true;
             });

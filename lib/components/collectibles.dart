@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 class CollectiblesWidget extends StatelessWidget {
   final dynamic collectibleImage;
   final double dimension;
-  const CollectiblesWidget({super.key, this.collectibleImage,required this.dimension});
+  const CollectiblesWidget(
+      {super.key, this.collectibleImage, required this.dimension});
 
   @override
   Widget build(context) {
@@ -14,7 +15,11 @@ class CollectiblesWidget extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
           child: collectibleImage.isNotEmpty
-              ? FancyShimmerImage(imageUrl: collectibleImage,width: dimension,height: dimension)
+              ? FancyShimmerImage(
+                  imageUrl: collectibleImage,
+                  width: dimension,
+                  height: dimension,
+                  boxFit: BoxFit.fill)
               // CachedNetworkImage(
               //     width: 150,
               //     height: 150,
