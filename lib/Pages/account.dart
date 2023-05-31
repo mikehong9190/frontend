@@ -14,6 +14,7 @@ import '../constants.dart';
 import '../components/collectibles.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
 import '../components/account_details.dart';
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 
 class AccountWidget extends StatefulWidget {
   const AccountWidget({
@@ -148,15 +149,12 @@ class _AccountWidgetState extends State<AccountWidget> {
                                           title: const Text("Collectibles"),
                                           content:
                                               collectibles[index].isNotEmpty
-                                                  ? Image.network(
-                                                      collectibles[index],
-                                                      width: 500,
-                                                      height: 500,
-                                                    )
+                                                  ? FancyShimmerImage(imageUrl: collectibles[index])
+                                              
                                                   : Image.asset(
                                                       "assets/images/defaultImage.png",
-                                                      width: 500,
-                                                      height: 500,
+                                                      width: 600,
+                                                      height: 600,
                                                     ),
                                         );
                                       });
