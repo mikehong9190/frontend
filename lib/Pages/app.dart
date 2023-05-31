@@ -156,11 +156,13 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
                         ))
                     : Container()
               ],
-              leading: IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/app");
-                  },
-                  icon: SvgPicture.asset("assets/svg/Vector.svg")),
+              leading: _currentIndex != 0
+                  ? IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/app");
+                      },
+                      icon: SvgPicture.asset("assets/svg/Vector.svg"))
+                  : Container(),
               backgroundColor: Colors.white,
               title: Text(topBar[_currentIndex],
                   style: const TextStyle(

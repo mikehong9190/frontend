@@ -1,17 +1,17 @@
 import 'dart:convert';
 // import 'dart:html';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'dart:io';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/components/textField.dart';
-// import 'package:google_fonts/google_fonts.dart';
 
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../model/responses.dart';
 import '../store.dart';
@@ -244,12 +244,22 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                 height: 80,
                               )
                             : profilePicture.isNotEmpty
-                                ? Image.network(
-                                    profilePicture,
-                                    fit: BoxFit.cover,
-                                    width: 80.0,
-                                    height: 80.0,
-                                  )
+                                ? CachedNetworkImage(
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                            imageUrl: profilePicture,
+                            progressIndicatorBuilder: (context, url,
+                                    downloadProgress) =>
+                                SizedBox(
+                                  height: 50,
+                                  width: 50,
+                                  child: CircularProgressIndicator(
+                                      valueColor:
+                                          const AlwaysStoppedAnimation<Color>(
+                                              Color.fromRGBO(54, 189, 151, 1)),
+                                      value: downloadProgress.progress),
+                                ))
                                 : Image.asset(
                                     "assets/images/defaultImage.png",
                                     fit: BoxFit.cover,

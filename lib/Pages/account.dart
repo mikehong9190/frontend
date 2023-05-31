@@ -156,7 +156,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                           },
                           child: CollectiblesWidget(
                             collectibleImage: collectibles[index],
-                            dimension: 170,
+                            dimension: 160,
                           ),
                         );
                         // );
