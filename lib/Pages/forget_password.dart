@@ -8,6 +8,8 @@
 // import '../store.dart';
 // import 'package:provider/provider.dart';
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'dart:developer';
@@ -102,8 +104,8 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       });
       final response = await post(Uri.https(apiHost, '/v1/validate-email'),
           body: jsonEncode(payload));
-      log (response.body);
-       final jsonData =
+      log(response.body);
+      final jsonData =
           EmailVerificationResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         setState(() {
@@ -117,7 +119,6 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
           message = jsonData.message;
         });
       }
-
     } catch (error, stackTrace) {
       log(stackTrace.toString());
     } finally {
@@ -138,7 +139,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
     try {
       final response = await post(Uri.https(apiHost, '/v1/reset-password'),
           body: jsonEncode(payload));
-      log (response.body);
+      log(response.body);
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/login");
         // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reset"});
@@ -172,7 +173,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
 
       final response = await post(Uri.https(apiHost, '/v1/verify-otp'),
           body: jsonEncode(payload));
-           final jsonData =
+      final jsonData =
           OTPVerificationResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         setState(() {
@@ -253,7 +254,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                     "Send OTP",
                     style: TextStyle(
                         color: !isVerified
-                            ?  Theme.of(context).colorScheme.secondary
+                            ? Theme.of(context).colorScheme.secondary
                             : Colors.blueGrey),
                   ),
           ),
@@ -278,18 +279,18 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                       "Verify OTP",
                       style: TextStyle(
                           color: !isVerified
-                              ?  Theme.of(context).colorScheme.secondary
+                              ? Theme.of(context).colorScheme.secondary
                               : Colors.blueGrey),
                     ),
             ),
           if (statusCode != 0)
-      SizedBox(
-          height: 20,
-          child: Text(
-            message,
-            style:
-                TextStyle(color: statusCode == 200 ? Colors.green : Colors.red),
-          )),
+            SizedBox(
+                height: 20,
+                child: Text(
+                  message,
+                  style: TextStyle(
+                      color: statusCode == 200 ? Colors.green : Colors.red),
+                )),
           if (isVerified)
             passwordFieldWidget(
                 "New Password",
@@ -316,7 +317,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                           Theme.of(context).colorScheme.secondary),
+                          Theme.of(context).colorScheme.secondary),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)))),

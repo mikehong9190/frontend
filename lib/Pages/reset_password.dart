@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'dart:developer';
@@ -151,7 +153,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/verify-otp'),
           body: jsonEncode(payload));
-   
+
       if (response.statusCode == 200) {
         setState(() {
           isVerified = true;
@@ -198,7 +200,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
           ),
           const Align(
             alignment: Alignment.center,
-            child: Text("This is used to build your profile on swiirl",
+            child: Text("An OTP has been sent to your email.",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
           ),
           const SizedBox(
@@ -223,7 +225,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                     "Verify OTP",
                     style: TextStyle(
                         color: !isVerified
-                            ?  Theme.of(context).colorScheme.secondary
+                            ? Theme.of(context).colorScheme.secondary
                             : Colors.blueGrey),
                   ),
           ),
@@ -253,7 +255,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                           Theme.of(context).colorScheme.secondary),
+                          Theme.of(context).colorScheme.secondary),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)))),

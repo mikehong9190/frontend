@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unused_field
 
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -267,7 +267,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       }
       final response = await post(Uri.https(apiHost, '/v1/signup'),
           body: jsonEncode(payload));
-      print(response.statusCode);
+      // print(response.statusCode);
       if (response.statusCode == 200) {
         final jsonData =
             RegisteredUserResponse.fromJson(jsonDecode(response.body));

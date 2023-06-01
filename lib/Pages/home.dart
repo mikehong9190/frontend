@@ -129,8 +129,12 @@ class _HomeWidgetState extends State<HomeWidget> {
                   child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: initiatives.isEmpty
-                    ? const Text("No Artworks added yet",
-                        style: TextStyle(fontSize: 18))
+                    ? const Text(
+                        'No initiatives added yet',
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Color.fromARGB(255, 196, 196, 196)),
+                      )
                     : ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,

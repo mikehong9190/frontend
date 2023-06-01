@@ -169,15 +169,17 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
                   // }
 
                   final response = await post(Uri.https(apiHost, '/v1/signup'),
-                      body: jsonEncode(
-                          {"idToken": token, "platform": Platform.isAndroid ? "android" : "ios"}));
+                      body: jsonEncode({
+                        "idToken": token,
+                        "platform": Platform.isAndroid ? "android" : "ios"
+                      }));
                   if (response.statusCode == 200) {
                     final jsonData =
                         Welcome.fromJson(jsonDecode(response.body));
                     if (jsonData.message == 'Account created successfully!') {
                       context.read<User>().setUserDetails(
                           userId: jsonData.data.id,
-                          token : jsonData.data.token,
+                          token: jsonData.data.token,
                           emailId: '',
                           message: "created account using google");
                       Navigator.pushNamed(context, "/google-auth-school");

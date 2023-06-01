@@ -150,10 +150,13 @@ class _InitiativeState extends State<Initiative> {
                     initiatives.isEmpty
                         ? const Expanded(
                             child: Center(
-                                child: Text(
-                              'No initiatives added yet',
-                              style: TextStyle(fontSize: 18),
-                            )),
+                              child: Text(
+                                'No initiatives added yet',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color.fromARGB(255, 196, 196, 196)),
+                              ),
+                            ),
                           )
                         : Expanded(
                             child: ListView.builder(

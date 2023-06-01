@@ -60,7 +60,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
         });
       }
     } catch (error, stackTrace) {
-      print(stackTrace);
+      // print(stackTrace);
       log(stackTrace.toString());
       log(error.toString());
     } finally {

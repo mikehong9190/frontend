@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer';
@@ -13,14 +15,19 @@ import '../model/responses.dart';
 import '../store.dart';
 
 class FirstPageWidget extends StatelessWidget {
-  final controller;
-  final onNext;
-  final message;
-  final statusCode;
-  final otpController;
-  final isLoading;
-  final isOtpSend;
-  final goToLogin;
+  final dynamic controller;
+  final dynamic onNext;
+  final dynamic message;
+  final dynamic statusCode;
+  final dynamic otpController;
+  final dynamic isLoading;
+  final dynamic isOtpSend;
+  final dynamic goToLogin;
+
+  bool isValidEmail(String email) {
+    final regex = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+    return regex.hasMatch(email);
+  }
 
   const FirstPageWidget({
     super.key,
@@ -101,7 +108,7 @@ class FirstPageWidget extends StatelessWidget {
                                 RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.circular(50.0)))),
-                    onPressed: controller.text.contains("@")
+                    onPressed: isValidEmail(controller.text)
                         ? () {
                             onNext();
                           }
@@ -159,16 +166,16 @@ class FirstPageWidget extends StatelessWidget {
 }
 
 class SecondPageWidget extends StatelessWidget {
-  final controller1;
-  final controller2;
-  final onNext;
+  final dynamic controller1;
+  final dynamic controller2;
+  final dynamic onNext;
   final String message;
   final bool isPasswordValid;
   final bool arePasswordsEqual;
   final bool isPasswordHidden;
   final bool isConfirmPasswordHidden;
-  final checkPasswordVisibility;
-  final checkConfirmPasswordVisibility;
+  final dynamic checkPasswordVisibility;
+  final dynamic checkConfirmPasswordVisibility;
 
   const SecondPageWidget({
     super.key,
@@ -280,17 +287,17 @@ class SecondPageWidget extends StatelessWidget {
 }
 
 class ThirdPageWidget extends StatelessWidget {
-  final firstNameController;
-  final lastNameController;
-  final schoolDistrictController;
-  final schoolNameController;
-  final onNext;
-  final isLoading;
-  final getDistricts;
-  final getSchools;
-  final clickOnSuggestion;
-  final clickOnSchool;
-  final isRegisterButtonEnabled;
+  final dynamic firstNameController;
+  final dynamic lastNameController;
+  final dynamic schoolDistrictController;
+  final dynamic schoolNameController;
+  final dynamic onNext;
+  final dynamic isLoading;
+  final dynamic getDistricts;
+  final dynamic getSchools;
+  final dynamic clickOnSuggestion;
+  final dynamic clickOnSchool;
+  final dynamic isRegisterButtonEnabled;
 
   const ThirdPageWidget({
     super.key,

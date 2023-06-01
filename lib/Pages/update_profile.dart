@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 // import 'dart:html';
 // import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +30,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   File? _image;
   XFile? _pickedFile;
   bool isUploadingImage = false;
+  bool isUploadedImage = false;
   bool firstLoad = true;
   bool isProfileUpdating = false;
   bool isLoading = false;
@@ -54,6 +57,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
     if (_pickedFile != null) {
       setState(() {
         _image = File(_pickedFile!.path);
+        isUploadedImage = false;
       });
     }
   }
@@ -189,9 +193,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       final response = await request.send();
       if (response.statusCode == 200) {
         log("Working");
-        // setState(() {
-        //   _image = null;
-        // });
+        setState(() {
+          isUploadedImage = true;
+        });
       }
     } catch (error) {
       log(error.toString());
@@ -204,30 +208,34 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
 
   @override
   Widget build(context) {
-    final color = (Theme.of(context).colorScheme.secondary);
+    // final color = (Theme.of(context).colorScheme.secondary);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-          centerTitle: true,
-          elevation: 0,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, "/app");
-                // Navigator.pushNamed(context, "/app",
-                //     arguments: {"UserId": userId, "message": message});
-              },
-              icon: SvgPicture.asset("assets/svg/Vector.svg")),
-          backgroundColor: Colors.white,
-          title: const Text('Update Profile',
-              style: TextStyle(
-                color: Colors.black87,
-              ))),
+        centerTitle: true,
+        elevation: 0,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, "/app");
+              // Navigator.pushNamed(context, "/app",
+              //     arguments: {"UserId": userId, "message": message});
+            },
+            icon: SvgPicture.asset("assets/svg/Vector.svg")),
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Update Profile',
+          style: TextStyle(
+            color: Colors.black87,
+          ),
+        ),
+      ),
       body: isLoading
           ? Align(
               alignment: Alignment.center,
               child: CircularProgressIndicator(
                 color: Theme.of(context).colorScheme.secondary,
-              ))
+              ),
+            )
           : Container(
               margin: const EdgeInsets.symmetric(horizontal: 30),
               child: Center(
@@ -239,47 +247,51 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                       height: 20,
                     ),
                     ClipOval(
-                        child: (_image != null
-                            ? Image.file(
-                                _image!,
-                                fit: BoxFit.cover,
-                                width: 80,
-                                height: 80,
-                              )
-                            : profilePicture.isNotEmpty
-                                ? CachedNetworkImage(
-                                    width: 80,
-                                    height: 80,
-                                    fit: BoxFit.cover,
-                                    imageUrl: profilePicture,
-                                    progressIndicatorBuilder: (context, url,
-                                            downloadProgress) =>
-                                        SizedBox(
-                                          height: 50,
-                                          width: 50,
-                                          child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary),
-                                              value: downloadProgress.progress),
-                                        ))
-                                : Image.asset(
-                                    "assets/images/defaultImage.png",
-                                    fit: BoxFit.cover,
-                                    width: 80.0,
-                                    height: 80.0,
-                                  ))),
+                      child: (_image != null
+                          ? Image.file(
+                              _image!,
+                              fit: BoxFit.cover,
+                              width: 80,
+                              height: 80,
+                            )
+                          : profilePicture.isNotEmpty
+                              ? CachedNetworkImage(
+                                  width: 80,
+                                  height: 80,
+                                  fit: BoxFit.cover,
+                                  imageUrl: profilePicture,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          SizedBox(
+                                    height: 50,
+                                    width: 50,
+                                    child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary),
+                                        value: downloadProgress.progress),
+                                  ),
+                                )
+                              : Image.asset(
+                                  "assets/images/defaultImage.png",
+                                  fit: BoxFit.cover,
+                                  width: 80.0,
+                                  height: 80.0,
+                                )),
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
                     GestureDetector(
-                      child: Text('Update Profile Picture',
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.secondary
-                              // Theme.of(context).colorScheme.secondary
-                              )),
+                      child: Text(
+                        'Update Profile Picture',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary
+                            // Theme.of(context).colorScheme.secondary
+                            ),
+                      ),
                       onTap: () => _pickImage(),
                     ),
                     const SizedBox(
@@ -297,7 +309,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                   color: Colors.black,
                                 ),
                               )
-                            : const Text('Save'),
+                            : isUploadedImage
+                                ? const Text("")
+                                : const Text('Save'),
                       ),
                     textFieldWidget(
                         "First Name", firstNameController, false, null, true),
