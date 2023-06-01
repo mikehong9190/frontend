@@ -44,7 +44,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   late bool isLoading = false;
   late List<dynamic> initiatives = [];
   late String schoolName = "Aspire Public Schools";
-  late String schoolLocation= "Aspire Public Schools";
+  late String schoolLocation = "Aspire Public Schools";
   late String description = '';
   String? schoolPicture = "";
   File? _image;
@@ -74,14 +74,21 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   void uploadSchoolPicture() async {
     try {
-      print('AASD');
+      var token = context.read<User>().token;
+      var userId = context.read<User>().userId;
+
+      if (token.isEmpty && userId.isEmpty) {
+        throw const FormatException('NO token or Id present');
+      }
+      
       var url = Uri.https(apiHost, '/v1/school/update');
       final request = MultipartRequest('PUT', url);
       final multipartFile =
           MultipartFile.fromBytes("file", await _image!.readAsBytes());
       request.files.add(multipartFile);
+      request.headers['authorization'] = 'Bearer $token';
       request.fields["schoolId"] = widget.schoolId;
-      request.fields["userId"] = context.read<User>().userId;
+      request.fields["userId"] = userId;
       final response = await request.send();
       print(response.statusCode);
       print(response.reasonPhrase);
@@ -108,7 +115,8 @@ class _HomeWidgetState extends State<HomeWidget> {
       print(response.body);
       // print(response.statusCode);
       if (response.statusCode == 200) {
-        final jsonData = SchoolDetailResponse.fromJson(jsonDecode(response.body));
+        final jsonData =
+            SchoolDetailResponse.fromJson(jsonDecode(response.body));
         print(jsonData.data.toString());
         setState(() {
           schoolName = jsonData.data.school.name;
@@ -119,7 +127,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         });
       }
     } catch (error, stackTrace) {
-      print (stackTrace);
+      print(stackTrace);
       log(stackTrace.toString());
     } finally {
       setState(() {
@@ -204,7 +212,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                   child: SizedBox(
                                                   width: double.infinity,
                                                   child: ElevatedButton(
-                                                      onPressed: () {uploadSchoolPicture ();},
+                                                      onPressed: () {
+                                                        uploadSchoolPicture();
+                                                      },
                                                       style: ButtonStyle(
                                                           backgroundColor:
                                                               MaterialStateProperty
