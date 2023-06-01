@@ -34,6 +34,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   bool isOtpSend = false;
   bool isOtpVerified = false;
   bool isSendingOtp = false;
+  String updateErrorMessage = '';
   String profilePicture = '';
   // late String userId;
   // late String message;
@@ -174,7 +175,6 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       setState(() {
         isUploadingImage = true;
       });
-
       var url = Uri.https(apiHost, '/v1/update-profile');
       // var url = Uri.parse(
       //     'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile');
@@ -185,11 +185,19 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           filename: "jpg");
       request.files.add(multipartFile);
       final response = await request.send();
+      print(response.statusCode);
+      print(response.reasonPhrase);
       if (response.statusCode == 200) {
         log("Working");
-        // setState(() {
-        //   _image = null;
-        // });
+
+        setState(() {
+          isUploadingImage = false;
+          updateErrorMessage = '';
+        });
+      } else {
+        setState(() {
+          updateErrorMessage = 'Error while updating profile pic';
+        });
       }
     } catch (error) {
       log(error.toString());
@@ -257,9 +265,10 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                           width: 50,
                                           child: CircularProgressIndicator(
                                               valueColor:
-                                                  AlwaysStoppedAnimation<
-                                                          Color>(
-                                                      Theme.of(context).colorScheme.secondary),
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary),
                                               value: downloadProgress.progress),
                                         ))
                                 : Image.asset(
@@ -296,6 +305,10 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                               )
                             : const Text('Save'),
                       ),
+                    SizedBox(
+                      height: 10,
+                      child: Text(updateErrorMessage),
+                    ),
                     textFieldWidget(
                         "First Name", firstNameController, false, null, true),
                     const SizedBox(
@@ -397,7 +410,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                                 : Text(
                                                     "Reset Password",
                                                     style: TextStyle(
-                                                        color: Theme.of(context).colorScheme.secondary),
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary),
                                                   )),
                                       TextButton(
                                           onPressed: () {
@@ -410,9 +425,11 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                                 .toString());
                                             Navigator.pushNamed(context, '/');
                                           },
-                                          child:  Text('Sign Out',
+                                          child: Text('Sign Out',
                                               style: TextStyle(
-                                                  color: Theme.of(context).colorScheme.secondary)))
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary)))
                                     ],
                                   )
                                 : TextButton(
@@ -422,9 +439,11 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                       context.read<User>().clearUserDetails();
                                       Navigator.pushNamed(context, '/');
                                     },
-                                    child:  Text('Sign Out',
+                                    child: Text('Sign Out',
                                         style: TextStyle(
-                                            color: Theme.of(context).colorScheme.secondary)))))
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary)))))
                   ]))
               // isLoading
               //   ? Align(

@@ -2,13 +2,17 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 import '../constants.dart';
-import '../model/responses.dart';
+import '../model/school_details.dart';
 import '../components/single_initiative.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:image_picker/image_picker.dart';
+import '../store.dart';
 // import 'package:flutter/services.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:frontend/Pages/camera.dart';
@@ -40,7 +44,11 @@ class _HomeWidgetState extends State<HomeWidget> {
   late bool isLoading = false;
   late List<dynamic> initiatives = [];
   late String schoolName = "Aspire Public Schools";
+  late String schoolLocation= "Aspire Public Schools";
+  late String description = '';
   String? schoolPicture = "";
+  File? _image;
+  XFile? _pickedFile;
 
   @override
   void didChangeDependencies() {
@@ -50,22 +58,68 @@ class _HomeWidgetState extends State<HomeWidget> {
     // put your logic from initState here
   }
 
+  Future<void> _pickImage(setInnerState) async {
+    try {
+      final picker = ImagePicker();
+      _pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      if (_pickedFile != null) {
+        setInnerState(() {
+          _image = File(_pickedFile!.path);
+        });
+      }
+    } catch (error, stackTrace) {
+      print(stackTrace);
+    }
+  }
+
+  void uploadSchoolPicture() async {
+    try {
+      print('AASD');
+      var url = Uri.https(apiHost, '/v1/school/update');
+      final request = MultipartRequest('PUT', url);
+      final multipartFile =
+          MultipartFile.fromBytes("file", await _image!.readAsBytes());
+      request.files.add(multipartFile);
+      request.fields["schoolId"] = widget.schoolId;
+      request.fields["userId"] = context.read<User>().userId;
+      final response = await request.send();
+      print(response.statusCode);
+      print(response.reasonPhrase);
+      if (response.statusCode == 200) {
+        Navigator.pushNamed(context, "/app");
+      }
+    } catch (error, stackTrace) {
+      print(stackTrace);
+    } finally {
+      print("12334");
+    }
+  }
+
   void getSchoolDetails() async {
     try {
       setState(() {
         isLoading = true;
       });
       final queryParameters = {"schoolId": widget.schoolId};
+      print("---------- ${widget.schoolId} -------------");
       final response =
           await get(Uri.https(apiHost, '/v1/school', queryParameters));
       log(response.body);
+      print(response.body);
+      // print(response.statusCode);
       if (response.statusCode == 200) {
-        final jsonData = SchoolData.fromJson(jsonDecode(response.body));
+        final jsonData = SchoolDetailResponse.fromJson(jsonDecode(response.body));
+        print(jsonData.data.toString());
         setState(() {
-          initiatives = jsonData.data;
+          schoolName = jsonData.data.school.name;
+          schoolLocation = jsonData.data.school.district;
+          description = jsonData.data.school.description;
+          schoolPicture = jsonData.data.school.image;
+          initiatives = jsonData.data.data;
         });
       }
     } catch (error, stackTrace) {
+      print (stackTrace);
       log(stackTrace.toString());
     } finally {
       setState(() {
@@ -91,11 +145,85 @@ class _HomeWidgetState extends State<HomeWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height / 4,
-                width: MediaQuery.of(context).size.width,
-                child: Image.asset(
-                  "assets/images/schoolDefault.jpg",
-                  fit: BoxFit.cover,
+                child: Stack(
+                  children: [
+                    Container(
+                      // height: MediaQuery.of(context).size.height / 4,
+                      width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                        "assets/images/schoolDefault.jpg",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        icon: SvgPicture.asset("assets/svg/edit.svg"),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                    title: const Text("Edit School Image"),
+                                    content: StatefulBuilder(
+                                        builder: (context, setInnerState) {
+                                      return SizedBox(
+                                          child: Column(
+                                        children: [
+                                          _image != null
+                                              ? Text("Images Added")
+                                              : Text("Not"),
+                                          _image != null
+                                              ? Image.file(
+                                                  _image!,
+                                                  fit: BoxFit.cover,
+                                                  width: 80,
+                                                  height: 80,
+                                                )
+                                              : Container(),
+                                          ButtonTheme(
+                                              child: SizedBox(
+                                            width: double.infinity,
+                                            child: ElevatedButton(
+                                                onPressed: () {
+                                                  _pickImage(setInnerState);
+                                                },
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .secondary)),
+                                                child: const Text(
+                                                    "Choose from Gallery")),
+                                          )),
+                                          _image != null
+                                              ? ButtonTheme(
+                                                  child: SizedBox(
+                                                  width: double.infinity,
+                                                  child: ElevatedButton(
+                                                      onPressed: () {uploadSchoolPicture ();},
+                                                      style: ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all(Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .secondary)),
+                                                      child:
+                                                          const Text("Save")),
+                                                ))
+                                              : Container()
+                                        ],
+                                      ));
+                                    }));
+                              });
+                        },
+                      ),
+                    )
+                  ],
                 ),
               ),
               Padding(
@@ -107,7 +235,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        widget.schoolName ?? "NAME",
+                        schoolName ?? "NAME",
                         style: const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 20),
                       ),
@@ -115,7 +243,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     Row(children: [
                       SvgPicture.asset("assets/svg/location.svg"),
                       Text(
-                        widget.schoolLocation ?? 'LOCATION',
+                        schoolLocation ?? 'LOCATION',
                         style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 14),
                       )
