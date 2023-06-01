@@ -37,6 +37,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   bool isOtpSend = false;
   bool isOtpVerified = false;
   bool isSendingOtp = false;
+  String updateErrorMessage = '';
   String profilePicture = '';
   // late String userId;
   // late String message;
@@ -191,6 +192,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           filename: "jpg");
       request.files.add(multipartFile);
       final response = await request.send();
+      print(response.statusCode);
+      print(response.reasonPhrase);
       if (response.statusCode == 200) {
         log("Working");
         setState(() {
@@ -313,6 +316,10 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                 ? const Text("")
                                 : const Text('Save'),
                       ),
+                    SizedBox(
+                      height: 10,
+                      child: Text(updateErrorMessage),
+                    ),
                     textFieldWidget(
                         "First Name", firstNameController, false, null, true),
                     const SizedBox(
