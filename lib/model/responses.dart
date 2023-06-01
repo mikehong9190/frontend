@@ -237,7 +237,7 @@ class Welcome {
 
   factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
         message: json["message"],
-        data: Data.fromJson(json["data"]),
+        data: Data.fromJson(json["data"] ?? null),
       );
 
   Map<String, dynamic> toJson() => {

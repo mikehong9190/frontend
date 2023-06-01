@@ -47,6 +47,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   late String schoolLocation = "Aspire Public Schools";
   late String description = '';
   var descriptionController = TextEditingController();
+  late bool isSchoolLoading = false;
   String schoolPicture = "";
   File? _image;
   XFile? _pickedFile;
@@ -73,8 +74,11 @@ class _HomeWidgetState extends State<HomeWidget> {
     }
   }
 
-  void updateSchoolDescription() async {
+  void updateSchoolDescription(setInnerState) async {
     try {
+      setInnerState(() {
+        isSchoolLoading = true;
+      });
       var token = context.read<User>().token;
       var userId = context.read<User>().userId;
 
@@ -101,12 +105,17 @@ class _HomeWidgetState extends State<HomeWidget> {
       print(stackTrace);
       print(error);
     } finally {
-      print("DONE");
+      setInnerState(() {
+        isSchoolLoading = false;
+      });
     }
   }
 
-  void uploadSchoolPicture() async {
+  void uploadSchoolPicture(setInnerState) async {
     try {
+      setInnerState(() {
+        isSchoolLoading = true;
+      });
       var token = context.read<User>().token;
       var userId = context.read<User>().userId;
 
@@ -133,7 +142,9 @@ class _HomeWidgetState extends State<HomeWidget> {
     } catch (error, stackTrace) {
       print(stackTrace);
     } finally {
-      print("12334");
+      setInnerState(() {
+        isSchoolLoading = false;
+      });
     }
   }
 
@@ -193,14 +204,19 @@ class _HomeWidgetState extends State<HomeWidget> {
                   children: [
                     Container(
                       // height: MediaQuery.of(context).size.height / 4,
-                      width: MediaQuery.of(context).size.width,
+                      // width: MediaQuery.of(context).size.width,
                       alignment: Alignment.center,
                       child: schoolPicture.isEmpty
                           ? Image.asset(
                               "assets/images/schoolDefault.jpg",
+                              width: MediaQuery.of(context).size.width,
                               fit: BoxFit.cover,
                             )
-                          : FancyShimmerImage(imageUrl: schoolPicture),
+                          : FancyShimmerImage(
+                              imageUrl: schoolPicture,
+                              boxFit: BoxFit.cover,
+                              width: MediaQuery.of(context).size.width,
+                            ),
                     ),
                     Container(
                       alignment: Alignment.topRight,
@@ -215,17 +231,14 @@ class _HomeWidgetState extends State<HomeWidget> {
                                     content: StatefulBuilder(
                                         builder: (context, setInnerState) {
                                       return SizedBox(
+                                          // height: MediaQuery.of(context).size.height * 0.5,
                                           child: Column(
+                                        mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          _image != null
-                                              ? Text("Images Added")
-                                              : Text("Not"),
                                           _image != null
                                               ? Image.file(
                                                   _image!,
                                                   fit: BoxFit.cover,
-                                                  width: 80,
-                                                  height: 80,
                                                 )
                                               : Container(),
                                           ButtonTheme(
@@ -251,7 +264,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                   width: double.infinity,
                                                   child: ElevatedButton(
                                                       onPressed: () {
-                                                        uploadSchoolPicture();
+                                                        uploadSchoolPicture(
+                                                            setInnerState);
                                                       },
                                                       style: ButtonStyle(
                                                           backgroundColor:
@@ -260,8 +274,17 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                           context)
                                                                       .colorScheme
                                                                       .secondary)),
-                                                      child:
-                                                          const Text("Save")),
+                                                      child: isSchoolLoading
+                                                          ? const SizedBox(
+                                                              width: 20,
+                                                              height: 20,
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            )
+                                                          : const Text("Save")),
                                                 ))
                                               : Container()
                                         ],
@@ -297,66 +320,152 @@ class _HomeWidgetState extends State<HomeWidget> {
                       ),
                     ]),
                     Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        alignment: Alignment.centerLeft,
-                        child: Text(description)),
-                    Container(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                      title: const Text("Edit School Details"),
-                                      content: StatefulBuilder(
-                                          builder: (context, setInnerState) {
-                                        return SizedBox(
-                                            child: Column(
-                                          children: [
-                                            SizedBox(
-                                                height: 80,
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(description),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                        title:
+                                            const Text("Edit School Description"),
+                                        content: StatefulBuilder(
+                                            builder: (context, setInnerState) {
+                                          return SizedBox(
+                                            width: MediaQuery.of(context).size.width,
+                                              child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              SizedBox(
+                                                  height: 80,
+                                                  width: double.infinity,
+                                                  child: TextField(
+                                                    maxLines: 10,
+                                                    enabled: true,
+                                                    controller:
+                                                        descriptionController,
+                                                    obscureText: false,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      border: OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.zero,
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .black)),
+                                                      hintText: "Description",
+                                                    ),
+                                                  )),
+                                              ButtonTheme(
+                                                  child: SizedBox(
                                                 width: double.infinity,
-                                                child: TextField(
-                                                  maxLines: 10,
-                                                  enabled: true,
-                                                  controller:
-                                                      descriptionController,
-                                                  obscureText: false,
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    border: OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius.zero,
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.black)),
-                                                    hintText: "Description",
-                                                  ),
-                                                )),
-                                            ButtonTheme(
-                                                child: SizedBox(
-                                              width: double.infinity,
-                                              child: ElevatedButton(
-                                                  onPressed: () {
-                                                    updateSchoolDescription();
-                                                  },
-                                                  style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .all(Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .secondary)),
-                                                  child: const Text("Save")),
-                                            ))
-                                          ],
-                                        ));
-                                      }));
-                                });
-                          },
-                          icon: SvgPicture.asset("assets/svg/edit.svg"),
-                        ))
+                                                child: ElevatedButton(
+                                                    onPressed: () {
+                                                      updateSchoolDescription(
+                                                          setInnerState);
+                                                    },
+                                                    style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .secondary)),
+                                                    child: isSchoolLoading
+                                                        ? const SizedBox(
+                                                            width: 20,
+                                                            height: 20,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          )
+                                                        : const Text("Save")),
+                                              ))
+                                            ],
+                                          ));
+                                        }));
+                                  });
+                            },
+                            // onPressed: () {
+                            //   showDialog(
+                            //     context: context,
+                            //     builder: (context) {
+                            //       return AlertDialog(
+                            //         title: const Text("Edit School Details"),
+                            //         content: StatefulBuilder(
+                            //           builder: (context, setInnerState) {
+                            //             return SizedBox(
+                            //               child: Column(
+                            //                 children: [
+                            //                   SizedBox(
+                            //                     height: 40,
+                            //                     width: double.infinity,
+                            //                     child: TextField(
+                            //                       maxLines: 10,
+                            //                       enabled: true,
+                            //                       controller:
+                            //                           descriptionController,
+                            //                       obscureText: false,
+                            //                       decoration:
+                            //                           const InputDecoration(
+                            //                         border: OutlineInputBorder(
+                            //                           borderRadius:
+                            //                               BorderRadius.zero,
+                            //                           borderSide: BorderSide(
+                            //                             color: Colors.black,
+                            //                           ),
+                            //                         ),
+                            //                         hintText: "Description",
+                            //                       ),
+                            //                     ),
+                            //                   ),
+                            //                   ButtonTheme(
+                            //                     child: SizedBox(
+                            //                       width: double.infinity,
+                            //                       child: ElevatedButton(
+                            //                         onPressed: () {
+                            //                           updateSchoolDescription();
+                            //                         },
+                            //                         style: ButtonStyle(
+                            //                           backgroundColor:
+                            //                               MaterialStateProperty
+                            //                                   .all(
+                            //                             Theme.of(context)
+                            //                                 .colorScheme
+                            //                                 .secondary,
+                            //                           ),
+                            //                         ),
+                            //                         child: const Text("Save"),
+                            //                       ),
+                            //                     ),
+                            //                   ),
+                            //                 ],
+                            //               ),
+                            //             );
+                            //           },
+                            //         ),
+                            //       );
+                            //     },
+                            //   );
+                            // },
+                            icon: SvgPicture.asset("assets/svg/edit.svg"),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(
+                      color: Color.fromARGB(255, 70, 69, 69),
+                      thickness: 0.1,
+                    ),
                   ],
                 ),
               ),
@@ -364,7 +473,8 @@ class _HomeWidgetState extends State<HomeWidget> {
               //     child:
               SizedBox(
                   child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                 child: initiatives.isEmpty
                     ? const Text(
                         'No initiatives added yet',

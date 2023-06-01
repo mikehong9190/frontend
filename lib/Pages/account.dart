@@ -112,6 +112,13 @@ class _AccountWidgetState extends State<AccountWidget> {
                     moneyRaised: moneyRaised,
                     name: name,
                     goalsMets: goalsMets),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                  child: Divider(
+                    color: Color.fromARGB(255, 70, 69, 69),
+                    thickness: 0.1,
+                  ),
+                ),
                 // ),
                 // Expanded(
                 // child:
