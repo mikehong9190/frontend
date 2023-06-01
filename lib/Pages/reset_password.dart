@@ -190,11 +190,12 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Reset Password",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-              )),
+            alignment: Alignment.center,
+            child: Text(
+              "Reset Password",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+            ),
+          ),
           const SizedBox(
             height: 20,
           ),

@@ -171,7 +171,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             Navigator.pushNamed(context, "/forget-password");
                           },
                           child: Text(
-                            'forget password ?',
+                            'Forgot Password ?',
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary),
                           ))),
