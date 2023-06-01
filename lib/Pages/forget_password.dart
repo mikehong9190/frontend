@@ -8,6 +8,8 @@
 // import '../store.dart';
 // import 'package:provider/provider.dart';
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'dart:developer';
@@ -102,8 +104,8 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       });
       final response = await post(Uri.https(apiHost, '/v1/validate-email'),
           body: jsonEncode(payload));
-      log (response.body);
-       final jsonData =
+      log(response.body);
+      final jsonData =
           EmailVerificationResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         setState(() {
@@ -117,7 +119,6 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
           message = jsonData.message;
         });
       }
-
     } catch (error, stackTrace) {
       log(stackTrace.toString());
     } finally {
@@ -138,7 +139,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
     try {
       final response = await post(Uri.https(apiHost, '/v1/reset-password'),
           body: jsonEncode(payload));
-      log (response.body);
+      log(response.body);
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/login");
         // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reset"});
@@ -172,7 +173,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
 
       final response = await post(Uri.https(apiHost, '/v1/verify-otp'),
           body: jsonEncode(payload));
-           final jsonData =
+      final jsonData =
           OTPVerificationResponse.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         setState(() {
@@ -209,64 +210,41 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
 
   @override
   build(context) {
-    return Scaffold(
-        body: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 30),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Align(
+    return SafeArea(
+      child: Scaffold(
+          body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Align(
               alignment: Alignment.center,
               child: Text(
                 "Reset Password",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-              )),
-          const SizedBox(
-            height: 20,
-          ),
-          // const Align(
-          //   alignment: Alignment.center,
-          //   child: Text("This is used to build your profile on swiirl",
-          //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-          // ),
-          const SizedBox(
-            height: 10,
-          ),
-          textFieldWidget(
-              "Your Email", emailController, false, null, !isOtpSend),
-          TextButton(
-            onPressed: isOtpSend
-                ? null
-                : () {
-                    sendOTP();
-                  },
-            child: sendingOtp
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      color: Colors.black,
-                    ),
-                  )
-                : Text(
-                    "Send OTP",
-                    style: TextStyle(
-                        color: !isVerified
-                            ?  Theme.of(context).colorScheme.secondary
-                            : Colors.blueGrey),
-                  ),
-          ),
-          if (isOtpSend)
-            textFieldWidget("OTP", otpController, false, null, true),
-          if (isOtpSend)
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            // const Align(
+            //   alignment: Alignment.center,
+            //   child: Text("This is used to build your profile on swiirl",
+            //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+            // ),
+            const SizedBox(
+              height: 10,
+            ),
+            textFieldWidget(
+                "Your Email", emailController, false, null, !isOtpSend),
             TextButton(
-              onPressed: isVerified
+              onPressed: isOtpSend
                   ? null
                   : () {
-                      verifyOtpForPasswordReset(otpController.text);
+                      sendOTP();
                     },
-              child: isVerifyingOtp
+              child: sendingOtp
                   ? const SizedBox(
                       width: 20,
                       height: 20,
@@ -275,69 +253,97 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                       ),
                     )
                   : Text(
-                      "Verify OTP",
+                      "Send OTP",
                       style: TextStyle(
                           color: !isVerified
-                              ?  Theme.of(context).colorScheme.secondary
+                              ? Theme.of(context).colorScheme.secondary
                               : Colors.blueGrey),
                     ),
             ),
-          if (statusCode != 0)
-      SizedBox(
-          height: 20,
-          child: Text(
-            message,
-            style:
-                TextStyle(color: statusCode == 200 ? Colors.green : Colors.red),
-          )),
-          if (isVerified)
-            passwordFieldWidget(
-                "New Password",
-                newPasswordController,
-                isNewPasswordHidden,
-                isNewPasswordValid,
-                true,
-                checkPasswordVisibility),
-          if (isVerified)
-            passwordFieldWidget(
-                "Confirm New Password",
-                confirmNewPasswordController,
-                isConfirmNewPasswordHidden,
-                arePasswordSame,
-                true,
-                checkConfirmPasswordVisibility),
-          const SizedBox(
-            height: 60,
-          ),
-          ButtonTheme(
-            child: SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                           Theme.of(context).colorScheme.secondary),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)))),
-                  onPressed: (isNewPasswordValid && arePasswordSame)
-                      ? () {
-                          resetPassword();
-                        }
-                      : null,
-                  child: isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        )
-                      : const Text("Next"),
-                )),
-          ),
-        ],
-      ),
-    ));
+            if (isOtpSend)
+              textFieldWidget("OTP", otpController, false, null, true),
+            if (isOtpSend)
+              TextButton(
+                onPressed: isVerified
+                    ? null
+                    : () {
+                        verifyOtpForPasswordReset(otpController.text);
+                      },
+                child: isVerifyingOtp
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.black,
+                        ),
+                      )
+                    : Text(
+                        "Verify OTP",
+                        style: TextStyle(
+                            color: !isVerified
+                                ? Theme.of(context).colorScheme.secondary
+                                : Colors.blueGrey),
+                      ),
+              ),
+            if (statusCode != 0)
+              SizedBox(
+                  height: 20,
+                  child: Text(
+                    message,
+                    style: TextStyle(
+                        color: statusCode == 200 ? Colors.green : Colors.red),
+                  )),
+            if (isVerified)
+              passwordFieldWidget(
+                  "New Password",
+                  newPasswordController,
+                  isNewPasswordHidden,
+                  isNewPasswordValid,
+                  true,
+                  checkPasswordVisibility),
+            if (isVerified)
+              passwordFieldWidget(
+                  "Confirm New Password",
+                  confirmNewPasswordController,
+                  isConfirmNewPasswordHidden,
+                  arePasswordSame,
+                  true,
+                  checkConfirmPasswordVisibility),
+            const SizedBox(
+              height: 60,
+            ),
+            ButtonTheme(
+              child: SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context).colorScheme.secondary),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(30.0)))),
+                    onPressed: (isNewPasswordValid && arePasswordSame)
+                        ? () {
+                            resetPassword();
+                          }
+                        : null,
+                    child: isLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text("Next"),
+                  )),
+            ),
+          ],
+        ),
+      )),
+    );
   }
 }

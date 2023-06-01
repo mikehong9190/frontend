@@ -19,8 +19,6 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 class AccountWidget extends StatefulWidget {
   const AccountWidget({
     super.key,
-    // required this.UserId,
-    // required this.message
   });
 
   @override
@@ -120,9 +118,12 @@ class _AccountWidgetState extends State<AccountWidget> {
                 collectibles.isEmpty
                     ? const Center(
                         child: Text(
-                        "No Initiatives added yet",
-                        style: TextStyle(fontSize: 18),
-                      ))
+                          'No initiatives added yet',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 196, 196, 196)),
+                        ),
+                      )
                     : SizedBox(
                         child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 0),
@@ -146,18 +147,29 @@ class _AccountWidgetState extends State<AccountWidget> {
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          insetPadding: EdgeInsets.zero,
-                                          title: const Text("Collectibles"),
-                                          content: collectibles[index]
-                                                  .isNotEmpty
-                                              ? FancyShimmerImage(
-                                                  imageUrl: collectibles[index])
-                                              : Image.asset(
-                                                  "assets/images/defaultImage.png",
-                                                  width: 600,
-                                                  height: 600,
-                                                ),
-                                        );
+                                            insetPadding: EdgeInsets.zero,
+                                            title: const Text("Collectibles"),
+                                            content: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.6,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.6,
+                                                child: collectibles[index]
+                                                        .isNotEmpty
+                                                    ? FancyShimmerImage(
+                                                        imageUrl:
+                                                            collectibles[index],
+                                                        boxFit: BoxFit.contain,
+                                                      )
+                                                    : Image.asset(
+                                                        "assets/images/defaultImage.png",
+                                                        width: 600,
+                                                        height: 600,
+                                                      )));
                                       });
                                 },
                                 child: CollectiblesWidget(

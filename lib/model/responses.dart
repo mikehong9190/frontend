@@ -3,9 +3,11 @@ class EmailVerificationResponse {
   const EmailVerificationResponse({required this.message});
 
   factory EmailVerificationResponse.fromJson(Map<String, dynamic> json) {
-    return EmailVerificationResponse(message: json['message'] ?? 'OTP cant be send to the user');
+    return EmailVerificationResponse(
+        message: json['message'] ?? 'OTP cant be send to the user');
   }
 }
+
 class OTPVerificationResponse {
   final String message;
   const OTPVerificationResponse({required this.message});
@@ -235,7 +237,7 @@ class Welcome {
 
   factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
         message: json["message"],
-        data: Data.fromJson(json["data"] ?? null),
+        data: Data.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -265,45 +267,47 @@ class Data {
 }
 
 class SchoolData {
-    String message;
-    List<SingleInitiative> data;
+  String message;
+  List<SingleInitiative> data;
 
-    SchoolData({
-        required this.message,
-        required this.data,
-    });
+  SchoolData({
+    required this.message,
+    required this.data,
+  });
 
-    factory SchoolData.fromJson(Map<String, dynamic> json) => SchoolData(
+  factory SchoolData.fromJson(Map<String, dynamic> json) => SchoolData(
         message: json["message"],
-        data: List<SingleInitiative>.from(json["data"].map((x) => SingleInitiative.fromJson(x))),
-    );
+        data: List<SingleInitiative>.from(
+            json["data"].map((x) => SingleInitiative.fromJson(x))),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "message": message,
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
-    };
+      };
 }
 
 class SingleInitiative {
-    String userFirstName;
-    String userLastName;
-    List<String> images;
+  String userFirstName;
+  String userLastName;
+  List<String> images;
 
-    SingleInitiative({
-        required this.userFirstName,
-        required this.userLastName,
-        required this.images,
-    });
+  SingleInitiative({
+    required this.userFirstName,
+    required this.userLastName,
+    required this.images,
+  });
 
-    factory SingleInitiative.fromJson(Map<String, dynamic> json) => SingleInitiative(
+  factory SingleInitiative.fromJson(Map<String, dynamic> json) =>
+      SingleInitiative(
         userFirstName: json["user_first_name"],
         userLastName: json["user_last_name"],
         images: List<String>.from(json["images"].map((x) => x)),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "user_first_name": userFirstName,
         "user_last_name": userLastName,
         "images": List<dynamic>.from(images.map((x) => x)),
-    };
+      };
 }

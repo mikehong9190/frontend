@@ -46,7 +46,8 @@ class _HomeWidgetState extends State<HomeWidget> {
   late String schoolName = "Aspire Public Schools";
   late String schoolLocation = "Aspire Public Schools";
   late String description = '';
-  String? schoolPicture = "";
+  var descriptionController = TextEditingController();
+  String schoolPicture = "";
   File? _image;
   XFile? _pickedFile;
 
@@ -72,6 +73,38 @@ class _HomeWidgetState extends State<HomeWidget> {
     }
   }
 
+  void updateSchoolDescription() async {
+    try {
+      var token = context.read<User>().token;
+      var userId = context.read<User>().userId;
+
+      if (token.isEmpty && userId.isEmpty) {
+        throw const FormatException('NO token or Id present');
+      }
+      var payload = {
+        "description": descriptionController.text,
+        "schoolId": widget.schoolId,
+        "userId": userId
+      };
+      final response = await put(Uri.https(apiHost, '/v1/school/update'),
+          body: payload,
+          headers: {
+            // HttpHeaders.authorizationHeader : token
+            'Authorization': 'Bearer $token'
+          });
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200) {
+        Navigator.pushNamed(context, "/app");
+      }
+    } catch (error, stackTrace) {
+      print(stackTrace);
+      print(error);
+    } finally {
+      print("DONE");
+    }
+  }
+
   void uploadSchoolPicture() async {
     try {
       var token = context.read<User>().token;
@@ -80,18 +113,20 @@ class _HomeWidgetState extends State<HomeWidget> {
       if (token.isEmpty && userId.isEmpty) {
         throw const FormatException('NO token or Id present');
       }
-      
+
       var url = Uri.https(apiHost, '/v1/school/update');
       final request = MultipartRequest('PUT', url);
-      final multipartFile =
-          MultipartFile.fromBytes("file", await _image!.readAsBytes());
+      final multipartFile = MultipartFile.fromBytes(
+          "file", await _image!.readAsBytes(),
+          filename: "jpg");
       request.files.add(multipartFile);
+
       request.headers['authorization'] = 'Bearer $token';
       request.fields["schoolId"] = widget.schoolId;
       request.fields["userId"] = userId;
+
       final response = await request.send();
-      print(response.statusCode);
-      print(response.reasonPhrase);
+
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/app");
       }
@@ -122,7 +157,8 @@ class _HomeWidgetState extends State<HomeWidget> {
           schoolName = jsonData.data.school.name;
           schoolLocation = jsonData.data.school.district;
           description = jsonData.data.school.description;
-          schoolPicture = jsonData.data.school.image;
+          descriptionController.text = jsonData.data.school.description;
+          schoolPicture = jsonData.data.school.image ?? '';
           initiatives = jsonData.data.data;
         });
       }
@@ -159,10 +195,12 @@ class _HomeWidgetState extends State<HomeWidget> {
                       // height: MediaQuery.of(context).size.height / 4,
                       width: MediaQuery.of(context).size.width,
                       alignment: Alignment.center,
-                      child: Image.asset(
-                        "assets/images/schoolDefault.jpg",
-                        fit: BoxFit.cover,
-                      ),
+                      child: schoolPicture.isEmpty
+                          ? Image.asset(
+                              "assets/images/schoolDefault.jpg",
+                              fit: BoxFit.cover,
+                            )
+                          : FancyShimmerImage(imageUrl: schoolPicture),
                     ),
                     Container(
                       alignment: Alignment.topRight,
@@ -245,7 +283,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        schoolName ?? "NAME",
+                        schoolName,
                         style: const TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 20),
                       ),
@@ -253,11 +291,72 @@ class _HomeWidgetState extends State<HomeWidget> {
                     Row(children: [
                       SvgPicture.asset("assets/svg/location.svg"),
                       Text(
-                        schoolLocation ?? 'LOCATION',
+                        schoolLocation,
                         style: const TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 14),
-                      )
-                    ])
+                      ),
+                    ]),
+                    Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        alignment: Alignment.centerLeft,
+                        child: Text(description)),
+                    Container(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                      title: const Text("Edit School Details"),
+                                      content: StatefulBuilder(
+                                          builder: (context, setInnerState) {
+                                        return SizedBox(
+                                            child: Column(
+                                          children: [
+                                            SizedBox(
+                                                height: 80,
+                                                width: double.infinity,
+                                                child: TextField(
+                                                  maxLines: 10,
+                                                  enabled: true,
+                                                  controller:
+                                                      descriptionController,
+                                                  obscureText: false,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    border: OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius.zero,
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                Colors.black)),
+                                                    hintText: "Description",
+                                                  ),
+                                                )),
+                                            ButtonTheme(
+                                                child: SizedBox(
+                                              width: double.infinity,
+                                              child: ElevatedButton(
+                                                  onPressed: () {
+                                                    updateSchoolDescription();
+                                                  },
+                                                  style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all(Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary)),
+                                                  child: const Text("Save")),
+                                            ))
+                                          ],
+                                        ));
+                                      }));
+                                });
+                          },
+                          icon: SvgPicture.asset("assets/svg/edit.svg"),
+                        ))
                   ],
                 ),
               ),
@@ -267,8 +366,12 @@ class _HomeWidgetState extends State<HomeWidget> {
                   child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: initiatives.isEmpty
-                    ? const Text("No Artworks added yet",
-                        style: TextStyle(fontSize: 18))
+                    ? const Text(
+                        'No initiatives added yet',
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Color.fromARGB(255, 196, 196, 196)),
+                      )
                     : ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,

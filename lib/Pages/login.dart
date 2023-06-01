@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'dart:developer';
 // import 'package:flutter_svg/flutter_svg.dart';
@@ -169,7 +171,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             Navigator.pushNamed(context, "/forget-password");
                           },
                           child: Text(
-                            'forget password ?',
+                            'Forgot Password ?',
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary),
                           ))),
