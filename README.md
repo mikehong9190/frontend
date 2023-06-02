@@ -20,6 +20,21 @@ flutter build apk
 The build apk file can be found in andriod/build/app/outputs/flutter-apk/app-release.apk
 
 # Features
+Login
+Home 
+Routing 
+Provider(State Management)
+Database 
+
+# Libraries & Tools Used 
+http
+Image Picker 
+shared preference 
+imStepper
+provider
+textField Search
+
+
 
 
 
