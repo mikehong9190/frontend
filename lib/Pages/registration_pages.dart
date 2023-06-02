@@ -498,7 +498,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
       // log(payload);
       final response = await put(
           Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-school-details'),
+              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/auth/update-school-details'),
           body: jsonEncode(payload));
       // log(response.body);
       if (response.statusCode == 200) Navigator.pushNamed(context, '/app');

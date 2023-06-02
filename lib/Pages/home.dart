@@ -199,75 +199,188 @@ class _HomeWidgetState extends State<HomeWidget> {
             //       maxHeight: MediaQuery.of(context).size.height + 1000,
             //     ),
             child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                child: Stack(
-                  children: [
-                    Container(
-                      // height: MediaQuery.of(context).size.height / 4,
-                      // width: MediaQuery.of(context).size.width,
-                      alignment: Alignment.center,
-                      child: schoolPicture.isEmpty
-                          ? Image.asset(
-                              "assets/images/schoolDefault.jpg",
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.cover,
-                            )
-                          : FancyShimmerImage(
-                              imageUrl: schoolPicture,
-                              boxFit: BoxFit.cover,
-                              width: MediaQuery.of(context).size.width,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  child: Stack(
+                    children: [
+                      Container(
+                        // height: MediaQuery.of(context).size.height / 4,
+                        // width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        child: schoolPicture.isEmpty
+                            ? Image.asset(
+                                "assets/images/schoolDefault.jpg",
+                                width: MediaQuery.of(context).size.width,
+                                fit: BoxFit.cover,
+                              )
+                            : FancyShimmerImage(
+                                imageUrl: schoolPicture,
+                                boxFit: BoxFit.cover,
+                                width: MediaQuery.of(context).size.width,
+                              ),
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: SvgPicture.asset("assets/svg/edit.svg"),
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                      title: const Text("Edit School Image"),
+                                      content: StatefulBuilder(
+                                          builder: (context, setInnerState) {
+                                        return SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                _image != null
+                                                    ? Image.file(
+                                                        _image!,
+                                                        fit: BoxFit.cover,
+                                                      )
+                                                    : Container(),
+                                                ButtonTheme(
+                                                    child: SizedBox(
+                                                  width: double.infinity,
+                                                  child: ElevatedButton(
+                                                      onPressed: () {
+                                                        _pickImage(
+                                                            setInnerState);
+                                                      },
+                                                      style: ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all(Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .secondary)),
+                                                      child: const Text(
+                                                          "Choose from Gallery")),
+                                                )),
+                                                _image != null
+                                                    ? ButtonTheme(
+                                                        child: SizedBox(
+                                                        width: double.infinity,
+                                                        child: ElevatedButton(
+                                                            onPressed: () {
+                                                              uploadSchoolPicture(
+                                                                  setInnerState);
+                                                            },
+                                                            style: ButtonStyle(
+                                                                backgroundColor:
+                                                                    MaterialStateProperty.all(Theme.of(
+                                                                            context)
+                                                                        .colorScheme
+                                                                        .secondary)),
+                                                            child:
+                                                                isSchoolLoading
+                                                                    ? const SizedBox(
+                                                                        width:
+                                                                            20,
+                                                                        height:
+                                                                            20,
+                                                                        child:
+                                                                            CircularProgressIndicator(
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                      )
+                                                                    : const Text(
+                                                                        "Save")),
+                                                      ))
+                                                    : Container()
+                                              ],
+                                            ));
+                                      }));
+                                });
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          schoolName,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 20),
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Row(children: [
+                        SvgPicture.asset("assets/svg/location.svg"),
+                        Text(
+                          schoolLocation,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 14),
+                        ),
+                      ]),
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(description),
                             ),
-                    ),
-                    Container(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                        icon: SvgPicture.asset("assets/svg/edit.svg"),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                    title: const Text("Edit School Image"),
-                                    content: StatefulBuilder(
-                                        builder: (context, setInnerState) {
-                                      return SizedBox(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              _image != null
-                                                  ? Image.file(
-                                                      _image!,
-                                                      fit: BoxFit.cover,
-                                                    )
-                                                  : Container(),
-                                              ButtonTheme(
-                                                  child: SizedBox(
-                                                width: double.infinity,
-                                                child: ElevatedButton(
-                                                    onPressed: () {
-                                                      _pickImage(setInnerState);
-                                                    },
-                                                    style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all(Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .secondary)),
-                                                    child: const Text(
-                                                        "Choose from Gallery")),
-                                              )),
-                                              _image != null
-                                                  ? ButtonTheme(
-                                                      child: SizedBox(
+                            IconButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                          title: const Text(
+                                              "Edit School Description"),
+                                          content: StatefulBuilder(builder:
+                                              (context, setInnerState) {
+                                            return SizedBox(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    SizedBox(
+                                                        height: 80,
+                                                        width: double.infinity,
+                                                        child: TextField(
+                                                          maxLines: 10,
+                                                          enabled: true,
+                                                          controller:
+                                                              descriptionController,
+                                                          obscureText: false,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                            border: OutlineInputBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .zero,
+                                                                borderSide: BorderSide(
+                                                                    color: Colors
+                                                                        .black)),
+                                                            hintText:
+                                                                "Description",
+                                                          ),
+                                                        )),
+                                                    ButtonTheme(
+                                                        child: SizedBox(
                                                       width: double.infinity,
                                                       child: ElevatedButton(
                                                           onPressed: () {
-                                                            uploadSchoolPicture(
+                                                            updateSchoolDescription(
                                                                 setInnerState);
                                                           },
                                                           style: ButtonStyle(
@@ -289,219 +402,112 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                               : const Text(
                                                                   "Save")),
                                                     ))
-                                                  : Container()
-                                            ],
-                                          ));
-                                    }));
-                              });
-                        },
+                                                  ],
+                                                ));
+                                          }));
+                                    });
+                              },
+                              // onPressed: () {
+                              //   showDialog(
+                              //     context: context,
+                              //     builder: (context) {
+                              //       return AlertDialog(
+                              //         title: const Text("Edit School Details"),
+                              //         content: StatefulBuilder(
+                              //           builder: (context, setInnerState) {
+                              //             return SizedBox(
+                              //               child: Column(
+                              //                 children: [
+                              //                   SizedBox(
+                              //                     height: 40,
+                              //                     width: double.infinity,
+                              //                     child: TextField(
+                              //                       maxLines: 10,
+                              //                       enabled: true,
+                              //                       controller:
+                              //                           descriptionController,
+                              //                       obscureText: false,
+                              //                       decoration:
+                              //                           const InputDecoration(
+                              //                         border: OutlineInputBorder(
+                              //                           borderRadius:
+                              //                               BorderRadius.zero,
+                              //                           borderSide: BorderSide(
+                              //                             color: Colors.black,
+                              //                           ),
+                              //                         ),
+                              //                         hintText: "Description",
+                              //                       ),
+                              //                     ),
+                              //                   ),
+                              //                   ButtonTheme(
+                              //                     child: SizedBox(
+                              //                       width: double.infinity,
+                              //                       child: ElevatedButton(
+                              //                         onPressed: () {
+                              //                           updateSchoolDescription();
+                              //                         },
+                              //                         style: ButtonStyle(
+                              //                           backgroundColor:
+                              //                               MaterialStateProperty
+                              //                                   .all(
+                              //                             Theme.of(context)
+                              //                                 .colorScheme
+                              //                                 .secondary,
+                              //                           ),
+                              //                         ),
+                              //                         child: const Text("Save"),
+                              //                       ),
+                              //                     ),
+                              //                   ),
+                              //                 ],
+                              //               ),
+                              //             );
+                              //           },
+                              //         ),
+                              //       );
+                              //     },
+                              //   );
+                              // },
+                              icon: SvgPicture.asset("assets/svg/edit.svg"),
+                            ),
+                          ],
+                        ),
                       ),
-                    )
-                  ],
+                      const Divider(
+                        color: Color.fromARGB(255, 70, 69, 69),
+                        thickness: 0.1,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        schoolName,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 20),
-                      ),
-                    ),
-                    Row(children: [
-                      SvgPicture.asset("assets/svg/location.svg"),
-                      Text(
-                        schoolLocation,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 14),
-                      ),
-                    ]),
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(description),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                        title: const Text(
-                                            "Edit School Description"),
-                                        content: StatefulBuilder(
-                                            builder: (context, setInnerState) {
-                                          return SizedBox(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  SizedBox(
-                                                      height: 80,
-                                                      width: double.infinity,
-                                                      child: TextField(
-                                                        maxLines: 10,
-                                                        enabled: true,
-                                                        controller:
-                                                            descriptionController,
-                                                        obscureText: false,
-                                                        decoration:
-                                                            const InputDecoration(
-                                                          border: OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .zero,
-                                                              borderSide: BorderSide(
-                                                                  color: Colors
-                                                                      .black)),
-                                                          hintText:
-                                                              "Description",
-                                                        ),
-                                                      )),
-                                                  ButtonTheme(
-                                                      child: SizedBox(
-                                                    width: double.infinity,
-                                                    child: ElevatedButton(
-                                                        onPressed: () {
-                                                          updateSchoolDescription(
-                                                              setInnerState);
-                                                        },
-                                                        style: ButtonStyle(
-                                                            backgroundColor: MaterialStateProperty
-                                                                .all(Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .secondary)),
-                                                        child: isSchoolLoading
-                                                            ? const SizedBox(
-                                                                width: 20,
-                                                                height: 20,
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                              )
-                                                            : const Text(
-                                                                "Save")),
-                                                  ))
-                                                ],
-                                              ));
-                                        }));
-                                  });
-                            },
-                            // onPressed: () {
-                            //   showDialog(
-                            //     context: context,
-                            //     builder: (context) {
-                            //       return AlertDialog(
-                            //         title: const Text("Edit School Details"),
-                            //         content: StatefulBuilder(
-                            //           builder: (context, setInnerState) {
-                            //             return SizedBox(
-                            //               child: Column(
-                            //                 children: [
-                            //                   SizedBox(
-                            //                     height: 40,
-                            //                     width: double.infinity,
-                            //                     child: TextField(
-                            //                       maxLines: 10,
-                            //                       enabled: true,
-                            //                       controller:
-                            //                           descriptionController,
-                            //                       obscureText: false,
-                            //                       decoration:
-                            //                           const InputDecoration(
-                            //                         border: OutlineInputBorder(
-                            //                           borderRadius:
-                            //                               BorderRadius.zero,
-                            //                           borderSide: BorderSide(
-                            //                             color: Colors.black,
-                            //                           ),
-                            //                         ),
-                            //                         hintText: "Description",
-                            //                       ),
-                            //                     ),
-                            //                   ),
-                            //                   ButtonTheme(
-                            //                     child: SizedBox(
-                            //                       width: double.infinity,
-                            //                       child: ElevatedButton(
-                            //                         onPressed: () {
-                            //                           updateSchoolDescription();
-                            //                         },
-                            //                         style: ButtonStyle(
-                            //                           backgroundColor:
-                            //                               MaterialStateProperty
-                            //                                   .all(
-                            //                             Theme.of(context)
-                            //                                 .colorScheme
-                            //                                 .secondary,
-                            //                           ),
-                            //                         ),
-                            //                         child: const Text("Save"),
-                            //                       ),
-                            //                     ),
-                            //                   ),
-                            //                 ],
-                            //               ),
-                            //             );
-                            //           },
-                            //         ),
-                            //       );
-                            //     },
-                            //   );
-                            // },
-                            icon: SvgPicture.asset("assets/svg/edit.svg"),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Divider(
-                      color: Color.fromARGB(255, 70, 69, 69),
-                      thickness: 0.1,
-                    ),
-                  ],
-                ),
-              ),
-              // Expanded(
-              //     child:
-              SizedBox(
+                SizedBox(
                   child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                child: initiatives.isEmpty
-                    ? const Text(
-                        'No initiatives added yet',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color.fromARGB(255, 196, 196, 196)),
-                      )
-                    : ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        itemCount: initiatives.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return SingleInitiativeWidget(
-                              images: initiatives[index].images,
-                              firstName: initiatives[index].userFirstName,
-                              lastName: initiatives[index].userLastName);
-                        },
-                      ),
-              ))
-            ],
-          ));
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                    child: initiatives.isEmpty
+                        ? const Text(
+                            'No initiatives added yet',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Color.fromARGB(255, 196, 196, 196)),
+                          )
+                        : ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: initiatives.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return SingleInitiativeWidget(
+                                  images: initiatives[index].images,
+                                  firstName: initiatives[index].userFirstName,
+                                  lastName: initiatives[index].userLastName);
+                            },
+                          ),
+                  ),
+                )
+              ],
+            ),
+          );
   }
 }

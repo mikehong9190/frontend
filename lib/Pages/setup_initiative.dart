@@ -33,7 +33,7 @@ class _InitiativeState extends State<SetupInitiative> {
         isLoading = true;
       });
       final response = await http.get(Uri.parse(
-          'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/initiative-types'));
+          'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/initiative/types'));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -77,7 +77,7 @@ class _InitiativeState extends State<SetupInitiative> {
           ),
           const SizedBox(height: 10),
           isLoading
-              ? Column(children:  [
+              ? Column(children: [
                   const SizedBox(height: 30),
                   Align(
                     alignment: Alignment.center,
@@ -164,7 +164,7 @@ class _InitiativeState extends State<SetupInitiative> {
               child: ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
-                     Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.secondary,
                   ),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(

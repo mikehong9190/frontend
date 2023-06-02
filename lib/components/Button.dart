@@ -66,7 +66,7 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
       //   token = token.substring(initLength, endLength);
       // }
 
-      final response = await post(Uri.https(apiHost, '/v1/signup'),
+      final response = await post(Uri.https(apiHost, '/v1/auth/signup'),
           body: jsonEncode({"idToken": token, "platform": "android"}));
       final jsonData = Welcome.fromJson(jsonDecode(response.body));
 
@@ -168,7 +168,8 @@ class _OAuthButtonWidgetState extends State<OAuthButtonWidget> {
                   //   token = token.substring(initLength, endLength);
                   // }
 
-                  final response = await post(Uri.https(apiHost, '/v1/signup'),
+                  final response = await post(
+                      Uri.https(apiHost, '/v1/auth/signup'),
                       body: jsonEncode({
                         "idToken": token,
                         "platform": Platform.isAndroid ? "android" : "ios"

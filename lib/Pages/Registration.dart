@@ -128,7 +128,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       setState(() {
         isLoading = true;
       });
-      final response = await post(Uri.https(apiHost, '/v1/validate-email'),
+      final response = await post(Uri.https(apiHost, '/v1/auth/validate-email'),
           body: jsonEncode(
               {"emailId": emailController.text, "requestType": "email"}));
       final jsonData =
@@ -175,7 +175,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       setState(() {
         isLoading = true;
       });
-      final response = await post(Uri.https(apiHost, '/v1/verify-otp'),
+      final response = await post(Uri.https(apiHost, '/v1/auth/verify-otp'),
           body: jsonEncode({
             "emailId": emailController.text,
             "requestType": "email",
@@ -265,7 +265,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       } else {
         payload["schoolId"] = schoolId;
       }
-      final response = await post(Uri.https(apiHost, '/v1/signup'),
+      final response = await post(Uri.https(apiHost, '/v1/auth/signup'),
           body: jsonEncode(payload));
       // print(response.statusCode);
       if (response.statusCode == 200) {

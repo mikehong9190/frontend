@@ -103,7 +103,7 @@ class _InitiativeState extends State<Initiative> {
       });
       final queryParameters = {"id": userId};
       final response = await get(
-          Uri.https(apiHost, '/v1/get-user-initiatives', queryParameters));
+          Uri.https(apiHost, '/v1/initiative/get-all', queryParameters));
 
       if (response.statusCode == 200) {
         final jsonData = Welcome.fromJson(jsonDecode(response.body));

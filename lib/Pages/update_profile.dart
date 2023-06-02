@@ -89,7 +89,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       };
       final response = await post(
           Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/send-otp'),
+              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/auth/send-otp'),
           body: jsonEncode(payload));
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/reset-password");
@@ -125,7 +125,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         isProfileUpdating = true;
       });
 
-      final response = await put(Uri.https(apiHost, '/v1/update-profile'),
+      final response = await put(Uri.https(apiHost, '/v1/user/update'),
           body: payload,
           headers: {
             // HttpHeaders.authorizationHeader : token
@@ -152,7 +152,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       });
       final queryParameters = {'id': id};
       final response =
-          await get(Uri.https(apiHost, '/v1/users', queryParameters));
+          await get(Uri.https(apiHost, '/v1/user/get-all', queryParameters));
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
@@ -181,9 +181,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       });
       final token = context.read<User>().token;
 
-      var url = Uri.https(apiHost, '/v1/update-profile');
+      var url = Uri.https(apiHost, '/v1/user/update');
       // var url = Uri.parse(
-      //     'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-profile');
+      //     'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/user/update');
       final request = MultipartRequest('PUT', url);
       request.headers['authorization'] = 'Bearer $token';
       request.fields["id"] = context.read<User>().userId;

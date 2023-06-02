@@ -102,7 +102,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       setState(() {
         sendingOtp = true;
       });
-      final response = await post(Uri.https(apiHost, '/v1/validate-email'),
+      final response = await post(Uri.https(apiHost, '/v1/auth/validate-email'),
           body: jsonEncode(payload));
       log(response.body);
       final jsonData =
@@ -137,7 +137,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       isLoading = true;
     });
     try {
-      final response = await post(Uri.https(apiHost, '/v1/reset-password'),
+      final response = await post(Uri.https(apiHost, '/v1/user/reset-password'),
           body: jsonEncode(payload));
       log(response.body);
       if (response.statusCode == 200) {
@@ -171,7 +171,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
         "otp": otp
       };
 
-      final response = await post(Uri.https(apiHost, '/v1/verify-otp'),
+      final response = await post(Uri.https(apiHost, '/v1/auth/verify-otp'),
           body: jsonEncode(payload));
       final jsonData =
           OTPVerificationResponse.fromJson(jsonDecode(response.body));

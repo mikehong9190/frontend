@@ -69,7 +69,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       setState(() {
         isLoading = true;
       });
-      final response = await post(Uri.https(apiHost, '/v1/login'),
+      final response = await post(Uri.https(apiHost, '/v1/auth/login'),
           body: jsonEncode({
             "emailId": emailController.text,
             "password": passwordController.text

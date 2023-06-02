@@ -146,7 +146,7 @@ class _GalleryState extends State<Gallery> {
     try {
       final response = await post(
           Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/get-presigned-urls'),
+              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/initiative/get-presigned-urls'),
           body: jsonEncode(payload));
 
       if (response.statusCode == 200) {
@@ -186,8 +186,8 @@ class _GalleryState extends State<Gallery> {
         "imageKeys": imageKeys
       };
       String url = isUpdate
-          ? 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/update-initiative'
-          : 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/create-initiative';
+          ? 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/initiative/update'
+          : 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/initiative/create';
       final response;
       if (isUpdate) {
         response = await put(Uri.parse(url),

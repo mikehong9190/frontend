@@ -61,7 +61,7 @@ class _AccountWidgetState extends State<AccountWidget> {
       });
       final queryParameters = {"id": id};
       final response =
-          await get(Uri.https(apiHost, '/v1/users', queryParameters));
+          await get(Uri.https(apiHost, '/v1/user/get-all', queryParameters));
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
@@ -94,16 +94,11 @@ class _AccountWidgetState extends State<AccountWidget> {
             alignment: Alignment.center,
             child: CircularProgressIndicator(
               color: Theme.of(context).colorScheme.secondary,
-            ))
+            ),
+          )
         : SingleChildScrollView(
-            // child: ConstrainedBox(
-            //   constraints: BoxConstraints(
-            //     maxHeight: 1000 + MediaQuery.of(context).size.height,
-            //   ),
             child: Column(
               children: [
-                // Container(
-                //   child:
                 AccountDetailWidget(
                     profilePicture: profilePicture,
                     collectiblesLength: collectibles.length,
@@ -113,15 +108,12 @@ class _AccountWidgetState extends State<AccountWidget> {
                     name: name,
                     goalsMets: goalsMets),
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
                   child: Divider(
                     color: Color.fromARGB(255, 70, 69, 69),
                     thickness: 0.1,
                   ),
                 ),
-                // ),
-                // Expanded(
-                // child:
                 collectibles.isEmpty
                     ? const Center(
                         child: Text(
@@ -160,7 +152,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                                                 width: MediaQuery.of(context)
                                                         .size
                                                         .width *
-                                                    0.6,
+                                                    0.8,
                                                 height: MediaQuery.of(context)
                                                         .size
                                                         .height *

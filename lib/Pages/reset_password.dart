@@ -110,7 +110,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
     try {
       final response = await post(
           Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/reset-password'),
+              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/user/reset-password'),
           body: jsonEncode(payload));
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/app");
@@ -126,7 +126,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
 // =======
 //     final response = await post(
 //         Uri.parse(
-//             'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/reset-password'),
+//             'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/user/reset-password'),
 //         body: jsonEncode(payload));
 //     if (response.statusCode == 200) {
 //       Navigator.pushNamed(context, "/app", arguments: {
@@ -151,7 +151,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
       // log(payload);
       final response = await post(
           Uri.parse(
-              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/verify-otp'),
+              'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/auth/verify-otp'),
           body: jsonEncode(payload));
 
       if (response.statusCode == 200) {
