@@ -199,22 +199,6 @@ class _GalleryState extends State<Gallery> {
             headers: {'Authorization': 'Bearer $token'});
       }
 
-      // for (final image in images) {
-      //   final multipartFile = http.MultipartFile.fromBytes(
-      //       'files', await image.readAsBytes(),
-      //       filename: image.name);
-      //   request.files.add(multipartFile);
-      // }
-      // request.fields['userId'] = user.userId;
-      // request.fields['initiativeTypeId'] = id;
-      // request.fields['initiativeId'] = initiativeId;
-      // request.fields['name'] = name;
-      // request.fields['target'] = '$target';
-      // request.fields['grade'] = grade;
-      // request.fields['numberOfStudents'] = '$noOfStudents';
-      // request.fields['imageKeys'] = imageKeys;
-      // final response = await request.send();
-
       if (response.statusCode == 200) {
         log("Step 3---------done");
         _showSuccessDialog(context);
@@ -338,7 +322,7 @@ class _GalleryState extends State<Gallery> {
                 ),
               ),
               isLoading
-                  ? Column(children:  [
+                  ? Column(children: [
                       const SizedBox(height: 70),
                       Align(
                         alignment: Alignment.center,
@@ -423,11 +407,6 @@ class _GalleryState extends State<Gallery> {
                                           Positioned(
                                             top: 0,
                                             right: 0,
-                                            // child: Icon(
-                                            //   Icons.check_circle,
-                                            //   color: Colors.green,
-                                            //   size: 30,
-                                            // ),
                                             child: Image.asset(
                                               "assets/images/select.png",
                                               // width: 30,
@@ -467,7 +446,7 @@ class _GalleryState extends State<Gallery> {
                               : const Color.fromARGB(255, 212, 211, 211),
                         ),
                       ),
-                      backgroundColor:  Theme.of(context).colorScheme.secondary,
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
                       onPressed: imageModel.finalImages.isNotEmpty
                           ? () {
                               getPresignedUrls(context, imageModel.finalImages);
@@ -481,7 +460,7 @@ class _GalleryState extends State<Gallery> {
                 bottom: 16.0,
                 right: 0,
                 child: FloatingActionButton(
-                  backgroundColor:  Theme.of(context).colorScheme.secondary,
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
                   onPressed: () {
                     showDialog(
                       context: context,
@@ -545,9 +524,11 @@ class _GalleryState extends State<Gallery> {
                           ),
                           actions: <Widget>[
                             TextButton(
-                              child:  Text('Close',
+                              child: Text('Close',
                                   style: TextStyle(
-                                      color: Theme.of(context).colorScheme.secondary)),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary)),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
@@ -557,7 +538,10 @@ class _GalleryState extends State<Gallery> {
                       },
                     );
                   },
-                  child: const Icon(Icons.add),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],

@@ -231,64 +231,65 @@ class _HomeWidgetState extends State<HomeWidget> {
                                     content: StatefulBuilder(
                                         builder: (context, setInnerState) {
                                       return SizedBox(
-                                          // height: MediaQuery.of(context).size.height * 0.5,
+                                          width:
+                                              MediaQuery.of(context).size.width,
                                           child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          _image != null
-                                              ? Image.file(
-                                                  _image!,
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : Container(),
-                                          ButtonTheme(
-                                              child: SizedBox(
-                                            width: double.infinity,
-                                            child: ElevatedButton(
-                                                onPressed: () {
-                                                  _pickImage(setInnerState);
-                                                },
-                                                style: ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all(Theme.of(
-                                                                    context)
-                                                                .colorScheme
-                                                                .secondary)),
-                                                child: const Text(
-                                                    "Choose from Gallery")),
-                                          )),
-                                          _image != null
-                                              ? ButtonTheme(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              _image != null
+                                                  ? Image.file(
+                                                      _image!,
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : Container(),
+                                              ButtonTheme(
                                                   child: SizedBox(
-                                                  width: double.infinity,
-                                                  child: ElevatedButton(
-                                                      onPressed: () {
-                                                        uploadSchoolPicture(
-                                                            setInnerState);
-                                                      },
-                                                      style: ButtonStyle(
-                                                          backgroundColor:
-                                                              MaterialStateProperty
+                                                width: double.infinity,
+                                                child: ElevatedButton(
+                                                    onPressed: () {
+                                                      _pickImage(setInnerState);
+                                                    },
+                                                    style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .secondary)),
+                                                    child: const Text(
+                                                        "Choose from Gallery")),
+                                              )),
+                                              _image != null
+                                                  ? ButtonTheme(
+                                                      child: SizedBox(
+                                                      width: double.infinity,
+                                                      child: ElevatedButton(
+                                                          onPressed: () {
+                                                            uploadSchoolPicture(
+                                                                setInnerState);
+                                                          },
+                                                          style: ButtonStyle(
+                                                              backgroundColor: MaterialStateProperty
                                                                   .all(Theme.of(
                                                                           context)
                                                                       .colorScheme
                                                                       .secondary)),
-                                                      child: isSchoolLoading
-                                                          ? const SizedBox(
-                                                              width: 20,
-                                                              height: 20,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            )
-                                                          : const Text("Save")),
-                                                ))
-                                              : Container()
-                                        ],
-                                      ));
+                                                          child: isSchoolLoading
+                                                              ? const SizedBox(
+                                                                  width: 20,
+                                                                  height: 20,
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                )
+                                                              : const Text(
+                                                                  "Save")),
+                                                    ))
+                                                  : Container()
+                                            ],
+                                          ));
                                     }));
                               });
                         },
@@ -333,65 +334,68 @@ class _HomeWidgetState extends State<HomeWidget> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                        title:
-                                            const Text("Edit School Description"),
+                                        title: const Text(
+                                            "Edit School Description"),
                                         content: StatefulBuilder(
                                             builder: (context, setInnerState) {
                                           return SizedBox(
-                                            width: MediaQuery.of(context).size.width,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
                                               child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              SizedBox(
-                                                  height: 80,
-                                                  width: double.infinity,
-                                                  child: TextField(
-                                                    maxLines: 10,
-                                                    enabled: true,
-                                                    controller:
-                                                        descriptionController,
-                                                    obscureText: false,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      border: OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius.zero,
-                                                          borderSide:
-                                                              BorderSide(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  SizedBox(
+                                                      height: 80,
+                                                      width: double.infinity,
+                                                      child: TextField(
+                                                        maxLines: 10,
+                                                        enabled: true,
+                                                        controller:
+                                                            descriptionController,
+                                                        obscureText: false,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          border: OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .zero,
+                                                              borderSide: BorderSide(
                                                                   color: Colors
                                                                       .black)),
-                                                      hintText: "Description",
-                                                    ),
-                                                  )),
-                                              ButtonTheme(
-                                                  child: SizedBox(
-                                                width: double.infinity,
-                                                child: ElevatedButton(
-                                                    onPressed: () {
-                                                      updateSchoolDescription(
-                                                          setInnerState);
-                                                    },
-                                                    style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
+                                                          hintText:
+                                                              "Description",
+                                                        ),
+                                                      )),
+                                                  ButtonTheme(
+                                                      child: SizedBox(
+                                                    width: double.infinity,
+                                                    child: ElevatedButton(
+                                                        onPressed: () {
+                                                          updateSchoolDescription(
+                                                              setInnerState);
+                                                        },
+                                                        style: ButtonStyle(
+                                                            backgroundColor: MaterialStateProperty
                                                                 .all(Theme.of(
                                                                         context)
                                                                     .colorScheme
                                                                     .secondary)),
-                                                    child: isSchoolLoading
-                                                        ? const SizedBox(
-                                                            width: 20,
-                                                            height: 20,
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          )
-                                                        : const Text("Save")),
-                                              ))
-                                            ],
-                                          ));
+                                                        child: isSchoolLoading
+                                                            ? const SizedBox(
+                                                                width: 20,
+                                                                height: 20,
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              )
+                                                            : const Text(
+                                                                "Save")),
+                                                  ))
+                                                ],
+                                              ));
                                         }));
                                   });
                             },

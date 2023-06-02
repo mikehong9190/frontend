@@ -86,91 +86,20 @@ class _CameraState extends State<ICamera> {
     var imageModel = Provider.of<User>(context);
 
     void goToPreview(XFile picture) {
-      // await _cameraController.stopImageStream();
-      // _cameraController.stopImageStream();
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ImagePreview(
-              picture: picture,
-              initiativeTypeId: id,
-              initiativeType: name,
-              target: target,
-              grade: grade,
-              noOfStudents: noOfStudents),
+            picture: picture,
+            initiativeTypeId: id,
+            initiativeType: name,
+            target: target,
+            grade: grade,
+            noOfStudents: noOfStudents,
+          ),
         ),
       );
     }
-    // void goToPreview(XFile picture) {
-    //   showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return AlertDialog(
-    //         title: const Text("Preview"),
-    //         content: SizedBox(
-    //           height: 610,
-    //           child: Column(
-    //             children: [
-    //               Image.file(
-    //                 File(picture.path),
-    //                 fit: BoxFit.cover,
-    //                 // height: MediaQuery.of(context).size.width * 0.9,
-    //                 width: MediaQuery.of(context).size.width * 0.7,
-    //               ),
-    //               const SizedBox(height: 20),
-    //               Row(
-    //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                 children: [
-    //                   ButtonTheme(
-    //                     child: SizedBox(
-    //                       height: 40,
-    //                       width: MediaQuery.of(context).size.width * 0.30,
-    //                       child: ElevatedButton(
-    //                         style: ButtonStyle(
-    //                             backgroundColor: MaterialStateProperty.all(
-    //                                 const Color.fromRGBO(0, 0, 0, 1)),
-    //                             shape: MaterialStateProperty.all<
-    //                                     RoundedRectangleBorder>(
-    //                                 RoundedRectangleBorder(
-    //                                     borderRadius:
-    //                                         BorderRadius.circular(5.0)))),
-    //                         onPressed: () {
-    //                           Navigator.of(context).pop();
-    //                         },
-    //                         child: const Text("Retake"),
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   ButtonTheme(
-    //                     child: SizedBox(
-    //                       height: 40,
-    //                       width: MediaQuery.of(context).size.width * 0.30,
-    //                       child: ElevatedButton(
-    //                         style: ButtonStyle(
-    //                             backgroundColor: MaterialStateProperty.all(
-    //                                 const Theme.of(context).colorScheme.secondary),
-    //                             shape: MaterialStateProperty.all<
-    //                                     RoundedRectangleBorder>(
-    //                                 RoundedRectangleBorder(
-    //                                     borderRadius:
-    //                                         BorderRadius.circular(5.0)))),
-    //                         onPressed: () {
-    //                           imageModel.addImage(picture);
-    //                           Navigator.pop(context);
-    //                         },
-    //                         child: const Text("Confirm"),
-    //                       ),
-    //                     ),
-    //                   ),
-    //                 ],
-    //               )
-    //             ],
-    //           ),
-    //         ),
-    //       );
-    //     },
-    //   );
-    // }
 
     Future takePicture() async {
       if (!_cameraController.value.isInitialized) {
@@ -192,115 +121,148 @@ class _CameraState extends State<ICamera> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => Gallery(
-                        initiativeTypeId: id,
-                        initiativeType: name,
-                        target: target,
-                        grade: grade,
-                        noOfStudents: noOfStudents),
-                  ),
-                );
-              },
-              icon: SvgPicture.asset("assets/svg/Vector.svg")),
-          backgroundColor: Colors.white,
-          title: const Text(
-            'Take a Picture',
-            style: TextStyle(
-              color: Colors.black87,
-            ),
-          )),
-      body: Column(children: [
-        // const Spacer(),
-        Expanded(
-          child: SizedBox(
-            width: double.infinity,
-            child: (_cameraController.value.isInitialized)
-                ? FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: SizedBox(
-                      width: _cameraController.value.previewSize!.height,
-                      height: _cameraController.value.previewSize!.width,
-                      child: CameraPreview(_cameraController),
-                    ),
-                  )
-                : Container(
-                    color: Colors.black,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
+        elevation: 0,
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => Gallery(
+                  initiativeTypeId: id,
+                  initiativeType: name,
+                  target: target,
+                  grade: grade,
+                  noOfStudents: noOfStudents,
+                ),
+              ),
+            );
+          },
+          icon: SvgPicture.asset("assets/svg/Vector.svg"),
+        ),
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Take a Picture',
+          style: TextStyle(
+            color: Colors.black87,
           ),
         ),
-        const Spacer(),
-        SizedBox(
-          height: 140,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 80,
-                height: 80,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => Gallery(
-                            initiativeTypeId: id,
-                            initiativeType: name,
-                            target: target,
-                            grade: grade,
-                            noOfStudents: noOfStudents),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SizedBox(
+              width: double.infinity,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: (_cameraController.value.isInitialized)
+                        ? AspectRatio(
+                            aspectRatio: _cameraController.value.aspectRatio,
+                            child: Stack(
+                              children: [
+                                CameraPreview(_cameraController),
+                                GridView.count(
+                                  crossAxisCount:
+                                      3, // Number of columns in the grid
+                                  children: List.generate(
+                                    18, // Number of cells in the grid
+                                    (index) => Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: const Color.fromARGB(
+                                              171, 255, 255, 255),
+                                          width: 0.5,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(
+                            color: Colors.black,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      color: Colors.white,
+                      height: 140,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 80,
+                            height: 80,
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => Gallery(
+                                      initiativeTypeId: id,
+                                      initiativeType: name,
+                                      target: target,
+                                      grade: grade,
+                                      noOfStudents: noOfStudents,
+                                    ),
+                                  ),
+                                );
+                              },
+                              icon: imageModel.images.isNotEmpty
+                                  ? Image.file(
+                                      File(imageModel
+                                          .images[imageModel.images.length - 1]
+                                          .path),
+                                      fit: BoxFit.cover,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.7,
+                                    )
+                                  : Image.asset(
+                                      "assets/images/defaultImage.png",
+                                      fit: BoxFit.cover,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.7,
+                                    ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 50,
+                          ),
+                          SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: IconButton(
+                              onPressed: takePicture,
+                              icon: Image.asset('assets/images/Shutter.png'),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 50,
+                          ),
+                          SizedBox(
+                            width: 80,
+                            height: 80,
+                            child: IconButton(
+                              onPressed: toggleCamera,
+                              icon: Image.asset('assets/images/Rotate.png'),
+                            ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                  icon: imageModel.images.isNotEmpty
-                      ? Image.file(
-                          File(imageModel
-                              .images[imageModel.images.length - 1].path),
-                          fit: BoxFit.cover,
-                          width: MediaQuery.of(context).size.width * 0.7,
-                        )
-                      : Image.asset(
-                          "assets/images/defaultImage.png",
-                          fit: BoxFit.cover,
-                          width: MediaQuery.of(context).size.width * 0.7,
-                        ),
-                ),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(
-                width: 50,
-              ),
-              SizedBox(
-                width: 100,
-                height: 100,
-                child: IconButton(
-                  onPressed: takePicture,
-                  icon: Image.asset('assets/images/Shutter.png'),
-                ),
-              ),
-              const SizedBox(
-                width: 50,
-              ),
-              SizedBox(
-                width: 80,
-                height: 80,
-                child: IconButton(
-                  onPressed: toggleCamera,
-                  icon: Image.asset('assets/images/Rotate.png'),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }

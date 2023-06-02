@@ -48,6 +48,7 @@ dependencies:
   camera: ^0.10.5
   cached_network_image: ^3.2.3
   fancy_shimmer_image: ^2.0.2
+  image_cropper: ^4.0.1
 
 dev_dependencies:
   flutter_test:
