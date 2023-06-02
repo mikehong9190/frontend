@@ -1,5 +1,7 @@
 // import 'dart:convert';
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -96,8 +98,8 @@ class _HomeWidgetState extends State<HomeWidget> {
             // HttpHeaders.authorizationHeader : token
             'Authorization': 'Bearer $token'
           });
-      print(response.statusCode);
-      print(response.body);
+      // print(response.statusCode);
+      // print(response.body);
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/app");
       }
@@ -154,16 +156,16 @@ class _HomeWidgetState extends State<HomeWidget> {
         isLoading = true;
       });
       final queryParameters = {"schoolId": widget.schoolId};
-      print("---------- ${widget.schoolId} -------------");
+
       final response =
           await get(Uri.https(apiHost, '/v1/school', queryParameters));
       log(response.body);
-      print(response.body);
+
       // print(response.statusCode);
       if (response.statusCode == 200) {
         final jsonData =
             SchoolDetailResponse.fromJson(jsonDecode(response.body));
-        print(jsonData.data.toString());
+
         setState(() {
           schoolName = jsonData.data.school.name;
           schoolLocation = jsonData.data.school.district;
@@ -174,7 +176,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         });
       }
     } catch (error, stackTrace) {
-      print(stackTrace);
+      // print(stackTrace);
       log(stackTrace.toString());
     } finally {
       setState(() {

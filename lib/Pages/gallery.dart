@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously
 
 import 'dart:convert';
 import 'dart:io';
@@ -10,9 +10,9 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:frontend/Pages/camera.dart';
-
 import '../store.dart';
 
 class Gallery extends StatefulWidget {
@@ -260,14 +260,23 @@ class _GalleryState extends State<Gallery> {
 
     openImages() async {
       try {
-        var pickedfiles = await imgpicker.pickMultiImage();
-        // ignore: unnecessary_null_comparison
-        if (pickedfiles != null) {
-          for (var i = 0; i < pickedfiles.length; i++) {
-            imageModel.addImage(pickedfiles[i]);
+        Map<Permission, PermissionStatus> statuses = await [
+          Permission.storage,
+          Permission.camera,
+        ].request();
+        if (statuses[Permission.storage]!.isGranted &&
+            statuses[Permission.camera]!.isGranted) {
+          var pickedfiles = await imgpicker.pickMultiImage();
+          // ignore: unnecessary_null_comparison
+          if (pickedfiles != null) {
+            for (var i = 0; i < pickedfiles.length; i++) {
+              imageModel.addImage(pickedfiles[i]);
+            }
+          } else {
+            log("no image selected");
           }
         } else {
-          log("no image selected");
+          log('no permission provided');
         }
       } catch (e) {
         log("error while picking file. $e");
@@ -462,78 +471,57 @@ class _GalleryState extends State<Gallery> {
                 child: FloatingActionButton(
                   backgroundColor: Theme.of(context).colorScheme.secondary,
                   onPressed: () {
-                    showDialog(
+                    showModalBottomSheet(
                       context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16.0),
+                          topRight: Radius.circular(16.0),
+                        ),
+                      ),
                       builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text("Add Artworks"),
-                          content: SizedBox(
-                            height: 98,
+                        return Container(
+                          height: 150,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16.0),
+                              topRight: Radius.circular(16.0),
+                            ),
+                          ),
+                          child: Center(
                             child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                ButtonTheme(
-                                  child: SizedBox(
-                                    // height: 10,
-                                    width: double.infinity,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                const Color.fromRGBO(
-                                                    54, 189, 151, 1)),
-                                      ),
-                                      onPressed: openImages,
-                                      child: const Text("Choose From Gallery"),
-                                    ),
-                                  ),
+                                ListTile(
+                                  leading: const Icon(Icons.photo_library),
+                                  title: const Text("Choose From Gallery"),
+                                  onTap: openImages,
                                 ),
-                                ButtonTheme(
-                                  child: SizedBox(
-                                    // height: 10,
-                                    width: double.infinity,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                const Color.fromRGBO(
-                                                    54, 189, 151, 1)),
+                                ListTile(
+                                  leading: const Icon(Icons.camera_alt),
+                                  title: const Text("Take a Photo"),
+                                  onTap: () async {
+                                    List<CameraDescription> cameras =
+                                        await availableCameras();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => ICamera(
+                                          initiativeTypeId: id,
+                                          initiativeType: name,
+                                          target: target,
+                                          grade: grade,
+                                          noOfStudents: noOfStudents,
+                                          cameras: cameras,
+                                          context: context,
+                                        ),
                                       ),
-                                      onPressed: () async {
-                                        await availableCameras().then(
-                                          (value) => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (_) => ICamera(
-                                                  initiativeTypeId: id,
-                                                  initiativeType: name,
-                                                  target: target,
-                                                  grade: grade,
-                                                  noOfStudents: noOfStudents,
-                                                  cameras: value,
-                                                  context: context),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: const Text("Take a photo"),
-                                    ),
-                                  ),
+                                    );
+                                  },
                                 ),
                               ],
                             ),
                           ),
-                          actions: <Widget>[
-                            TextButton(
-                              child: Text('Close',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary)),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
                         );
                       },
                     );

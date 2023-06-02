@@ -37,18 +37,19 @@ dependencies:
   provider: ^6.0.5
   flutter_svg: ^2.0.5
   google_fonts: ^4.0.4
-  im_stepper: ^1.0.1+1
   http: ^0.13.6
-  fluttertoast: ^8.2.1
+  # im_stepper: ^1.0.1+1
+  # fluttertoast: ^8.2.1
   textfield_search: ^0.10.0
   flutter_typeahead: ^4.3.8
+  shared_preferences: ^2.1.1
   google_sign_in: ^6.1.0
   image_picker: ^0.8.7+5
-  shared_preferences: ^2.1.1
   camera: ^0.10.5
   cached_network_image: ^3.2.3
   fancy_shimmer_image: ^2.0.2
   image_cropper: ^4.0.1
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:
