@@ -57,8 +57,7 @@ class MyApp extends StatelessWidget {
       title: 'Swirl.io',
       theme: ThemeData.light().copyWith(
           colorScheme: const ColorScheme.light(
-              secondary: Color.fromRGBO(54, 189, 151, 1)
-              ),
+              secondary: Color.fromRGBO(54, 189, 151, 1)),
           textTheme: GoogleFonts.urbanistTextTheme(Theme.of(context).textTheme),
           inputDecorationTheme: const InputDecorationTheme(
               focusedBorder: OutlineInputBorder(

@@ -258,14 +258,38 @@ class _GalleryState extends State<Gallery> {
       ).then((value) => value ?? false);
     }
 
+    Future<bool> askForSettings() async {
+      return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Permission Required"),
+            content: const Text(
+                "Please grant the required permissions in the app settings."),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('No'),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              ),
+              TextButton(
+                child: const Text('Yes'),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+              ),
+            ],
+          );
+        },
+      ).then((value) => value ?? false);
+    }
+
     openImages() async {
       try {
-        Map<Permission, PermissionStatus> statuses = await [
-          Permission.storage,
-          Permission.camera,
-        ].request();
-        if (statuses[Permission.storage]!.isGranted &&
-            statuses[Permission.camera]!.isGranted) {
+        Map<Permission, PermissionStatus> statuses =
+            await [Permission.storage].request();
+        if (statuses[Permission.storage]!.isGranted) {
           var pickedfiles = await imgpicker.pickMultiImage();
           // ignore: unnecessary_null_comparison
           if (pickedfiles != null) {
@@ -276,6 +300,44 @@ class _GalleryState extends State<Gallery> {
             log("no image selected");
           }
         } else {
+          bool shouldOpenSettings = await askForSettings();
+          if (shouldOpenSettings) {
+            openAppSettings();
+          }
+
+          log('no permission provided');
+        }
+      } catch (e) {
+        log("error while picking file. $e");
+      }
+    }
+
+    openCamera() async {
+      try {
+        Map<Permission, PermissionStatus> statuses = await [
+          Permission.camera,
+        ].request();
+        if (statuses[Permission.camera]!.isGranted) {
+          List<CameraDescription> cameras = await availableCameras();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ICamera(
+                initiativeTypeId: id,
+                initiativeType: name,
+                target: target,
+                grade: grade,
+                noOfStudents: noOfStudents,
+                cameras: cameras,
+                context: context,
+              ),
+            ),
+          );
+        } else {
+          bool shouldOpenSettings = await askForSettings();
+          if (shouldOpenSettings) {
+            openAppSettings();
+          }
           log('no permission provided');
         }
       } catch (e) {
@@ -500,24 +562,7 @@ class _GalleryState extends State<Gallery> {
                                 ListTile(
                                   leading: const Icon(Icons.camera_alt),
                                   title: const Text("Take a Photo"),
-                                  onTap: () async {
-                                    List<CameraDescription> cameras =
-                                        await availableCameras();
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => ICamera(
-                                          initiativeTypeId: id,
-                                          initiativeType: name,
-                                          target: target,
-                                          grade: grade,
-                                          noOfStudents: noOfStudents,
-                                          cameras: cameras,
-                                          context: context,
-                                        ),
-                                      ),
-                                    );
-                                  },
+                                  onTap: openCamera,
                                 ),
                               ],
                             ),
