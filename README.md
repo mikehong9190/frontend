@@ -21,6 +21,9 @@ The build apk file can be found in andriod/build/app/outputs/flutter-apk/app-rel
 
 # Features
 Login
+Google Authentication
+Reset Password 
+Update Profile
 Home 
 Routing 
 Provider(State Management)
