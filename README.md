@@ -34,6 +34,17 @@ imStepper
 provider
 textField Search
 
+# Routes 
+This file contains all the routes for your application
+'/' - Welcome Page
+'/getStarted' - Getting Started Page
+'/registration' - Registration Page
+'/app' - main app
+'/update-profile' - update Profile Page
+'/reset-password' - reset password Page
+'/forget-password' - forget password Page 
+'/login' - login Page
+
 
 
 
