@@ -230,7 +230,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               TextButton(
                 onPressed: goToRegistration,
                 child: const Text(
-                  'Signin',
+                  'Signup',
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w700),
                 ),
