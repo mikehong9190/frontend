@@ -434,7 +434,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                                 .read<User>()
                                                 .isManuallySignedIn
                                                 .toString());
-                                            Navigator.pushNamed(context, '/');
+                                            Navigator.pushNamed(context, '/login');
                                           },
                                           child: Text('Sign Out',
                                               style: TextStyle(

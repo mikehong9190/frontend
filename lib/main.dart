@@ -32,8 +32,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLoggedIn = prefs.getBool('userLoggedIn') ?? false;
+  bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+
   // String? userId = prefs.getString("userId")!;
-  String initialRoute = isLoggedIn ? '/app' : '/';
+  String initialRoute = isFirstTime?'/':isLoggedIn ? '/app' : '/login';
 
   runApp(MultiProvider(
     providers: [
