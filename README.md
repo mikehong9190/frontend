@@ -30,7 +30,7 @@ The build apk file can be found in andriod/build/app/outputs/flutter-apk/app-rel
 -Database 
 
 # Libraries & Tools Used 
-...http
+..*http
 ...Image Picker 
 ...shared preference 
 ...imStepper
