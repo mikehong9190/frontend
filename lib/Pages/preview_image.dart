@@ -15,16 +15,20 @@ class ImagePreview extends StatefulWidget {
   final dynamic target;
   final dynamic grade;
   final dynamic noOfStudents;
+  final String? updateInitiativeId;
+  final bool? isUpdate;
 
-  const ImagePreview({
-    Key? key,
-    required this.picture,
-    required this.initiativeTypeId,
-    required this.initiativeType,
-    required this.target,
-    required this.grade,
-    required this.noOfStudents,
-  }) : super(key: key);
+  const ImagePreview(
+      {Key? key,
+      required this.picture,
+      required this.initiativeTypeId,
+      required this.initiativeType,
+      required this.target,
+      required this.grade,
+      required this.noOfStudents,
+      required this.isUpdate,
+      required this.updateInitiativeId})
+      : super(key: key);
 
   @override
   _ImagePreviewState createState() => _ImagePreviewState();
@@ -87,6 +91,8 @@ class _ImagePreviewState extends State<ImagePreview> {
     late dynamic initiativeTarget = widget.target;
     late dynamic initiativeGrade = widget.grade;
     late dynamic initiativeNoOfStudents = widget.noOfStudents;
+    late dynamic isUpdate = widget.isUpdate;
+    late dynamic updateInitiativeId = widget.updateInitiativeId;
 
     // Use croppedPicture if available, otherwise use the original picture
     final XFile currentPicture = croppedPicture ?? widget.picture;
@@ -142,6 +148,8 @@ class _ImagePreviewState extends State<ImagePreview> {
                         context,
                         MaterialPageRoute(
                           builder: (_) => Gallery(
+                            updateInitiativeId: updateInitiativeId,
+                            isUpdate: isUpdate,
                             initiativeTypeId: id,
                             initiativeType: name,
                             target: initiativeTarget,

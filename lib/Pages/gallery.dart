@@ -323,6 +323,8 @@ class _GalleryState extends State<Gallery> {
             context,
             MaterialPageRoute(
               builder: (_) => ICamera(
+                updateInitiativeId: updateInitiativeId,
+                isUpdate: isUpdate,
                 initiativeTypeId: id,
                 initiativeType: name,
                 target: target,

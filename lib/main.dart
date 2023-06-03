@@ -34,6 +34,11 @@ void main() async {
   bool isLoggedIn = prefs.getBool('userLoggedIn') ?? false;
   bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
 
+  if (isFirstTime) {
+    // Set the 'isFirstTime' flag to false to indicate it's not the first time anymore
+    await prefs.setBool('isFirstTime', false);
+  }
+
   // String? userId = prefs.getString("userId")!;
   String initialRoute = isFirstTime
       ? '/'

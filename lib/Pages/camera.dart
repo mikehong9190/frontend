@@ -16,15 +16,19 @@ class ICamera extends StatefulWidget {
   final dynamic target;
   final dynamic grade;
   final dynamic noOfStudents;
+  final String? updateInitiativeId;
+  final bool? isUpdate;
   const ICamera(
       {Key? key,
       required this.cameras,
+      required this.isUpdate,
       required this.context,
       required this.initiativeTypeId,
       required this.initiativeType,
       required this.target,
       required this.grade,
-      required this.noOfStudents})
+      required this.noOfStudents,
+      required this.updateInitiativeId})
       : super(key: key);
 
   final List<CameraDescription>? cameras;
@@ -42,6 +46,8 @@ class _CameraState extends State<ICamera> {
   late dynamic target = widget.target;
   late dynamic grade = widget.grade;
   late dynamic noOfStudents = widget.noOfStudents;
+  late dynamic isUpdate = widget.isUpdate;
+  late dynamic updateInitiativeId = widget.updateInitiativeId;
 
   @override
   void dispose() {
@@ -90,13 +96,14 @@ class _CameraState extends State<ICamera> {
         context,
         MaterialPageRoute(
           builder: (context) => ImagePreview(
-            picture: picture,
-            initiativeTypeId: id,
-            initiativeType: name,
-            target: target,
-            grade: grade,
-            noOfStudents: noOfStudents,
-          ),
+              isUpdate: isUpdate,
+              picture: picture,
+              initiativeTypeId: id,
+              initiativeType: name,
+              target: target,
+              grade: grade,
+              noOfStudents: noOfStudents,
+              updateInitiativeId: updateInitiativeId),
         ),
       );
     }
