@@ -186,7 +186,7 @@ class _GalleryState extends State<Gallery> {
         "imageKeys": imageKeys
       };
       String url = isUpdate
-          ? 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/initiative/update'
+          ? 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/ '
           : 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/initiative/create';
       final response;
       if (isUpdate) {
