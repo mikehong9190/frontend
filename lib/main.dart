@@ -35,7 +35,11 @@ void main() async {
   bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
 
   // String? userId = prefs.getString("userId")!;
-  String initialRoute = isFirstTime?'/':isLoggedIn ? '/app' : '/login';
+  String initialRoute = isFirstTime
+      ? '/'
+      : isLoggedIn
+          ? '/app'
+          : '/login';
 
   runApp(MultiProvider(
     providers: [

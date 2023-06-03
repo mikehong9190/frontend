@@ -70,7 +70,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
     if (userId.isEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushNamedAndRemoveUntil(
-            context, '/', (Route<dynamic> route) => false);
+            context, '/login', (Route<dynamic> route) => false);
       });
     }
     getUserDetails(userId);
@@ -434,7 +434,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                                 .read<User>()
                                                 .isManuallySignedIn
                                                 .toString());
-                                            Navigator.pushNamed(context, '/login');
+                                            Navigator.pushNamed(
+                                                context, '/login');
                                           },
                                           child: Text('Sign Out',
                                               style: TextStyle(
@@ -448,7 +449,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                       final googleSignIn = GoogleSignIn();
                                       googleSignIn.signOut();
                                       context.read<User>().clearUserDetails();
-                                      Navigator.pushNamed(context, '/');
+                                      Navigator.pushNamed(context, '/login');
                                     },
                                     child: Text('Sign Out',
                                         style: TextStyle(

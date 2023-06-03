@@ -92,7 +92,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
     if (userId.isEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushNamedAndRemoveUntil(
-            context, '/', (Route<dynamic> route) => false);
+            context, '/login', (Route<dynamic> route) => false);
       });
     }
   }
