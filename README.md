@@ -20,33 +20,33 @@ flutter build apk
 The build apk file can be found in andriod/build/app/outputs/flutter-apk/app-release.apk
 
 # Features
-Login
-Google Authentication
-Reset Password 
-Update Profile
-Home 
-Routing 
-Provider(State Management)
-Database 
+...Login
+...Google Authentication
+...Reset Password 
+...Update Profile
+...Home 
+...Routing 
+...Provider(State Management)
+...Database 
 
 # Libraries & Tools Used 
-http
-Image Picker 
-shared preference 
-imStepper
-provider
-textField Search
+...http
+...Image Picker 
+...shared preference 
+...imStepper
+...provider
+...textField Search
 
 # Routes 
 This file contains all the routes for your application
-'/' - Welcome Page
-'/getStarted' - Getting Started Page
-'/registration' - Registration Page
-'/app' - main app
-'/update-profile' - update Profile Page
-'/reset-password' - reset password Page
-'/forget-password' - forget password Page 
-'/login' - login Page
+...'/' - Welcome Page
+...'/getStarted' - Getting Started Page
+...'/registration' - Registration Page
+...'/app' - main app
+...'/update-profile' - update Profile Page
+...'/reset-password' - reset password Page
+...'/forget-password' - forget password Page 
+...'/login' - login Page
 
 
 
