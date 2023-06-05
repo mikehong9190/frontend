@@ -39,14 +39,20 @@ The build apk file can be found in andriod/build/app/outputs/flutter-apk/app-rel
 - [http](https://pub.dev/packages/http)
 - [Image Picker](https://pub.dev/packages/image_picker) 
 - [shared preference](https://pub.dev/packages/shared_preferences)
-- imStepper
 - [provider](https://pub.dev/packages/provider)
-- textField Search
 - [Permisson Handler](https://pub.dev/packages/permission_handler)
 - [Image Cropper](https://pub.dev/packages/image_cropper)
 - [Fancy_schimmer_image](https://pub.dev/packages/fancy_shimmer_image)
 - [Flutter TypeAhead](https://pub.dev/packages/flutter_typeahead)
 - [Google Font](https://pub.dev/packages/google_fonts)
+
+# Application Structure 
+## The application follows the project as follows :
+- lib/ : Contains the Dart Code for the Application. 
+- lib/Pages/ : Contains the pages.
+- assets/images/ : Contains static image assets.
+- assets/svg/ : Contains static svg assets.
+
 # Routes 
 This file contains all the routes for your application
 - '/' - Welcome Page
