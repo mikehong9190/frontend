@@ -258,14 +258,14 @@ class _GalleryState extends State<Gallery> {
       ).then((value) => value ?? false);
     }
 
-    Future<bool> askForSettings() async {
+    Future<bool> askForSettings(String type) async {
+      String a = type;
       return showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("Permission Required"),
-            content: const Text(
-                "Please grant the required permissions in the app settings."),
+            content: Text(a),
             actions: <Widget>[
               TextButton(
                 child: const Text('No'),
@@ -274,7 +274,7 @@ class _GalleryState extends State<Gallery> {
                 },
               ),
               TextButton(
-                child: const Text('Yes'),
+                child: const Text('Enable in Settings'),
                 onPressed: () {
                   Navigator.of(context).pop(true);
                 },
@@ -285,11 +285,15 @@ class _GalleryState extends State<Gallery> {
       ).then((value) => value ?? false);
     }
 
+    print("Hello");
+
+    // print(Platform.environment);
+    print(Platform.operatingSystemVersion);
     openImages() async {
       try {
         Map<Permission, PermissionStatus> statuses =
-            await [Permission.storage].request();
-        if (statuses[Permission.storage]!.isGranted) {
+            await [Permission.photos].request();
+        if (statuses[Permission.photos]!.isGranted) {
           var pickedfiles = await imgpicker.pickMultiImage();
           // ignore: unnecessary_null_comparison
           if (pickedfiles != null) {
@@ -300,7 +304,8 @@ class _GalleryState extends State<Gallery> {
             log("no image selected");
           }
         } else {
-          bool shouldOpenSettings = await askForSettings();
+          bool shouldOpenSettings = await askForSettings(
+              "Enable permissions to access your photo library");
           if (shouldOpenSettings) {
             openAppSettings();
           }
@@ -336,7 +341,8 @@ class _GalleryState extends State<Gallery> {
             ),
           );
         } else {
-          bool shouldOpenSettings = await askForSettings();
+          bool shouldOpenSettings = await askForSettings(
+              'Swiirl does not have access to your camera.');
           if (shouldOpenSettings) {
             openAppSettings();
           }

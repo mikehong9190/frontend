@@ -90,7 +90,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         // });
       } else {
         setState(() {
-          message = 'Either Email OR Password is incorrect';
+          message = 'Either Email or Password is incorrect';
         });
       }
     } catch (error) {
@@ -230,7 +230,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               TextButton(
                 onPressed: goToRegistration,
                 child: const Text(
-                  'Signin',
+                  'Signup',
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w700),
                 ),
