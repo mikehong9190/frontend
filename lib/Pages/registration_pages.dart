@@ -246,6 +246,18 @@ class SecondPageWidget extends StatelessWidget {
             child: Text(
                 "Please agree to swiirl’s Term of Use and Privacy Policy,"),
           ),
+          InkWell(
+            child: const Text("Terms of use"),
+            onTap: () {
+              Navigator.popAndPushNamed(context, "/terms");
+            },
+          ),
+          InkWell(
+            child: const Text("Privacy Policy"),
+            onTap: () {
+              Navigator.popAndPushNamed(context, "/policy");
+            },
+          ),
           ButtonTheme(
             child: SizedBox(
                 height: 50,
