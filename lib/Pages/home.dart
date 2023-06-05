@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/helpers/ask_for_settings.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -52,33 +53,6 @@ class _HomeWidgetState extends State<HomeWidget> {
     // put your logic from initState here
   }
 
-  Future<bool> askForSettings(String type) async {
-    String a = type;
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Permission Required"),
-          content: Text(a),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('No'),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-            ),
-            TextButton(
-              child: const Text('Enable in Settings'),
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-            ),
-          ],
-        );
-      },
-    ).then((value) => value ?? false);
-  }
-
   Future<void> _pickImage(setInnerState) async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -101,7 +75,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           }
         } else {
           bool shouldOpenSettings = await askForSettings(
-              "Enable permissions to access your photo library");
+              context, "Enable permissions to access your photo library");
           if (shouldOpenSettings) {
             openAppSettings();
           }
@@ -122,7 +96,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           }
         } else {
           bool shouldOpenSettings = await askForSettings(
-              "Enable permissions to access your photo library");
+              context, "Enable permissions to access your photo library");
           if (shouldOpenSettings) {
             openAppSettings();
           }
