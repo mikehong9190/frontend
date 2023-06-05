@@ -90,7 +90,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         // });
       } else {
         setState(() {
-          message = 'Either Email OR Password is incorrect';
+          message = 'Either Email or Password is incorrect';
         });
       }
     } catch (error) {
