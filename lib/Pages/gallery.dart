@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:frontend/Pages/camera.dart';
 import '../store.dart';
 
@@ -285,32 +285,56 @@ class _GalleryState extends State<Gallery> {
       ).then((value) => value ?? false);
     }
 
-    print("Hello");
-
-    // print(Platform.environment);
-    print(Platform.operatingSystemVersion);
     openImages() async {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      String version = androidInfo.version.release;
       try {
-        Map<Permission, PermissionStatus> statuses =
-            await [Permission.photos].request();
-        if (statuses[Permission.photos]!.isGranted) {
-          var pickedfiles = await imgpicker.pickMultiImage();
-          // ignore: unnecessary_null_comparison
-          if (pickedfiles != null) {
-            for (var i = 0; i < pickedfiles.length; i++) {
-              imageModel.addImage(pickedfiles[i]);
+        if (Platform.isAndroid && version == '13') {
+          // print("hello");
+          Map<Permission, PermissionStatus> statuses =
+              await [Permission.photos].request();
+          if (statuses[Permission.photos]!.isGranted) {
+            var pickedfiles = await imgpicker.pickMultiImage();
+            // ignore: unnecessary_null_comparison
+            if (pickedfiles != null) {
+              for (var i = 0; i < pickedfiles.length; i++) {
+                imageModel.addImage(pickedfiles[i]);
+              }
+            } else {
+              log("no image selected");
             }
           } else {
-            log("no image selected");
+            bool shouldOpenSettings = await askForSettings(
+                "Enable permissions to access your photo library");
+            if (shouldOpenSettings) {
+              openAppSettings();
+            }
+
+            log('no permission provided');
           }
         } else {
-          bool shouldOpenSettings = await askForSettings(
-              "Enable permissions to access your photo library");
-          if (shouldOpenSettings) {
-            openAppSettings();
-          }
+          Map<Permission, PermissionStatus> statuses =
+              await [Permission.storage].request();
+          if (statuses[Permission.storage]!.isGranted) {
+            var pickedfiles = await imgpicker.pickMultiImage();
+            // ignore: unnecessary_null_comparison
+            if (pickedfiles != null) {
+              for (var i = 0; i < pickedfiles.length; i++) {
+                imageModel.addImage(pickedfiles[i]);
+              }
+            } else {
+              log("no image selected");
+            }
+          } else {
+            bool shouldOpenSettings = await askForSettings(
+                "Enable permissions to access your photo library");
+            if (shouldOpenSettings) {
+              openAppSettings();
+            }
 
-          log('no permission provided');
+            log('no permission provided');
+          }
         }
       } catch (e) {
         log("error while picking file. $e");
