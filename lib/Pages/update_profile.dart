@@ -53,30 +53,33 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   }
 
   Future<void> _pickImage() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    String version = androidInfo.version.release;
     final picker = ImagePicker();
     try {
-      if (Platform.isAndroid && version == '13') {
-        Map<Permission, PermissionStatus> statuses =
-            await [Permission.photos].request();
-        if (statuses[Permission.photos]!.isGranted) {
-          _pickedFile = await picker.pickImage(source: ImageSource.gallery);
-          if (_pickedFile != null) {
-            setState(() {
-              _image = File(_pickedFile!.path);
-              isUploadedImage = false;
-            });
-          }
-        } else {
-          bool shouldOpenSettings = await askForSettings(
-              context, "Enable permissions to access your photo library");
-          if (shouldOpenSettings) {
-            openAppSettings();
-          }
+      if (Platform.isAndroid) {
+        DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+        String version = androidInfo.version.release;
 
-          log('no permission provided');
+        if (version == '13') {
+          Map<Permission, PermissionStatus> statuses =
+              await [Permission.photos].request();
+          if (statuses[Permission.photos]!.isGranted) {
+            _pickedFile = await picker.pickImage(source: ImageSource.gallery);
+            if (_pickedFile != null) {
+              setState(() {
+                _image = File(_pickedFile!.path);
+                isUploadedImage = false;
+              });
+            }
+          } else {
+            bool shouldOpenSettings = await askForSettings(
+                context, "Enable permissions to access your photo library");
+            if (shouldOpenSettings) {
+              openAppSettings();
+            }
+
+            log('no permission provided');
+          }
         }
       } else {
         Map<Permission, PermissionStatus> statuses =
