@@ -8,9 +8,13 @@ class PrivacyWidget extends StatelessWidget {
   Widget build(context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
           centerTitle: true,
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.popAndPushNamed(context, "/registration", arguments: true);
+            },
             icon: SvgPicture.asset("assets/svg/Vector.svg"),
           ),
         ),
@@ -22,19 +26,37 @@ class PrivacyWidget extends StatelessWidget {
             children: [
               const Align(
                 alignment: Alignment.topLeft,
-                child: Text("Terms & Conditions"),
+                child: Text("Privacy Policy",
+                    style:
+                        TextStyle(fontWeight: FontWeight.w700, fontSize: 20)),
               ),
               const SizedBox(
-                height: double.infinity,
+                height: 30,
               ),
               const Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Text(
-                      "By downloading or using the app, these terms will automatically apply to you – you should make sure therefore that you read them carefully before using the app. You’re not allowed to copy or modify the app, any part of the app, or our trademarks in any way. You’re not allowed to attempt to extract the source code of the app, and you also shouldn’t try to translate the app into other languages or make derivative versions. The app itself, and all the trademarks, copyright, database rights, and other intellectual property rights related to it, still belong to Swiirl."),
+                      "Swiirl built the Swiirl app as a Free app. This SERVICE is provided by Swiirl at no cost and is intended for use as is."),
                 ),
-              )
+              ),
+              const Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                      "This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service."),
+                ),
+              ),
+              const Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                      "If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy."),
+                ),
+              ),
             ],
           ),
         ));

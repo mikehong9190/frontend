@@ -80,6 +80,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     }
   }
 
+  void changeAgreed(abcd) async {
+    setState(() {
+      isAgreed = !isAgreed;
+    });
+  }
+
   void changeState(value) => setState(() {
         _initiativeTypeEnum = value;
       });
@@ -334,16 +340,19 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         Step(
             title: const Text(''),
             content: SecondPageWidget(
-                controller1: passwordController,
-                controller2: confirmPasswordController,
-                onNext: checkPasswordAndChangeStep,
-                message: message,
-                isPasswordValid: isPasswordValid,
-                arePasswordsEqual: arePasswordsEqual,
-                isPasswordHidden: isPasswordHidden,
-                isConfirmPasswordHidden: isConfirmPasswordHidden,
-                checkPasswordVisibility: checkPasswordVisibility,
-                checkConfirmPasswordVisibility: checkConfirmPasswordVisibility),
+              controller1: passwordController,
+              controller2: confirmPasswordController,
+              onNext: checkPasswordAndChangeStep,
+              message: message,
+              isPasswordValid: isPasswordValid,
+              arePasswordsEqual: arePasswordsEqual,
+              isPasswordHidden: isPasswordHidden,
+              isConfirmPasswordHidden: isConfirmPasswordHidden,
+              checkPasswordVisibility: checkPasswordVisibility,
+              checkConfirmPasswordVisibility: checkConfirmPasswordVisibility,
+              isAgreed: isAgreed,
+              changeAgreed: changeAgreed,
+            ),
             isActive: currentStep >= 1),
         Step(
             title: const Text(''),
@@ -470,6 +479,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
   @override
   Widget build(context) {
+    final args = ModalRoute.of(context)!.settings.arguments;
+    if (args == true) {
+      setState(() {
+        currentStep = 1;
+      });
+    }
     return Scaffold(
         body: Theme(
             data: ThemeData(

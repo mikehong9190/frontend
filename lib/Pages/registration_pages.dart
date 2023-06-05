@@ -176,20 +176,22 @@ class SecondPageWidget extends StatelessWidget {
   final bool isConfirmPasswordHidden;
   final dynamic checkPasswordVisibility;
   final dynamic checkConfirmPasswordVisibility;
-
-  const SecondPageWidget({
-    super.key,
-    required this.controller1,
-    required this.controller2,
-    required this.onNext,
-    required this.message,
-    required this.isPasswordValid,
-    required this.arePasswordsEqual,
-    required this.isPasswordHidden,
-    required this.isConfirmPasswordHidden,
-    required this.checkPasswordVisibility,
-    required this.checkConfirmPasswordVisibility,
-  });
+  final bool isAgreed;
+  final dynamic changeAgreed;
+  const SecondPageWidget(
+      {super.key,
+      required this.controller1,
+      required this.controller2,
+      required this.onNext,
+      required this.message,
+      required this.isPasswordValid,
+      required this.arePasswordsEqual,
+      required this.isPasswordHidden,
+      required this.isConfirmPasswordHidden,
+      required this.checkPasswordVisibility,
+      required this.checkConfirmPasswordVisibility,
+      required this.isAgreed,
+      required this.changeAgreed});
 
   @override
   Widget build(context) {
@@ -241,22 +243,53 @@ class SecondPageWidget extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const SizedBox(
-            height: 30,
-            child: Text(
-                "Please agree to swiirl’s Term of Use and Privacy Policy,"),
+          // const SizedBox(
+          //   height: 30,
+          //   child: Text("Please agree to swiirl’s"),
+          // ),
+          Row(
+            children: [
+              const InkWell(
+                child: const Text("Please agree to swiirl’s  "),
+                onTap: null,
+              ),
+              InkWell(
+                child: const Text("Terms of use ",
+                    style: TextStyle(fontWeight: FontWeight.w700)),
+                onTap: () {
+                  Navigator.popAndPushNamed(context, "/terms");
+                },
+              ),
+              const InkWell(
+                child: const Text("and  "),
+                onTap: null,
+              ),
+              InkWell(
+                child: const Text("Privacy Policy",
+                    style: TextStyle(fontWeight: FontWeight.w700)),
+                onTap: () {
+                  Navigator.popAndPushNamed(
+                    context,
+                    "/policy",
+                  );
+                },
+              ),
+            ],
           ),
-          InkWell(
-            child: const Text("Terms of use"),
-            onTap: () {
-              Navigator.popAndPushNamed(context, "/terms");
-            },
-          ),
-          InkWell(
-            child: const Text("Privacy Policy"),
-            onTap: () {
-              Navigator.popAndPushNamed(context, "/policy");
-            },
+          Align(
+            alignment: Alignment.topLeft,
+            child: Row(
+              children: [
+                Checkbox(
+                  value: isAgreed,
+                  onChanged: changeAgreed,
+                  fillColor: MaterialStateProperty.all(
+                      Theme.of(context).colorScheme.secondary),
+                  shape: CircleBorder(),
+                ),
+                const Text("I Agree")
+              ],
+            ),
           ),
           ButtonTheme(
             child: SizedBox(
@@ -269,7 +302,7 @@ class SecondPageWidget extends StatelessWidget {
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)))),
-                  onPressed: isPasswordValid && arePasswordsEqual
+                  onPressed: isPasswordValid && arePasswordsEqual && isAgreed
                       ? () {
                           onNext();
                           // log(controller1.text);
@@ -283,7 +316,7 @@ class SecondPageWidget extends StatelessWidget {
             height: 20,
           ),
           const SizedBox(
-            height: 180,
+            height: 100,
           ),
           SizedBox(
             width: 350,
