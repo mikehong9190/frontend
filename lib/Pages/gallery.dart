@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/helpers/ask_for_settings.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
@@ -258,33 +259,6 @@ class _GalleryState extends State<Gallery> {
       ).then((value) => value ?? false);
     }
 
-    Future<bool> askForSettings(String type) async {
-      String a = type;
-      return showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Permission Required"),
-            content: Text(a),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('No'),
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-              ),
-              TextButton(
-                child: const Text('Enable in Settings'),
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-              ),
-            ],
-          );
-        },
-      ).then((value) => value ?? false);
-    }
-
     openImages() async {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -306,7 +280,7 @@ class _GalleryState extends State<Gallery> {
             }
           } else {
             bool shouldOpenSettings = await askForSettings(
-                "Enable permissions to access your photo library");
+                context, "Enable permissions to access your photo library");
             if (shouldOpenSettings) {
               openAppSettings();
             }
@@ -328,7 +302,7 @@ class _GalleryState extends State<Gallery> {
             }
           } else {
             bool shouldOpenSettings = await askForSettings(
-                "Enable permissions to access your photo library");
+                context, "Enable permissions to access your photo library");
             if (shouldOpenSettings) {
               openAppSettings();
             }
@@ -366,7 +340,7 @@ class _GalleryState extends State<Gallery> {
           );
         } else {
           bool shouldOpenSettings = await askForSettings(
-              'Swiirl does not have access to your camera.');
+              context, 'Swiirl does not have access to your camera.');
           if (shouldOpenSettings) {
             openAppSettings();
           }

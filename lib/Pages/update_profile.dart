@@ -6,6 +6,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/components/textField.dart';
+import 'package:frontend/helpers/ask_for_settings.dart';
 
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
@@ -70,7 +71,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           }
         } else {
           bool shouldOpenSettings = await askForSettings(
-              "Enable permissions to access your photo library");
+              context, "Enable permissions to access your photo library");
           if (shouldOpenSettings) {
             openAppSettings();
           }
@@ -90,7 +91,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           }
         } else {
           bool shouldOpenSettings = await askForSettings(
-              "Enable permissions to access your photo library");
+              context, "Enable permissions to access your photo library");
           if (shouldOpenSettings) {
             openAppSettings();
           }
@@ -212,33 +213,6 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         isLoading = false;
       });
     }
-  }
-
-  Future<bool> askForSettings(String type) async {
-    String a = type;
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Permission Required"),
-          content: Text(a),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('No'),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-            ),
-            TextButton(
-              child: const Text('Enable in Settings'),
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-            ),
-          ],
-        );
-      },
-    ).then((value) => value ?? false);
   }
 
   void uploadProfilePic() async {
