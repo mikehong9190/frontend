@@ -1,9 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-// import 'dart:html';
-// import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import 'dart:io';
 import 'dart:developer';
 import 'package:flutter/material.dart';
@@ -15,6 +12,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import '../model/responses.dart';
 import '../store.dart';
 import '../constants.dart';
@@ -53,13 +52,54 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
   }
 
   Future<void> _pickImage() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    String version = androidInfo.version.release;
     final picker = ImagePicker();
-    _pickedFile = (await picker.pickImage(source: ImageSource.gallery));
-    if (_pickedFile != null) {
-      setState(() {
-        _image = File(_pickedFile!.path);
-        isUploadedImage = false;
-      });
+    try {
+      if (Platform.isAndroid && version == '13') {
+        Map<Permission, PermissionStatus> statuses =
+            await [Permission.photos].request();
+        if (statuses[Permission.photos]!.isGranted) {
+          _pickedFile = await picker.pickImage(source: ImageSource.gallery);
+          if (_pickedFile != null) {
+            setState(() {
+              _image = File(_pickedFile!.path);
+              isUploadedImage = false;
+            });
+          }
+        } else {
+          bool shouldOpenSettings = await askForSettings(
+              "Enable permissions to access your photo library");
+          if (shouldOpenSettings) {
+            openAppSettings();
+          }
+
+          log('no permission provided');
+        }
+      } else {
+        Map<Permission, PermissionStatus> statuses =
+            await [Permission.storage].request();
+        if (statuses[Permission.storage]!.isGranted) {
+          _pickedFile = await picker.pickImage(source: ImageSource.gallery);
+          if (_pickedFile != null) {
+            setState(() {
+              _image = File(_pickedFile!.path);
+              isUploadedImage = false;
+            });
+          }
+        } else {
+          bool shouldOpenSettings = await askForSettings(
+              "Enable permissions to access your photo library");
+          if (shouldOpenSettings) {
+            openAppSettings();
+          }
+
+          log('no permission provided');
+        }
+      }
+    } catch (error) {
+      log(error.toString());
     }
   }
 
@@ -172,6 +212,33 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         isLoading = false;
       });
     }
+  }
+
+  Future<bool> askForSettings(String type) async {
+    String a = type;
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Permission Required"),
+          content: Text(a),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            TextButton(
+              child: const Text('Enable in Settings'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    ).then((value) => value ?? false);
   }
 
   void uploadProfilePic() async {

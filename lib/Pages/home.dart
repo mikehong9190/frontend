@@ -1,32 +1,22 @@
-// import 'dart:convert';
-
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+
 import '../constants.dart';
 import '../model/school_details.dart';
 import '../components/single_initiative.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_picker/image_picker.dart';
 import '../store.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:frontend/Pages/camera.dart';
-// import 'package:frontend/Pages/gallery.dart';
-// import 'package:frontend/Pages/setup_initiative.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:http/http.dart';
-// import 'package:provider/provider.dart';
-// import 'package:camera/camera.dart';
-
-// import '../model/responses.dart';
-// import '../store.dart';
 
 class HomeWidget extends StatefulWidget {
   final String schoolId;
@@ -62,14 +52,83 @@ class _HomeWidgetState extends State<HomeWidget> {
     // put your logic from initState here
   }
 
+  Future<bool> askForSettings(String type) async {
+    String a = type;
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Permission Required"),
+          content: Text(a),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            TextButton(
+              child: const Text('Enable in Settings'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    ).then((value) => value ?? false);
+  }
+
   Future<void> _pickImage(setInnerState) async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    String version = androidInfo.version.release;
+    final picker = ImagePicker();
+
     try {
-      final picker = ImagePicker();
-      _pickedFile = await picker.pickImage(source: ImageSource.gallery);
-      if (_pickedFile != null) {
-        setInnerState(() {
-          _image = File(_pickedFile!.path);
-        });
+      if (Platform.isAndroid && version == '13') {
+        Map<Permission, PermissionStatus> statuses =
+            await [Permission.photos].request();
+
+        if (statuses[Permission.photos]!.isGranted) {
+          _pickedFile = await picker.pickImage(source: ImageSource.gallery);
+          if (_pickedFile != null) {
+            setInnerState(() {
+              _image = File(_pickedFile!.path);
+            });
+          } else {
+            log("No image selected");
+          }
+        } else {
+          bool shouldOpenSettings = await askForSettings(
+              "Enable permissions to access your photo library");
+          if (shouldOpenSettings) {
+            openAppSettings();
+          }
+
+          log('no permission provided');
+        }
+      } else {
+        Map<Permission, PermissionStatus> statuses =
+            await [Permission.storage].request();
+        if (statuses[Permission.storage]!.isGranted) {
+          _pickedFile = await picker.pickImage(source: ImageSource.gallery);
+          if (_pickedFile != null) {
+            setInnerState(() {
+              _image = File(_pickedFile!.path);
+            });
+          } else {
+            log("No image selected");
+          }
+        } else {
+          bool shouldOpenSettings = await askForSettings(
+              "Enable permissions to access your photo library");
+          if (shouldOpenSettings) {
+            openAppSettings();
+          }
+
+          log('no permission provided');
+        }
       }
     } catch (error, stackTrace) {
       print(stackTrace);
