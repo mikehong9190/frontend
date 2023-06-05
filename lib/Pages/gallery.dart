@@ -260,32 +260,34 @@ class _GalleryState extends State<Gallery> {
     }
 
     openImages() async {
-      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      String version = androidInfo.version.release;
       try {
-        if (Platform.isAndroid && version == '13') {
+        if (Platform.isAndroid) {
+          DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+          AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+          String version = androidInfo.version.release;
           // print("hello");
-          Map<Permission, PermissionStatus> statuses =
-              await [Permission.photos].request();
-          if (statuses[Permission.photos]!.isGranted) {
-            var pickedfiles = await imgpicker.pickMultiImage();
-            // ignore: unnecessary_null_comparison
-            if (pickedfiles != null) {
-              for (var i = 0; i < pickedfiles.length; i++) {
-                imageModel.addImage(pickedfiles[i]);
+          if (version == '13') {
+            Map<Permission, PermissionStatus> statuses =
+                await [Permission.photos].request();
+            if (statuses[Permission.photos]!.isGranted) {
+              var pickedfiles = await imgpicker.pickMultiImage();
+              // ignore: unnecessary_null_comparison
+              if (pickedfiles != null) {
+                for (var i = 0; i < pickedfiles.length; i++) {
+                  imageModel.addImage(pickedfiles[i]);
+                }
+              } else {
+                log("no image selected");
               }
             } else {
-              log("no image selected");
-            }
-          } else {
-            bool shouldOpenSettings = await askForSettings(
-                context, "Enable permissions to access your photo library");
-            if (shouldOpenSettings) {
-              openAppSettings();
-            }
+              bool shouldOpenSettings = await askForSettings(
+                  context, "Enable permissions to access your photo library");
+              if (shouldOpenSettings) {
+                openAppSettings();
+              }
 
-            log('no permission provided');
+              log('no permission provided');
+            }
           }
         } else {
           Map<Permission, PermissionStatus> statuses =
