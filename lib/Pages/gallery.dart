@@ -388,8 +388,8 @@ class _GalleryState extends State<Gallery> {
             ),
           );
         } else {
-          bool shouldOpenSettings = await askForSettings(
-              context, 'Swiirl does not have access to your camera.');
+          bool shouldOpenSettings = await askForSettings(context,
+              'Swiirl does not have access to your camera and microphone.');
           if (shouldOpenSettings) {
             openAppSettings();
           }
