@@ -73,7 +73,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
               // ),
               ButtonTheme(
                 child: SizedBox(
-                  // width: 220,
+                  width: 200,
                   child: ElevatedButton(
                       // onPressed: () {
                       //   Navigator.push(
