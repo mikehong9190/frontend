@@ -27,7 +27,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
     return Row(
       children: [
         CollectiblesWidget(
-          collectibleImage: images[0],
+          collectibleImage: images.isNotEmpty? images[0] : '',
           dimension: 120,
         ),
         // CachedNetworkImage(
