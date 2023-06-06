@@ -30,19 +30,18 @@ class FirstPageWidget extends StatelessWidget {
     return regex.hasMatch(email);
   }
 
-  const FirstPageWidget({
-    super.key,
-    required this.controller,
-    required this.onNext,
-    required this.message,
-    required this.statusCode,
-    required this.otpController,
-    required this.isLoading,
-    required this.isOtpSend,
-    required this.goToLogin,
-    required this.termsPopup
-  });
-  
+  const FirstPageWidget(
+      {super.key,
+      required this.controller,
+      required this.onNext,
+      required this.message,
+      required this.statusCode,
+      required this.otpController,
+      required this.isLoading,
+      required this.isOtpSend,
+      required this.goToLogin,
+      required this.termsPopup});
+
   @override
   build(context) {
     return Center(
@@ -256,25 +255,25 @@ class SecondPageWidget extends StatelessWidget {
           Row(
             children: [
               const InkWell(
-                child: const Text("Please agree to swiirl’s  "),
                 onTap: null,
+                child: Text("Please agree to swiirl’s  "),
               ),
               InkWell(
                 child: const Text("Terms of use ",
                     style: TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
-                  termsPopup ();
+                  termsPopup();
                 },
               ),
               const InkWell(
-                child: const Text("and  "),
                 onTap: null,
+                child: Text("and  "),
               ),
               InkWell(
                 child: const Text("Privacy Policy",
                     style: TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
-                 privacyPopup ();
+                  privacyPopup();
                 },
               ),
             ],
@@ -288,7 +287,7 @@ class SecondPageWidget extends StatelessWidget {
                   onChanged: changeAgreed,
                   fillColor: MaterialStateProperty.all(
                       Theme.of(context).colorScheme.secondary),
-                  shape: CircleBorder(),
+                  shape: const CircleBorder(),
                 ),
                 const Text("I Agree")
               ],

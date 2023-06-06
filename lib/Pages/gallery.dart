@@ -105,7 +105,7 @@ class _GalleryState extends State<Gallery> {
   //upload images to s3 bucket using pre-signed urls
   void uploadImages(context, List<dynamic> urls, List<XFile> images) async {
     try {
-      print("Upload");
+      // print("Upload");
       for (var i = 0; i < urls.length; i++) {
         String contentType = getContentType(images[i]);
         Uri uri = Uri.parse(urls[i]);
@@ -114,9 +114,9 @@ class _GalleryState extends State<Gallery> {
           body: await images[i].readAsBytes(),
           headers: {"Content-Type": contentType},
         );
-        print(response.statusCode);
+        // print(response.statusCode);
         if (response.statusCode != 200) {
-          print(response.reasonPhrase.toString());
+          // print(response.reasonPhrase.toString());
           throw Exception('Failed to upload image at index $i');
         }
       }

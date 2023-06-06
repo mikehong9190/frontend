@@ -54,7 +54,7 @@ class _InitiativesDetailsWidget extends State<InitiativesDetailsWidget> {
       delete(url,
           body: json.encode(payload),
           headers: {'Authorization': 'Bearer $token'}).then((response) {
-        print(response.body);
+        // print(response.body);
         if (response.statusCode == 200) {
           Navigator.pop(context);
           Navigator.push(
@@ -193,12 +193,10 @@ class _InitiativesDetailsWidget extends State<InitiativesDetailsWidget> {
                   ),
                 ),
               ])
-            : 
-            Container(
+            : Container(
                 margin: const EdgeInsets.only(top: 50),
                 width: double.infinity,
-                child: 
-                imageKeys.isNotEmpty
+                child: imageKeys.isNotEmpty
                     ? GridView.count(
                         padding: const EdgeInsets.only(top: 10),
                         primary: false,
