@@ -24,6 +24,7 @@ class InitiativesDetailsWidget extends StatefulWidget {
 
 class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
   bool isLoading = false;
+  bool isDeleting = false;
 
   String errorMessage = '';
   int target = 0;
@@ -45,7 +46,7 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
     super.didChangeDependencies();
   }
 
-  void deleteImage() async {
+  void deleteImage(setInnerState) async {
     try {
       var token = context.read<User>().token;
       if (token.isEmpty) {
@@ -131,35 +132,47 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Delete Image(s)"),
-          content: const Text("Do you want to delete the selected images?"),
-          actions: [
-            TextButton(
-              child: const Text('No'),
-              onPressed: () {
-                Navigator.pop(context);
-                setState(() {
-                  removeImageKeys = [];
-                });
-              },
-            ),
-            TextButton(
-              child: !isLoading
-                  ? const Text("Yes")
-                  : const SizedBox(
-                      width: 20,
-                      height: 20,
+        return StatefulBuilder(builder: (context, setInnerState) {
+          return AlertDialog(
+            title: const Text("Delete Image(s)"),
+            content: isDeleting
+                ? SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: Align(
+                      alignment: Alignment.center,
                       child: CircularProgressIndicator(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
-              onPressed: () {
-                deleteImage();
-              },
-            ),
-          ],
-        );
+                  )
+                : const Text("Do you want to delete the selected images?"),
+            actions: [
+              TextButton(
+                child: const Text('No'),
+                onPressed: isDeleting
+                    ? null
+                    : () {
+                        Navigator.pop(context);
+                        setState(() {
+                          removeImageKeys = [];
+                        });
+                      },
+              ),
+              TextButton(
+                child: const Text("Yes"),
+                onPressed: isDeleting
+                    ? null
+                    : () {
+                        setInnerState(() {
+                          isDeleting = true;
+                        });
+                        deleteImage(setInnerState);
+                      },
+              ),
+            ],
+          );
+        });
       },
     );
   }

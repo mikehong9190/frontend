@@ -278,19 +278,23 @@ class SecondPageWidget extends StatelessWidget {
               ),
             ],
           ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Row(
-              children: [
-                Checkbox(
-                  value: isAgreed,
-                  onChanged: changeAgreed,
-                  fillColor: MaterialStateProperty.all(
-                      Theme.of(context).colorScheme.secondary),
-                  shape: const CircleBorder(),
-                ),
-                const Text("I Agree")
-              ],
+          Padding(
+            padding: const EdgeInsets.only (left: 10),
+            child: Align(
+              alignment: AlignmentDirectional.bottomStart,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Checkbox(
+                    value: isAgreed,
+                    onChanged: changeAgreed,
+                    fillColor: MaterialStateProperty.all(
+                        Theme.of(context).colorScheme.secondary),
+                    shape: const CircleBorder(),
+                  ),
+                  const Text("I Agree")
+                ],
+              ),
             ),
           ),
           ButtonTheme(

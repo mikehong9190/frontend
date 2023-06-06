@@ -36,8 +36,8 @@ class CollectiblesWidget extends StatelessWidget {
               //         ))
               : Image.asset(
                   "assets/images/defaultImage.png",
-                  width: 150,
-                  height: 150,
+                  width: dimension,
+                  height: dimension,
                   fit: BoxFit.cover,
                 ),
         ),
