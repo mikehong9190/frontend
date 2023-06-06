@@ -128,13 +128,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         "userId": userId
       };
       final response = await put(Uri.https(apiHost, '/v1/school/update'),
-          body: payload,
-          headers: {
-            // HttpHeaders.authorizationHeader : token
-            'Authorization': 'Bearer $token'
-          });
-      // print(response.statusCode);
-      // print(response.body);
+          body: payload, headers: {'Authorization': 'Bearer $token'});
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/app");
       }

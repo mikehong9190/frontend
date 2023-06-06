@@ -23,6 +23,7 @@ class FirstPageWidget extends StatelessWidget {
   final dynamic isLoading;
   final dynamic isOtpSend;
   final dynamic goToLogin;
+  final dynamic termsPopup;
 
   bool isValidEmail(String email) {
     final regex = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
@@ -39,8 +40,9 @@ class FirstPageWidget extends StatelessWidget {
     required this.isLoading,
     required this.isOtpSend,
     required this.goToLogin,
+    required this.termsPopup
   });
-
+  
   @override
   build(context) {
     return Center(
@@ -176,20 +178,26 @@ class SecondPageWidget extends StatelessWidget {
   final bool isConfirmPasswordHidden;
   final dynamic checkPasswordVisibility;
   final dynamic checkConfirmPasswordVisibility;
-
-  const SecondPageWidget({
-    super.key,
-    required this.controller1,
-    required this.controller2,
-    required this.onNext,
-    required this.message,
-    required this.isPasswordValid,
-    required this.arePasswordsEqual,
-    required this.isPasswordHidden,
-    required this.isConfirmPasswordHidden,
-    required this.checkPasswordVisibility,
-    required this.checkConfirmPasswordVisibility,
-  });
+  final bool isAgreed;
+  final dynamic changeAgreed;
+  final dynamic termsPopup;
+  final dynamic privacyPopup;
+  const SecondPageWidget(
+      {super.key,
+      required this.controller1,
+      required this.controller2,
+      required this.onNext,
+      required this.message,
+      required this.isPasswordValid,
+      required this.arePasswordsEqual,
+      required this.isPasswordHidden,
+      required this.isConfirmPasswordHidden,
+      required this.checkPasswordVisibility,
+      required this.checkConfirmPasswordVisibility,
+      required this.isAgreed,
+      required this.changeAgreed,
+      required this.termsPopup,
+      required this.privacyPopup});
 
   @override
   Widget build(context) {
@@ -241,10 +249,50 @@ class SecondPageWidget extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const SizedBox(
-            height: 30,
-            child: Text(
-                "Please agree to swiirl’s Term of Use and Privacy Policy,"),
+          // const SizedBox(
+          //   height: 30,
+          //   child: Text("Please agree to swiirl’s"),
+          // ),
+          Row(
+            children: [
+              const InkWell(
+                child: const Text("Please agree to swiirl’s  "),
+                onTap: null,
+              ),
+              InkWell(
+                child: const Text("Terms of use ",
+                    style: TextStyle(fontWeight: FontWeight.w700)),
+                onTap: () {
+                  termsPopup ();
+                },
+              ),
+              const InkWell(
+                child: const Text("and  "),
+                onTap: null,
+              ),
+              InkWell(
+                child: const Text("Privacy Policy",
+                    style: TextStyle(fontWeight: FontWeight.w700)),
+                onTap: () {
+                 privacyPopup ();
+                },
+              ),
+            ],
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Row(
+              children: [
+                Checkbox(
+                  value: isAgreed,
+                  onChanged: changeAgreed,
+                  fillColor: MaterialStateProperty.all(
+                      Theme.of(context).colorScheme.secondary),
+                  shape: CircleBorder(),
+                ),
+                const Text("I Agree")
+              ],
+            ),
           ),
           ButtonTheme(
             child: SizedBox(
@@ -257,7 +305,7 @@ class SecondPageWidget extends StatelessWidget {
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)))),
-                  onPressed: isPasswordValid && arePasswordsEqual
+                  onPressed: isPasswordValid && arePasswordsEqual && isAgreed
                       ? () {
                           onNext();
                           // log(controller1.text);
@@ -271,7 +319,7 @@ class SecondPageWidget extends StatelessWidget {
             height: 20,
           ),
           const SizedBox(
-            height: 180,
+            height: 100,
           ),
           SizedBox(
             width: 350,
