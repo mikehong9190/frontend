@@ -11,7 +11,7 @@ class CollectiblesWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(8.0),
+      borderRadius: BorderRadius.circular(20.0),
       child: collectibleImage.isNotEmpty
           ? FancyShimmerImage(
               imageUrl: collectibleImage,
