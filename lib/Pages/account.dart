@@ -108,7 +108,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                     name: name,
                     goalsMets: goalsMets),
                 const Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
                   child: Divider(
                     color: Color.fromARGB(255, 70, 69, 69),
                     thickness: 0.1,
@@ -125,7 +125,7 @@ class _AccountWidgetState extends State<AccountWidget> {
                       )
                     : SizedBox(
                         child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: GridView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: collectibles.length,
@@ -133,8 +133,8 @@ class _AccountWidgetState extends State<AccountWidget> {
                             shrinkWrap: true,
                             gridDelegate:
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    crossAxisSpacing: 1,
-                                    mainAxisSpacing: 1,
+                                    crossAxisSpacing: 15,
+                                    mainAxisSpacing: 15,
                                     maxCrossAxisExtent: 220),
                             itemBuilder: (_, index) {
                               return
