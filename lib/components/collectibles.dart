@@ -10,38 +10,34 @@ class CollectiblesWidget extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return Column(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: collectibleImage.isNotEmpty
-              ? FancyShimmerImage(
-                  imageUrl: collectibleImage,
-                  width: dimension,
-                  height: dimension,
-                  boxFit: BoxFit.cover)
-              // CachedNetworkImage(
-              //     width: 150,
-              //     height: 150,
-              //     fit: BoxFit.cover,
-              //     imageUrl: collectibleImage,
-              //     progressIndicatorBuilder: (context, url, downloadProgress) =>
-              //         SizedBox(
-              //           width: 80,
-              //           height: 80,
-              //           child: CircularProgressIndicator(
-              //               valueColor: const AlwaysStoppedAnimation<Color>(
-              //                   Theme.of(context).colorScheme.secondary),
-              //               value: downloadProgress.progress),
-              //         ))
-              : Image.asset(
-                  "assets/images/defaultImage.png",
-                  width: dimension,
-                  height: dimension,
-                  fit: BoxFit.cover,
-                ),
-        ),
-      ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20.0),
+      child: collectibleImage.isNotEmpty
+          ? FancyShimmerImage(
+              imageUrl: collectibleImage,
+              width: dimension,
+              height: dimension,
+              boxFit: BoxFit.cover)
+          // CachedNetworkImage(
+          //     width: 150,
+          //     height: 150,
+          //     fit: BoxFit.cover,
+          //     imageUrl: collectibleImage,
+          //     progressIndicatorBuilder: (context, url, downloadProgress) =>
+          //         SizedBox(
+          //           width: 80,
+          //           height: 80,
+          //           child: CircularProgressIndicator(
+          //               valueColor: const AlwaysStoppedAnimation<Color>(
+          //                   Theme.of(context).colorScheme.secondary),
+          //               value: downloadProgress.progress),
+          //         ))
+          : Image.asset(
+              "assets/images/defaultImage.png",
+              width: dimension,
+              height: dimension,
+              fit: BoxFit.cover,
+            ),
     );
   }
 }

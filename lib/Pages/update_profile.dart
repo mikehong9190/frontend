@@ -80,6 +80,26 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
 
             log('no permission provided');
           }
+        } else {
+          Map<Permission, PermissionStatus> statuses =
+              await [Permission.storage].request();
+          if (statuses[Permission.storage]!.isGranted) {
+            _pickedFile = await picker.pickImage(source: ImageSource.gallery);
+            if (_pickedFile != null) {
+              setState(() {
+                _image = File(_pickedFile!.path);
+                isUploadedImage = false;
+              });
+            }
+          } else {
+            bool shouldOpenSettings = await askForSettings(
+                context, "Enable permissions to access your photo library");
+            if (shouldOpenSettings) {
+              openAppSettings();
+            }
+
+            log('no permission provided');
+          }
         }
       } else {
         Map<Permission, PermissionStatus> statuses =
