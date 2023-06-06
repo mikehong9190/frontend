@@ -27,7 +27,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
     return Row(
       children: [
         CollectiblesWidget(
-          collectibleImage: images.isNotEmpty? images[0] : '',
+          collectibleImage: images.isNotEmpty ? images[0] : '',
           dimension: 120,
         ),
         // CachedNetworkImage(
@@ -51,13 +51,14 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                name,
+                name.length > 25 ? '${name.substring(0, 25)}...' : name,
+                overflow: TextOverflow.ellipsis,
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text("$grade Grade"),
+                child: Text(grade),
               ),
               // Row(
               //   children: [

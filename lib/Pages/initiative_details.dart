@@ -305,8 +305,10 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
                       ],
                     ),
                     Container(
-                      margin: const EdgeInsets.only(top: 200, bottom: 20),
-
+                      margin: EdgeInsets.only(
+                        top: name.length > 25 ? 230 : 200,
+                        bottom: 20,
+                      ),
                       // width: double.infinity,
                       child: imageKeys.isNotEmpty
                           ? GridView.count(
