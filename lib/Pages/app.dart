@@ -221,13 +221,13 @@ class QuestionWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return Column(children: [
-      const SizedBox(height: 50),
+      const SizedBox(height: 20),
       Align(
         alignment: Alignment.topLeft,
         child: Text(question,
             style: const TextStyle(fontFamily: 'Urbanist', fontSize: 24)),
       ),
-      const SizedBox(height: 30),
+      const SizedBox(height: 20),
       ...answers
           .map(
             (e) => Align(
@@ -249,7 +249,7 @@ class FAQWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,47 +261,3 @@ class FAQWidget extends StatelessWidget {
     );
   }
 }
-// class FaqWidget extends StatefulWidget {
-//   const FaqWidget({super.key});
-
-//   @override
-//   State<FaqWidget> createState() => _FaqWidgetState();
-// }
-
-// class _FaqWidgetState extends State<FaqWidget> {
-//   bool _isTileExpanded = false;
-//   // static final _questions =[{_question : "Questions"}];
-//   @override
-//   Widget build(context) {
-//     return Column(children: <Widget>[
-//       Padding(
-//           padding: EdgeInsets.all(16.0),
-//           child: Text("The code word is ‘Rochambeau,’ dig me?",
-//               style: DefaultTextStyle.of(context)
-//                   .style
-//                   .apply(fontSizeFactor: 2.0))),
-//       Text("The code word is ‘Rochambeau,’ dig me?"),
-//       Text("The code word is ‘Rochambeau,’ dig me?"),
-//       Text("The code word is ‘Rochambeau,’ dig me?"),
-//     ]);
-//   }
-// }
-
-// class QuestionBoxWidget extends StatelessWidget {
-//   const QuestionBoxWidget ({
-//     super.key,
-//     this.question = question,
-//     this.answer = answer,
-//   })
-// }
-// class Questions {
-//   late String question;
-//   late Array answer;
-// }
-// class SingleBox extends StatelessWidget {
-
-//   @override
-//   Widget build (context) {
-
-//   }
-// }
