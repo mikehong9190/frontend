@@ -12,13 +12,15 @@ import 'package:http/http.dart';
 
 class InitiativesDetailsWidget extends StatefulWidget {
   final String id;
-  const InitiativesDetailsWidget({super.key, required this.id});
+  const InitiativesDetailsWidget({Key? key, required this.id})
+      : super(key: key);
 
   @override
-  State<InitiativesDetailsWidget> createState() => _InitiativesDetailsWidget();
+  _InitiativesDetailsWidgetState createState() =>
+      _InitiativesDetailsWidgetState();
 }
 
-class _InitiativesDetailsWidget extends State<InitiativesDetailsWidget> {
+class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
   bool isLoading = false;
   String errorMessage = '';
   int target = 0;
@@ -51,10 +53,11 @@ class _InitiativesDetailsWidget extends State<InitiativesDetailsWidget> {
         ]
       };
       var url = Uri.https(apiHost, '/v1/initiative/deleteImage');
-      delete(url,
-          body: json.encode(payload),
-          headers: {'Authorization': 'Bearer $token'}).then((response) {
-        // print(response.body);
+      delete(
+        url,
+        body: json.encode(payload),
+        headers: {'Authorization': 'Bearer $token'},
+      ).then((response) {
         if (response.statusCode == 200) {
           Navigator.pop(context);
           Navigator.push(
@@ -108,83 +111,81 @@ class _InitiativesDetailsWidget extends State<InitiativesDetailsWidget> {
   }
 
   void toggleImage(imageUrl) {
-    var newRemoveImageKeys = [...removeImageKeys];
-    if (removeImageKeys.contains(imageUrl)) {
-      newRemoveImageKeys.remove(imageUrl);
-    } else {
-      newRemoveImageKeys.add(imageUrl);
-    }
     setState(() {
-      removeImageKeys = newRemoveImageKeys;
+      if (removeImageKeys.contains(imageUrl)) {
+        removeImageKeys.remove(imageUrl);
+      } else {
+        removeImageKeys.add(imageUrl);
+      }
     });
   }
 
   void deletePopup() async {
-    return showDialog(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
-        return StatefulBuilder(builder: (context, setInnerState) {
-          return AlertDialog(
-            title: const Text("Delete Image(s)"),
-            content: const Text("Do you want to delete the selected images"),
-            actions: [
-              TextButton(
-                child: const Text('No'),
-                onPressed: () {
-                  Navigator.pop(context);
-                  setState(() {
-                    removeImageKeys = [];
-                  });
-                  // Navigator.of(context).pop(false);
-                },
-              ),
-              TextButton(
-                child: const Text('Yes'),
-                onPressed: () {
-                  deleteImage();
-                },
-              ),
-            ],
-          );
-        });
+        return AlertDialog(
+          title: const Text("Delete Image(s)"),
+          content: const Text("Do you want to delete the selected images?"),
+          actions: [
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  removeImageKeys = [];
+                });
+              },
+            ),
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                deleteImage();
+              },
+            ),
+          ],
+        );
       },
     );
   }
 
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          centerTitle: true,
-          actions: removeImageKeys.isEmpty
-              ? null
-              : [
-                  IconButton(
-                      onPressed: () {
-                        deletePopup();
-                      },
-                      icon: SvgPicture.asset("assets/svg/bin.svg"))
-                ],
-          leading: removeImageKeys.isEmpty
-              ? IconButton(
-                  onPressed: () {},
-                  icon: SvgPicture.asset("assets/svg/Vector.svg"))
-              : Container(),
-          backgroundColor: removeImageKeys.isEmpty
-              ? Colors.white
-              : Theme.of(context).colorScheme.secondary,
-          title: removeImageKeys.isEmpty
-              ? Text(
-                  name,
-                  style: const TextStyle(
-                    color: Colors.black87,
-                  ),
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        actions: removeImageKeys.isEmpty
+            ? null
+            : [
+                IconButton(
+                  onPressed: () {
+                    deletePopup();
+                  },
+                  icon: SvgPicture.asset("assets/svg/bin.svg"),
                 )
-              : Text(removeImageKeys.length.toString()),
-        ),
-        body: isLoading
-            ? Column(children: [
+              ],
+        leading: removeImageKeys.isEmpty
+            ? IconButton(
+                onPressed: () {},
+                icon: SvgPicture.asset("assets/svg/Vector.svg"),
+              )
+            : Container(),
+        backgroundColor: removeImageKeys.isEmpty
+            ? Colors.white
+            : Theme.of(context).colorScheme.secondary,
+        title: removeImageKeys.isEmpty
+            ? const Text(
+                'Initiative Details',
+                style: TextStyle(
+                  color: Colors.black87,
+                ),
+              )
+            : Text(removeImageKeys.length.toString()),
+      ),
+      body: isLoading
+          ? Column(
+              children: [
                 const SizedBox(height: 70),
                 Align(
                   alignment: Alignment.center,
@@ -192,94 +193,126 @@ class _InitiativesDetailsWidget extends State<InitiativesDetailsWidget> {
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
-              ])
-            : Container(
-                margin: const EdgeInsets.only(top: 50),
-                width: double.infinity,
-                child: imageKeys.isNotEmpty
-                    ? GridView.count(
-                        padding: const EdgeInsets.only(top: 10),
-                        primary: false,
-                        crossAxisSpacing: 15,
-                        mainAxisSpacing: 15,
-                        crossAxisCount: 2,
+              ],
+            )
+          : Container(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              margin: const EdgeInsets.only(top: 20),
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '$grade - $name',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 25),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
                         children: [
-                          ...imageKeys.map(
-                            (image) => GestureDetector(
-                              onTap: () {
-                                toggleImage(image);
-                              },
-                              child: Stack(
-                                children: <Widget>[
-                                  Container(
-                                    padding: const EdgeInsets.only(
-                                      top: 35,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(10),
-                                          bottomLeft: Radius.circular(10),
-                                          bottomRight: Radius.circular(10)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 1,
-                                          blurRadius: 3,
-                                          offset: const Offset(0, 2),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Stack(
-                                      children: [
-                                        ClipRRect(
+                          Text(
+                            'Students : $numberOfStudent',
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 115, 146, 116),
+                                fontSize: 17),
+                          ),
+                          const Spacer(),
+                          Text(
+                            'Target : $target',
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 115, 146, 116),
+                                fontSize: 17),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 100),
+                      const Text(
+                        'Artworks',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 190),
+
+                    // width: double.infinity,
+                    child: imageKeys.isNotEmpty
+                        ? GridView.count(
+                            padding: const EdgeInsets.only(top: 10),
+                            primary: false,
+                            crossAxisSpacing: 15,
+                            mainAxisSpacing: 15,
+                            crossAxisCount: 2,
+                            children: [
+                              ...imageKeys.map(
+                                (image) => GestureDetector(
+                                  onTap: () {
+                                    toggleImage(image);
+                                  },
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Stack(
+                                        children: [
+                                          ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
                                             child: FancyShimmerImage(
                                               imageUrl: image,
                                               boxFit: BoxFit.cover,
                                               width: double.infinity,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.15,
-                                            )),
-                                        if (removeImageKeys.contains(image))
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  Colors.black.withOpacity(0.5),
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
+                                              // height:
+                                              //     MediaQuery.of(context).size.height *
+                                              //         0.15,
                                             ),
                                           ),
-                                      ],
-                                    ),
-                                  ),
-                                  if (removeImageKeys.contains(image))
-                                    Positioned(
-                                      top: 0,
-                                      right: 0,
-                                      child: Image.asset(
-                                        "assets/images/select.png",
-                                        // width: 30,
-                                        // height: 150,
-                                        // fit: BoxFit.cover,
+                                          if (removeImageKeys.contains(image))
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                              ),
+                                            ),
+                                        ],
                                       ),
-                                    ),
-                                ],
+                                      if (removeImageKeys.contains(image))
+                                        Positioned(
+                                          top: 5,
+                                          right: 5,
+                                          child: Container(
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                            ),
+                                            child: Icon(
+                                              Icons.check,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
                               ),
+                            ],
+                          )
+                        : const Center(
+                            child: Text(
+                              "No artwork here",
+                              style: TextStyle(fontSize: 16),
                             ),
                           ),
-                        ],
-                      )
-                    : const Center(
-                        child: Text(
-                          "No artwork here",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      )));
+                  ),
+                ],
+              ),
+            ),
+    );
   }
 }

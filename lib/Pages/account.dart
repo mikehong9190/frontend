@@ -146,19 +146,19 @@ class _AccountWidgetState extends State<AccountWidget> {
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                            insetPadding: EdgeInsets.zero,
-                                            title: const Text("Collectibles"),
-                                            content: SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.8,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.6,
-                                                child: collectibles[index]
-                                                        .isNotEmpty
+                                          insetPadding: EdgeInsets.zero,
+                                          title: const Text("Collectibles"),
+                                          content: SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.8,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.6,
+                                            child:
+                                                collectibles[index].isNotEmpty
                                                     ? FancyShimmerImage(
                                                         imageUrl:
                                                             collectibles[index],
@@ -168,7 +168,9 @@ class _AccountWidgetState extends State<AccountWidget> {
                                                         "assets/images/defaultImage.png",
                                                         width: 600,
                                                         height: 600,
-                                                      )));
+                                                      ),
+                                          ),
+                                        );
                                       });
                                 },
                                 child: CollectiblesWidget(
