@@ -254,6 +254,9 @@ class SecondPageWidget extends StatelessWidget {
           // ),
           Row(
             children: [
+              const SizedBox(
+                width: 13,
+              ),
               const InkWell(
                 onTap: null,
                 child: Text("Please agree to swiirl’s  "),
@@ -278,24 +281,18 @@ class SecondPageWidget extends StatelessWidget {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.only (left: 10),
-            child: Align(
-              alignment: AlignmentDirectional.bottomStart,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Checkbox(
-                    value: isAgreed,
-                    onChanged: changeAgreed,
-                    fillColor: MaterialStateProperty.all(
-                        Theme.of(context).colorScheme.secondary),
-                    shape: const CircleBorder(),
-                  ),
-                  const Text("I Agree")
-                ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Checkbox(
+                value: isAgreed,
+                onChanged: changeAgreed,
+                fillColor: MaterialStateProperty.all(
+                    Theme.of(context).colorScheme.secondary),
+                shape: const CircleBorder(),
               ),
-            ),
+              const Text("I Agree")
+            ],
           ),
           ButtonTheme(
             child: SizedBox(
