@@ -52,20 +52,22 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
   }
 
   void deleteErrorPopup() {
-    showDialog(context: context, builder: (context) {
-      return AlertDialog(
-      title: const Text("Delete Image(s)"),
-      content: const Text("Error while deleting Image"),
-      actions: [
-        TextButton(
-          child: const Text('Okay'),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    );
-    });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Delete Image(s)"),
+            content: const Text("Error while deleting Image"),
+            actions: [
+              TextButton(
+                child: const Text('Okay'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
   }
 
   void deleteImage(setInnerState) async {
@@ -257,7 +259,7 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
             : Container(
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 margin: const EdgeInsets.only(top: 20),
-                child: Stack(
+                child: Column(
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -326,84 +328,84 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
                         ),
                       ],
                     ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        top: name.length > 25 ? 230 : 200,
-                        bottom: 20,
-                      ),
-                      // width: double.infinity,
-                      child: imageKeys.isNotEmpty
-                          ? GridView.count(
-                              // padding: const EdgeInsets.only(top: 10),
-                              primary: false,
-                              crossAxisSpacing: 15,
-                              mainAxisSpacing: 15,
-                              crossAxisCount: 2,
-                              children: [
-                                ...imageKeys.map(
-                                  (image) => GestureDetector(
-                                    onTap: () {
-                                      toggleImage(image);
-                                    },
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Stack(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              child: FancyShimmerImage(
-                                                imageUrl: image,
-                                                boxFit: BoxFit.cover,
-                                                width: double.infinity,
-                                                // height:
-                                                //     MediaQuery.of(context).size.height *
-                                                //         0.15,
-                                              ),
-                                            ),
-                                            if (removeImageKeys.contains(image))
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    Radius.circular(10),
-                                                  ),
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        // width: double.infinity,
+                        child: imageKeys.isNotEmpty
+                            ? GridView.count(
+                                // padding: const EdgeInsets.only(top: 10),
+                                primary: false,
+                                crossAxisSpacing: 15,
+                                mainAxisSpacing: 15,
+                                crossAxisCount: 2,
+                                children: [
+                                  ...imageKeys.map(
+                                    (image) => GestureDetector(
+                                      onTap: () {
+                                        toggleImage(image);
+                                      },
+                                      child: Stack(
+                                        children: <Widget>[
+                                          Stack(
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                child: FancyShimmerImage(
+                                                  imageUrl: image,
+                                                  boxFit: BoxFit.cover,
+                                                  width: double.infinity,
+                                                  // height:
+                                                  //     MediaQuery.of(context).size.height *
+                                                  //         0.15,
                                                 ),
                                               ),
-                                          ],
-                                        ),
-                                        if (removeImageKeys.contains(image))
-                                          Positioned(
-                                            top: 5,
-                                            right: 5,
-                                            child: Container(
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.white,
-                                              ),
-                                              child: Icon(
-                                                Icons.check,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary,
+                                              if (removeImageKeys
+                                                  .contains(image))
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                      Radius.circular(10),
+                                                    ),
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                          if (removeImageKeys.contains(image))
+                                            Positioned(
+                                              top: 5,
+                                              right: 5,
+                                              child: Container(
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.white,
+                                                ),
+                                                child: Icon(
+                                                  Icons.check,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
+                                ],
+                              )
+                            : const Center(
+                                child: Text(
+                                  "No artwork here",
+                                  style: TextStyle(fontSize: 16),
                                 ),
-                              ],
-                            )
-                          : const Center(
-                              child: Text(
-                                "No artwork here",
-                                style: TextStyle(fontSize: 16),
                               ),
-                            ),
-                    ),
+                      ),
+                    )
                   ],
                 ),
               ),
