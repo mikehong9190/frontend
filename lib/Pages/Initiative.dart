@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/Pages/setup_initiative.dart';
 import 'package:provider/provider.dart';
+
 import '../store.dart';
 import '../constants.dart';
 import 'package:http/http.dart';
 import '../components/initiatives_for_initiatives.dart';
+import 'package:frontend/Pages/initiative_details.dart';
 
 class Welcome {
   String message;
@@ -163,19 +166,31 @@ class _InitiativeState extends State<Initiative> {
                                 itemCount: initiatives.length,
                                 itemBuilder: (context, index) {
                                   return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 10),
-                                    child: InitiativesForInitiativeWidget(
-                                        images: initiatives[index].images,
-                                        target: initiatives[index].target,
-                                        id: initiatives[index].id,
-                                        initiativeTypeId:
-                                            initiatives[index].initiativeTypeId,
-                                        numberOfStudents:
-                                            initiatives[index].numberOfStudents,
-                                        grade: initiatives[index].grade,
-                                        name: initiatives[index].name),
-                                  );
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 10),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) =>
+                                                  InitiativesDetailsWidget(
+                                                      id: initiatives[index]
+                                                          .id),
+                                            ),
+                                          );
+                                        },
+                                        child: InitiativesForInitiativeWidget(
+                                            images: initiatives[index].images,
+                                            target: initiatives[index].target,
+                                            id: initiatives[index].id,
+                                            initiativeTypeId: initiatives[index]
+                                                .initiativeTypeId,
+                                            numberOfStudents: initiatives[index]
+                                                .numberOfStudents,
+                                            grade: initiatives[index].grade,
+                                            name: initiatives[index].name),
+                                      ));
                                 }),
                           ),
                     // Image.asset("assets/images/swiirl-black.png"),
