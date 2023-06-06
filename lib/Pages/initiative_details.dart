@@ -23,7 +23,6 @@ class InitiativesDetailsWidget extends StatefulWidget {
 
 class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
   bool isLoading = false;
-  bool deleteLoader = false;
 
   String errorMessage = '';
   int target = 0;
@@ -47,9 +46,6 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
 
   void deleteImage() async {
     try {
-      setState(() {
-        deleteLoader = true;
-      });
       var token = context.read<User>().token;
       if (token.isEmpty) {
         throw const FormatException('Token not found.');
@@ -69,7 +65,6 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
         if (response.statusCode == 200) {
           setState(() {
             removeImageKeys = [];
-            deleteLoader = false;
           });
           Navigator.pop(context);
           Navigator.push(
@@ -148,34 +143,19 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
                 });
               },
             ),
-            ElevatedButton(
-              onPressed: () async {
-                setState(() {
-                  deleteLoader = true;
-                });
-
-                deleteImage();
-
-                setState(() {
-                  deleteLoader = false;
-                });
-
-                Navigator.pop(context);
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (deleteLoader)
-                    const SizedBox(
+            TextButton(
+              child: !isLoading
+                  ? const Text("Yes")
+                  : const SizedBox(
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
                         color: Colors.white,
                       ),
                     ),
-                  if (!deleteLoader) const Text("Yes"),
-                ],
-              ),
+              onPressed: () {
+                deleteImage();
+              },
             ),
           ],
         );
