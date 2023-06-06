@@ -24,8 +24,8 @@ class InitiativesDetailsWidget extends StatefulWidget {
 
 class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
   bool isLoading = false;
-  bool isDeleting = false;
-
+  // bool isDeleting = false;
+  bool error = false;
   String errorMessage = '';
   int target = 0;
   int numberOfStudent = 0;
@@ -51,8 +51,26 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
     super.didChangeDependencies();
   }
 
+  void deleteErrorPopup() {
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+      title: const Text("Delete Image(s)"),
+      content: const Text("Error while deleting Image"),
+      actions: [
+        TextButton(
+          child: const Text('Okay'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+    });
+  }
+
   void deleteImage(setInnerState) async {
     try {
+      print("abcd");
       var token = context.read<User>().token;
       if (token.isEmpty) {
         throw const FormatException('Token not found.');
@@ -69,23 +87,26 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
         body: json.encode(payload),
         headers: {'Authorization': 'Bearer $token'},
       ).then((response) {
+        Navigator.pop(context);
         if (response.statusCode == 200) {
-          setState(() {
-            removeImageKeys = [];
-          });
-          Navigator.pop(context);
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (_) => InitiativesDetailsWidget(id: widget.id),
             ),
           );
+        } else {
+          deleteErrorPopup();
         }
       });
     } catch (error, stackTrace) {
       print(error);
       print(stackTrace);
-    } finally {}
+    } finally {
+      setState(() {
+        removeImageKeys = [];
+      });
+    }
   }
 
   void getInitiativesDetails(id) async {
@@ -137,6 +158,7 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        bool isDeleting = false;
         return StatefulBuilder(builder: (context, setInnerState) {
           return AlertDialog(
             title: const Text("Delete Image(s)"),
