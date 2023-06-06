@@ -11,6 +11,7 @@
 // import '../constants.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/Pages/initiative_details.dart';
 import 'collectibles.dart';
 import 'package:frontend/Pages/gallery.dart';
 
@@ -61,10 +62,23 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                name,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+              Row(
+                children: [
+                  Text(
+                    name,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w700),
+                  ),
+                  TextButton(onPressed: () {
+                     Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => InitiativesDetailsWidget(id : id),
+                              ),
+                            );
+
+                  }, child: const Text("SEE"))
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),

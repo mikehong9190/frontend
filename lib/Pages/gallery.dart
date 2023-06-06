@@ -105,6 +105,7 @@ class _GalleryState extends State<Gallery> {
   //upload images to s3 bucket using pre-signed urls
   void uploadImages(context, List<dynamic> urls, List<XFile> images) async {
     try {
+      print("Upload");
       for (var i = 0; i < urls.length; i++) {
         String contentType = getContentType(images[i]);
         Uri uri = Uri.parse(urls[i]);
@@ -113,8 +114,9 @@ class _GalleryState extends State<Gallery> {
           body: await images[i].readAsBytes(),
           headers: {"Content-Type": contentType},
         );
+        print(response.statusCode);
         if (response.statusCode != 200) {
-          log(response.reasonPhrase.toString());
+          print(response.reasonPhrase.toString());
           throw Exception('Failed to upload image at index $i');
         }
       }
@@ -187,7 +189,7 @@ class _GalleryState extends State<Gallery> {
         "imageKeys": imageKeys
       };
       String url = isUpdate
-          ? 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/ '
+          ? 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/initiative/update'
           : 'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/initiative/create';
       final response;
       if (isUpdate) {
@@ -199,7 +201,6 @@ class _GalleryState extends State<Gallery> {
             body: jsonEncode(payload),
             headers: {'Authorization': 'Bearer $token'});
       }
-
       if (response.statusCode == 200) {
         log("Step 3---------done");
         _showSuccessDialog(context);

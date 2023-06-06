@@ -23,6 +23,7 @@ class FirstPageWidget extends StatelessWidget {
   final dynamic isLoading;
   final dynamic isOtpSend;
   final dynamic goToLogin;
+  final dynamic termsPopup;
 
   bool isValidEmail(String email) {
     final regex = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
@@ -39,8 +40,9 @@ class FirstPageWidget extends StatelessWidget {
     required this.isLoading,
     required this.isOtpSend,
     required this.goToLogin,
+    required this.termsPopup
   });
-
+  
   @override
   build(context) {
     return Center(
@@ -178,6 +180,8 @@ class SecondPageWidget extends StatelessWidget {
   final dynamic checkConfirmPasswordVisibility;
   final bool isAgreed;
   final dynamic changeAgreed;
+  final dynamic termsPopup;
+  final dynamic privacyPopup;
   const SecondPageWidget(
       {super.key,
       required this.controller1,
@@ -191,7 +195,9 @@ class SecondPageWidget extends StatelessWidget {
       required this.checkPasswordVisibility,
       required this.checkConfirmPasswordVisibility,
       required this.isAgreed,
-      required this.changeAgreed});
+      required this.changeAgreed,
+      required this.termsPopup,
+      required this.privacyPopup});
 
   @override
   Widget build(context) {
@@ -257,7 +263,7 @@ class SecondPageWidget extends StatelessWidget {
                 child: const Text("Terms of use ",
                     style: TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
-                  Navigator.popAndPushNamed(context, "/terms");
+                  termsPopup ();
                 },
               ),
               const InkWell(
@@ -268,10 +274,7 @@ class SecondPageWidget extends StatelessWidget {
                 child: const Text("Privacy Policy",
                     style: TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
-                  Navigator.popAndPushNamed(
-                    context,
-                    "/policy",
-                  );
+                 privacyPopup ();
                 },
               ),
             ],
