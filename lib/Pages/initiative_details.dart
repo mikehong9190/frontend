@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:frontend/Pages/gallery.dart';
 import 'package:provider/provider.dart';
 
 import '../store.dart';
@@ -22,9 +23,12 @@ class InitiativesDetailsWidget extends StatefulWidget {
 
 class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
   bool isLoading = false;
+  bool deleteLoader = false;
+
   String errorMessage = '';
   int target = 0;
   int numberOfStudent = 0;
+  String initiativeTypeId = '';
   String grade = '';
   String name = '';
   List<String> removeImageKeys = [];
@@ -43,6 +47,9 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
 
   void deleteImage() async {
     try {
+      setState(() {
+        deleteLoader = true;
+      });
       var token = context.read<User>().token;
       if (token.isEmpty) {
         throw const FormatException('Token not found.');
@@ -53,12 +60,17 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
         ]
       };
       var url = Uri.https(apiHost, '/v1/initiative/deleteImage');
+
       delete(
         url,
         body: json.encode(payload),
         headers: {'Authorization': 'Bearer $token'},
       ).then((response) {
         if (response.statusCode == 200) {
+          setState(() {
+            removeImageKeys = [];
+            deleteLoader = false;
+          });
           Navigator.pop(context);
           Navigator.push(
             context,
@@ -66,9 +78,6 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
               builder: (_) => InitiativesDetailsWidget(id: widget.id),
             ),
           );
-          setState(() {
-            removeImageKeys = [];
-          });
         }
       });
     } catch (error, stackTrace) {
@@ -93,6 +102,8 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
         grade = jsonData.data.grade;
         imageKeys = jsonData.data.images;
         name = jsonData.data.name;
+        initiativeTypeId = jsonData.data.initiativeTypeId;
+
         setState(() {
           errorMessage = '';
         });
@@ -137,11 +148,34 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
                 });
               },
             ),
-            TextButton(
-              child: const Text('Yes'),
-              onPressed: () {
+            ElevatedButton(
+              onPressed: () async {
+                setState(() {
+                  deleteLoader = true;
+                });
+
                 deleteImage();
+
+                setState(() {
+                  deleteLoader = false;
+                });
+
+                Navigator.pop(context);
               },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (deleteLoader)
+                    const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    ),
+                  if (!deleteLoader) const Text("Yes"),
+                ],
+              ),
             ),
           ],
         );
@@ -167,7 +201,9 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
               ],
         leading: removeImageKeys.isEmpty
             ? IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
                 icon: SvgPicture.asset("assets/svg/Vector.svg"),
               )
             : Container(),
@@ -226,21 +262,54 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 100),
+                      const SizedBox(height: 40),
                       const Text(
                         'Artworks',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
+                      ButtonTheme(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 10, bottom: 10),
+                          width: double.infinity,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => Gallery(
+                                        isUpdate: true,
+                                        updateInitiativeId: widget.id,
+                                        initiativeTypeId: initiativeTypeId,
+                                        initiativeType: name,
+                                        target: target,
+                                        grade: grade,
+                                        noOfStudents: numberOfStudent),
+                                  ),
+                                );
+                              },
+                              style: ButtonStyle(
+                                  padding: const MaterialStatePropertyAll(
+                                      EdgeInsets.only(top: 15, bottom: 15)),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.black),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)))),
+                              child: const Text("Add more art")),
+                        ),
+                      ),
                     ],
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 190),
+                    margin: const EdgeInsets.only(top: 200, bottom: 20),
 
                     // width: double.infinity,
                     child: imageKeys.isNotEmpty
                         ? GridView.count(
-                            padding: const EdgeInsets.only(top: 10),
+                            // padding: const EdgeInsets.only(top: 10),
                             primary: false,
                             crossAxisSpacing: 15,
                             mainAxisSpacing: 15,

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/Pages/initiative_details.dart';
 import 'package:frontend/helpers/ask_for_settings.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -80,7 +81,20 @@ class _GalleryState extends State<Gallery> {
         actions: [
           CupertinoDialogAction(
               child: const Text("Okay"),
-              onPressed: () => {Navigator.pushNamed(context, "/app")}),
+              onPressed: () => {
+                    if (isUpdate)
+                      {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => InitiativesDetailsWidget(
+                                id: updateInitiativeId),
+                          ),
+                        )
+                      }
+                    else
+                      {Navigator.pushNamed(context, "/app")}
+                  }),
         ],
       ),
     );
@@ -250,7 +264,17 @@ class _GalleryState extends State<Gallery> {
                 onPressed: () {
                   imageModel.clearImages();
                   imageModel.clearFinalImages();
-                  Navigator.pushNamed(context, '/app');
+                  if (isUpdate) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            InitiativesDetailsWidget(id: updateInitiativeId),
+                      ),
+                    );
+                  } else {
+                    Navigator.pushNamed(context, '/app');
+                  }
                   // Navigator.of(context).pop(true);
                 },
               ),
@@ -271,6 +295,28 @@ class _GalleryState extends State<Gallery> {
             Map<Permission, PermissionStatus> statuses =
                 await [Permission.photos].request();
             if (statuses[Permission.photos]!.isGranted) {
+              var pickedfiles = await imgpicker.pickMultiImage();
+              // ignore: unnecessary_null_comparison
+              if (pickedfiles != null) {
+                for (var i = 0; i < pickedfiles.length; i++) {
+                  imageModel.addImage(pickedfiles[i]);
+                }
+              } else {
+                log("no image selected");
+              }
+            } else {
+              bool shouldOpenSettings = await askForSettings(
+                  context, "Enable permissions to access your photo library");
+              if (shouldOpenSettings) {
+                openAppSettings();
+              }
+
+              log('no permission provided');
+            }
+          } else {
+            Map<Permission, PermissionStatus> statuses =
+                await [Permission.storage].request();
+            if (statuses[Permission.storage]!.isGranted) {
               var pickedfiles = await imgpicker.pickMultiImage();
               // ignore: unnecessary_null_comparison
               if (pickedfiles != null) {

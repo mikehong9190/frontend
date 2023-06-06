@@ -1,18 +1,7 @@
-// import 'dart:convert';
-
-// import 'package:flutter/services.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:frontend/Pages/Initiative.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:http/http.dart';
-// import 'package:provider/provider.dart';
-// import '../model/responses.dart';
-// import '../store.dart';
-// import '../constants.dart';
-// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'collectibles.dart';
-import 'package:frontend/Pages/gallery.dart';
+// import 'package:frontend/Pages/gallery.dart';
+import 'package:frontend/Pages/initiative_details.dart';
 
 class InitiativesForInitiativeWidget extends StatelessWidget {
   final String id;
@@ -85,18 +74,26 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                 child: SizedBox(
                   width: 220,
                   child: ElevatedButton(
+                      // onPressed: () {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (_) => Gallery(
+                      //           isUpdate: true,
+                      //           updateInitiativeId: id,
+                      //           initiativeTypeId: initiativeTypeId,
+                      //           initiativeType: name,
+                      //           target: target,
+                      //           grade: grade,
+                      //           noOfStudents: numberOfStudents),
+                      //     ),
+                      //   );
+                      // },
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => Gallery(
-                                isUpdate: true,
-                                updateInitiativeId: id,
-                                initiativeTypeId: initiativeTypeId,
-                                initiativeType: name,
-                                target: target,
-                                grade: grade,
-                                noOfStudents: numberOfStudents),
+                            builder: (_) => InitiativesDetailsWidget(id: id),
                           ),
                         );
                       },
@@ -108,7 +105,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                                   RoundedRectangleBorder(
                                       borderRadius:
                                           BorderRadius.circular(30.0)))),
-                      child: const Text("Add More Art")),
+                      child: const Text("View")),
                 ),
               ),
             ],
