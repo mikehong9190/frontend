@@ -34,6 +34,11 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
   List<String> removeImageKeys = [];
   List<dynamic> imageKeys = [];
 
+  Future<bool> _onWillPop() async {
+    Navigator.pushNamed(context, '/app');
+    return false;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -166,203 +171,206 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        actions: removeImageKeys.isEmpty
-            ? null
-            : [
-                IconButton(
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: true,
+          actions: removeImageKeys.isEmpty
+              ? null
+              : [
+                  IconButton(
+                    onPressed: () {
+                      deletePopup();
+                    },
+                    icon: SvgPicture.asset("assets/svg/bin.svg"),
+                  )
+                ],
+          leading: removeImageKeys.isEmpty
+              ? IconButton(
                   onPressed: () {
-                    deletePopup();
+                    Navigator.pushNamed(context, '/app');
                   },
-                  icon: SvgPicture.asset("assets/svg/bin.svg"),
+                  icon: SvgPicture.asset("assets/svg/Vector.svg"),
                 )
-              ],
-        leading: removeImageKeys.isEmpty
-            ? IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/app');
-                },
-                icon: SvgPicture.asset("assets/svg/Vector.svg"),
-              )
-            : Container(),
-        backgroundColor: removeImageKeys.isEmpty
-            ? Colors.white
-            : Theme.of(context).colorScheme.secondary,
-        title: removeImageKeys.isEmpty
-            ? const Text(
-                'Initiative Details',
-                style: TextStyle(
-                  color: Colors.black87,
-                ),
-              )
-            : Text(removeImageKeys.length.toString()),
-      ),
-      body: isLoading
-          ? Column(
-              children: [
-                const SizedBox(height: 70),
-                Align(
-                  alignment: Alignment.center,
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.secondary,
+              : Container(),
+          backgroundColor: removeImageKeys.isEmpty
+              ? Colors.white
+              : Theme.of(context).colorScheme.secondary,
+          title: removeImageKeys.isEmpty
+              ? const Text(
+                  'Initiative Details',
+                  style: TextStyle(
+                    color: Colors.black87,
                   ),
-                ),
-              ],
-            )
-          : Container(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              margin: const EdgeInsets.only(top: 20),
-              child: Stack(
+                )
+              : Text(removeImageKeys.length.toString()),
+        ),
+        body: isLoading
+            ? Column(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '$grade - $name',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Text(
-                            'Students : $numberOfStudent',
-                            style: const TextStyle(
-                                color: Color.fromARGB(255, 115, 146, 116),
-                                fontSize: 17),
-                          ),
-                          const Spacer(),
-                          Text(
-                            'Target : $target',
-                            style: const TextStyle(
-                                color: Color.fromARGB(255, 115, 146, 116),
-                                fontSize: 17),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 40),
-                      const Text(
-                        'Artworks',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                      ButtonTheme(
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 10, bottom: 10),
-                          width: double.infinity,
-                          child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => Gallery(
-                                        isUpdate: true,
-                                        updateInitiativeId: widget.id,
-                                        initiativeTypeId: initiativeTypeId,
-                                        initiativeType: name,
-                                        target: target,
-                                        grade: grade,
-                                        noOfStudents: numberOfStudent),
-                                  ),
-                                );
-                              },
-                              style: ButtonStyle(
-                                  padding: const MaterialStatePropertyAll(
-                                      EdgeInsets.only(top: 15, bottom: 15)),
-                                  backgroundColor:
-                                      MaterialStateProperty.all(Colors.black),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0)))),
-                              child: const Text("Add more art")),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 200, bottom: 20),
-
-                    // width: double.infinity,
-                    child: imageKeys.isNotEmpty
-                        ? GridView.count(
-                            // padding: const EdgeInsets.only(top: 10),
-                            primary: false,
-                            crossAxisSpacing: 15,
-                            mainAxisSpacing: 15,
-                            crossAxisCount: 2,
-                            children: [
-                              ...imageKeys.map(
-                                (image) => GestureDetector(
-                                  onTap: () {
-                                    toggleImage(image);
-                                  },
-                                  child: Stack(
-                                    children: <Widget>[
-                                      Stack(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                            child: FancyShimmerImage(
-                                              imageUrl: image,
-                                              boxFit: BoxFit.cover,
-                                              width: double.infinity,
-                                              // height:
-                                              //     MediaQuery.of(context).size.height *
-                                              //         0.15,
-                                            ),
-                                          ),
-                                          if (removeImageKeys.contains(image))
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black
-                                                    .withOpacity(0.5),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  Radius.circular(10),
-                                                ),
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                      if (removeImageKeys.contains(image))
-                                        Positioned(
-                                          top: 5,
-                                          right: 5,
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.white,
-                                            ),
-                                            child: Icon(
-                                              Icons.check,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                            ),
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        : const Center(
-                            child: Text(
-                              "No artwork here",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ),
+                  const SizedBox(height: 70),
+                  Align(
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
                 ],
+              )
+            : Container(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                margin: const EdgeInsets.only(top: 20),
+                child: Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '$grade - $name',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 25),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Text(
+                              'Students : $numberOfStudent',
+                              style: const TextStyle(
+                                  color: Color.fromARGB(255, 115, 146, 116),
+                                  fontSize: 17),
+                            ),
+                            const Spacer(),
+                            Text(
+                              'Target : $target',
+                              style: const TextStyle(
+                                  color: Color.fromARGB(255, 115, 146, 116),
+                                  fontSize: 17),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 40),
+                        const Text(
+                          'Artworks',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                        ButtonTheme(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 10, bottom: 10),
+                            width: double.infinity,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => Gallery(
+                                          isUpdate: true,
+                                          updateInitiativeId: widget.id,
+                                          initiativeTypeId: initiativeTypeId,
+                                          initiativeType: name,
+                                          target: target,
+                                          grade: grade,
+                                          noOfStudents: numberOfStudent),
+                                    ),
+                                  );
+                                },
+                                style: ButtonStyle(
+                                    padding: const MaterialStatePropertyAll(
+                                        EdgeInsets.only(top: 15, bottom: 15)),
+                                    backgroundColor:
+                                        MaterialStateProperty.all(Colors.black),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)))),
+                                child: const Text("Add more art")),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 200, bottom: 20),
+
+                      // width: double.infinity,
+                      child: imageKeys.isNotEmpty
+                          ? GridView.count(
+                              // padding: const EdgeInsets.only(top: 10),
+                              primary: false,
+                              crossAxisSpacing: 15,
+                              mainAxisSpacing: 15,
+                              crossAxisCount: 2,
+                              children: [
+                                ...imageKeys.map(
+                                  (image) => GestureDetector(
+                                    onTap: () {
+                                      toggleImage(image);
+                                    },
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Stack(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              child: FancyShimmerImage(
+                                                imageUrl: image,
+                                                boxFit: BoxFit.cover,
+                                                width: double.infinity,
+                                                // height:
+                                                //     MediaQuery.of(context).size.height *
+                                                //         0.15,
+                                              ),
+                                            ),
+                                            if (removeImageKeys.contains(image))
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                    Radius.circular(10),
+                                                  ),
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                        if (removeImageKeys.contains(image))
+                                          Positioned(
+                                            top: 5,
+                                            right: 5,
+                                            child: Container(
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.white,
+                                              ),
+                                              child: Icon(
+                                                Icons.check,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const Center(
+                              child: Text(
+                                "No artwork here",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 }
