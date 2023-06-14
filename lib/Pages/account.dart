@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:developer';
 
@@ -15,6 +17,7 @@ import '../components/collectibles.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
 import '../components/account_details.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AccountWidget extends StatefulWidget {
   const AccountWidget({
@@ -60,8 +63,11 @@ class _AccountWidgetState extends State<AccountWidget> {
         isLoading = true;
       });
       final queryParameters = {"id": id};
-      final response =
-          await get(Uri.https(apiHost, '/v1/user/get-all', queryParameters));
+      var user = Provider.of<User>(context, listen: false);
+      var token = user.token;
+      final response = await get(
+          Uri.https(apiHost, '/v1/user/get-all', queryParameters),
+          headers: {'Authorization': 'Bearer $token'});
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
@@ -75,6 +81,12 @@ class _AccountWidgetState extends State<AccountWidget> {
           location = jsonData.schoolDistrict;
           bio = jsonData.bio ?? '';
         });
+      } else {
+        log("TOKEN EXPIRED");
+        final googleSignIn = GoogleSignIn();
+        googleSignIn.signOut();
+        context.read<User>().clearUserDetails();
+        Navigator.pushNamed(context, '/login');
       }
     } catch (error) {
       log(error.toString());

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
@@ -7,6 +9,8 @@ import 'package:frontend/Pages/initiative.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 import '../model/responses.dart';
 import '../store.dart';
 import './home.dart';
@@ -47,9 +51,12 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       setState(() {
         isLoading = true;
       });
+      var user = Provider.of<User>(context, listen: false);
+      var token = user.token;
       final queryParameters = {"id": id};
-      final response =
-          await get(Uri.https(apiHost, '/v1/user/get-all', queryParameters));
+      final response = await get(
+          Uri.https(apiHost, '/v1/user/get-all', queryParameters),
+          headers: {'Authorization': 'Bearer $token'});
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
@@ -58,9 +65,14 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
           schoolName = jsonData.schoolName;
           schoolLocation = jsonData.schoolDistrict;
         });
+      } else {
+        log("Token Expired");
+        final googleSignIn = GoogleSignIn();
+        googleSignIn.signOut();
+        context.read<User>().clearUserDetails();
+        Navigator.pushNamed(context, '/login');
       }
     } catch (error, stackTrace) {
-      // print(stackTrace);
       log(stackTrace.toString());
       log(error.toString());
     } finally {

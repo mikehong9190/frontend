@@ -215,8 +215,11 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         isLoading = true;
       });
       final queryParameters = {'id': id};
-      final response =
-          await get(Uri.https(apiHost, '/v1/user/get-all', queryParameters));
+      var user = Provider.of<User>(context, listen: false);
+      var token = user.token;
+      final response = await get(
+          Uri.https(apiHost, '/v1/user/get-all', queryParameters),
+          headers: {'Authorization': 'Bearer $token'});
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
