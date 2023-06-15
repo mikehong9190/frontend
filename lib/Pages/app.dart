@@ -7,6 +7,7 @@ import 'package:frontend/Pages/initiative.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../model/responses.dart';
 import '../store.dart';
 import './home.dart';
@@ -97,10 +98,21 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
     ),
   ];
 
-  void changeIndex(index) {
-    setState(() {
-      _currentIndex = index;
-    });
+  void changeIndex(index) async {
+    // print("Index :::::: ");
+    // print(index);
+    // print("askjsd");
+    // print(_currentIndex);
+    if (index == 2) {
+      final Uri url = Uri.parse(faqPage);
+      if (!await launchUrl(url)) {
+        throw Exception('Could not launch $url');
+      }
+    } else {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
   }
 
   @override
