@@ -20,7 +20,7 @@ import '../constants.dart';
 
   Future<void> _launchInWebView(String url) async {
     await FlutterWebBrowser.openWebPage(
-  url: "https://flutter.io/");  
+  url: faqPage);  
   }
 
 class MyStateFulWidget extends StatefulWidget {
