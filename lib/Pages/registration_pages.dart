@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:developer';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +13,7 @@ import '../components/button.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 import '../model/responses.dart';
+import "../constants.dart";
 import '../store.dart';
 
 class FirstPageWidget extends StatelessWidget {
@@ -262,8 +264,11 @@ class SecondPageWidget extends StatelessWidget {
               InkWell(
                 child: const Text("Terms of use ",
                     style: TextStyle(fontWeight: FontWeight.w700)),
-                onTap: () {
-                  termsPopup();
+                onTap: () async {
+                  final Uri url = Uri.parse(termsPage);
+                  if (!await launchUrl(url)) {
+                    throw Exception('Could not launch $url');
+                  }
                 },
               ),
               const InkWell(
@@ -273,8 +278,11 @@ class SecondPageWidget extends StatelessWidget {
               InkWell(
                 child: const Text("Privacy Policy",
                     style: TextStyle(fontWeight: FontWeight.w700)),
-                onTap: () {
-                  privacyPopup();
+                onTap: () async {
+                  final Uri url = Uri.parse(privacyPage);
+                  if (!await launchUrl(url)) {
+                    throw Exception('Could not launch $url');
+                  }
                 },
               ),
             ],
