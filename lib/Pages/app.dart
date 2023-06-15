@@ -20,7 +20,7 @@ import '../constants.dart';
 
   Future<void> _launchInWebView(String url) async {
     await FlutterWebBrowser.openWebPage(
-  url: faqPage);  
+  url: url);  
   }
 
 class MyStateFulWidget extends StatefulWidget {
@@ -109,7 +109,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
 
   void changeIndex(index) {
     if (index == 2) {
-      var url = Uri.parse(faqPage);
+      // var url = Uri.parse(faqPage);
       _launchInWebView (faqPage);
     } else {
       setState(() {
