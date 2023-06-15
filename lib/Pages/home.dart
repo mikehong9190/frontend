@@ -202,9 +202,11 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   void getSchoolDetails() async {
     try {
-      setState(() {
-        isLoading = true;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = true;
+        });
+      }
       final queryParameters = {"schoolId": widget.schoolId};
 
       final response =
@@ -215,23 +217,26 @@ class _HomeWidgetState extends State<HomeWidget> {
       if (response.statusCode == 200) {
         final jsonData =
             SchoolDetailResponse.fromJson(jsonDecode(response.body));
-
-        setState(() {
-          schoolName = jsonData.data.school.name;
-          schoolLocation = jsonData.data.school.district;
-          description = jsonData.data.school.description;
-          descriptionController.text = jsonData.data.school.description;
-          schoolPicture = jsonData.data.school.image ?? '';
-          initiatives = jsonData.data.data;
-        });
+        if (mounted) {
+          setState(() {
+            schoolName = jsonData.data.school.name;
+            schoolLocation = jsonData.data.school.district;
+            description = jsonData.data.school.description;
+            descriptionController.text = jsonData.data.school.description;
+            schoolPicture = jsonData.data.school.image ?? '';
+            initiatives = jsonData.data.data;
+          });
+        }
       }
     } catch (error, stackTrace) {
       // print(stackTrace);
       log(stackTrace.toString());
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
