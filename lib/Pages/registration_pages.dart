@@ -1,18 +1,27 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'dart:developer';
+import 'dart:convert';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:textfield_search/textfield_search.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
+import 'package:http/http.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
 import '../components/textField.dart';
 import '../components/button.dart';
-import 'dart:convert';
-import 'package:http/http.dart';
 import '../model/responses.dart';
 import '../store.dart';
+import '../constants.dart';
+
+
+  Future<void> _launchInBrowser(String url) async {
+     await FlutterWebBrowser.openWebPage(
+  url: url);
+  }
 
 class FirstPageWidget extends StatelessWidget {
   final dynamic controller;
@@ -263,7 +272,8 @@ class SecondPageWidget extends StatelessWidget {
                 child: const Text("Terms of use ",
                     style: TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
-                  termsPopup();
+                  var url = Uri.parse(termsPage);
+                  _launchInBrowser(termsPage);
                 },
               ),
               const InkWell(
@@ -274,7 +284,8 @@ class SecondPageWidget extends StatelessWidget {
                 child: const Text("Privacy Policy",
                     style: TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
-                  privacyPopup();
+                   var url = Uri.parse(privacyPage);
+                  _launchInBrowser(privacyPage);
                 },
               ),
             ],

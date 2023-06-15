@@ -51,6 +51,8 @@ dependencies:
   image_cropper: ^4.0.1
   permission_handler: ^10.2.0
   device_info_plus: ^9.0.2
+  # url_launcher: ^6.1.11
+  flutter_web_browser: ^0.17.1
 
 dev_dependencies:
   flutter_test:
