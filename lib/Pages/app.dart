@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/Pages/initiative.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,15 @@ import '../store.dart';
 import './home.dart';
 import './account.dart';
 import '../constants.dart';
+
+  Future<void> _launchInWebView(Uri url) async {
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.inAppWebView,
+    )) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
 class MyStateFulWidget extends StatefulWidget {
   const MyStateFulWidget({super.key});
@@ -102,9 +112,14 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   ];
 
   void changeIndex(index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    if (index == 2) {
+      var url = Uri.parse(faqPage);
+      _launchInWebView (url);
+    } else {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
   }
 
   @override

@@ -9,15 +9,16 @@ import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
-import '../model/responses.dart';
-import '../store.dart';
-// import './home.dart';
-import '../constants.dart';
-import '../components/collectibles.dart';
-// import 'package:cached_network_image/cached_network_image.dart';
-import '../components/account_details.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+// import './home.dart';
+import '../store.dart';
+import '../model/responses.dart';
+import '../constants.dart';
+import '../components/collectibles.dart';
+import '../components/account_details.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 
 class AccountWidget extends StatefulWidget {
   const AccountWidget({
