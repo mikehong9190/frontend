@@ -137,63 +137,65 @@ class _AccountWidgetState extends State<AccountWidget> {
                         ),
                       )
                     : SizedBox(
-                        child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: collectibles.length,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            gridDelegate:
-                                const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    crossAxisSpacing: 15,
-                                    mainAxisSpacing: 15,
-                                    maxCrossAxisExtent: 220),
-                            itemBuilder: (_, index) {
-                              return
-                                  // Center(
-                                  //     child:
-                                  GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          insetPadding: EdgeInsets.zero,
-                                          title: const Text("Collectibles"),
-                                          content: SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.8,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.6,
-                                            child:
-                                                collectibles[index].isNotEmpty
-                                                    ? FancyShimmerImage(
-                                                        imageUrl:
-                                                            collectibles[index],
-                                                        boxFit: BoxFit.contain,
-                                                      )
-                                                    : Image.asset(
-                                                        "assets/images/defaultImage.png",
-                                                        width: 600,
-                                                        height: 600,
-                                                      ),
-                                          ),
-                                        );
-                                      });
-                                },
-                                child: CollectiblesWidget(
-                                  collectibleImage: collectibles[index],
-                                  dimension: 160,
-                                ),
-                              );
-                              // );
-                            }),
-                      ))
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          margin: const EdgeInsets.only(bottom: 20),
+                          child: GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: collectibles.length,
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                      crossAxisSpacing: 15,
+                                      mainAxisSpacing: 15,
+                                      maxCrossAxisExtent: 220),
+                              itemBuilder: (_, index) {
+                                return
+                                    // Center(
+                                    //     child:
+                                    GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            insetPadding: EdgeInsets.zero,
+                                            title: const Text("Collectibles"),
+                                            content: SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.8,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.6,
+                                              child: collectibles[index]
+                                                      .isNotEmpty
+                                                  ? FancyShimmerImage(
+                                                      imageUrl:
+                                                          collectibles[index],
+                                                      boxFit: BoxFit.contain,
+                                                    )
+                                                  : Image.asset(
+                                                      "assets/images/defaultImage.png",
+                                                      width: 600,
+                                                      height: 600,
+                                                    ),
+                                            ),
+                                          );
+                                        });
+                                  },
+                                  child: CollectiblesWidget(
+                                    collectibleImage: collectibles[index],
+                                    dimension: 160,
+                                  ),
+                                );
+                                // );
+                              }),
+                        ),
+                      )
               ],
             ),
           );
