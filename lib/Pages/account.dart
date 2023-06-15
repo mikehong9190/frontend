@@ -64,6 +64,7 @@ class _AccountWidgetState extends State<AccountWidget> {
       final queryParameters = {"id": id};
       final response = await get(
           Uri.https(apiHost, '/v1/user/get-all', queryParameters));
+      print(response.body);
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);

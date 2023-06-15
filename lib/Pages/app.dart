@@ -53,6 +53,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       final queryParameters = {"id": id};
       final response = await get(
           Uri.https(apiHost, '/v1/user/get-all', queryParameters));
+      print(response.body);
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
@@ -99,7 +100,8 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
     // print(_currentIndex);
     if (index == 2) {
       final Uri url = Uri.parse(faqPage);
-      if (!await launchUrl(url)) {
+      if (!await canLaunchUrl(url)) {
+       await launchUrl(url,mode: LaunchMode.inAppWebView);
         throw Exception('Could not launch $url');
       }
     } else {
