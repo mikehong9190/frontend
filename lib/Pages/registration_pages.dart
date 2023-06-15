@@ -5,12 +5,12 @@ import 'dart:convert';
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:textfield_search/textfield_search.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-
+import 'package:flutter_web_browser/flutter_web_browser.dart';
 import '../components/textField.dart';
 import '../components/button.dart';
 import '../model/responses.dart';
@@ -18,13 +18,9 @@ import '../store.dart';
 import '../constants.dart';
 
 
-  Future<void> _launchInBrowser(Uri url) async {
-    if (!await launchUrl(
-      url,
-      mode: LaunchMode.externalApplication,
-    )) {
-      throw Exception('Could not launch $url');
-    }
+  Future<void> _launchInBrowser(String url) async {
+     await FlutterWebBrowser.openWebPage(
+  url: url);
   }
 
 class FirstPageWidget extends StatelessWidget {
@@ -277,7 +273,7 @@ class SecondPageWidget extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
                   var url = Uri.parse(termsPage);
-                  _launchInBrowser(url);
+                  _launchInBrowser(termsPage);
                 },
               ),
               const InkWell(
@@ -289,7 +285,7 @@ class SecondPageWidget extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
                    var url = Uri.parse(privacyPage);
-                  _launchInBrowser(url);
+                  _launchInBrowser(privacyPage);
                 },
               ),
             ],
