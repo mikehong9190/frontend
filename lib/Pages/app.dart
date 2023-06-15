@@ -48,6 +48,8 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       setState(() {
         isLoading = true;
       });
+      var user = Provider.of<User>(context, listen: false);
+      var token = user.token;
       final queryParameters = {"id": id};
       final response = await get(
           Uri.https(apiHost, '/v1/user/get-all', queryParameters));

@@ -59,12 +59,11 @@ class _AccountWidgetState extends State<AccountWidget> {
       setState(() {
         isLoading = true;
       });
-
+      var user = Provider.of<User>(context, listen: false);
+      var token = user.token;
       final queryParameters = {"id": id};
       final response = await get(
           Uri.https(apiHost, '/v1/user/get-all', queryParameters));
-      print(response.statusCode);
-      print(response.body);
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
