@@ -48,17 +48,9 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       setState(() {
         isLoading = true;
       });
-      final token = context.read<User>().token;
-      if (token.isEmpty) {
-        throw const FormatException('Token is empty .. not Authorized');
-      }
       final queryParameters = {"id": id};
       final response = await get(
-          Uri.https(apiHost, '/v1/user/get-all', queryParameters),
-          headers: {
-            // HttpHeaders.authorizationHeader : token
-            'Authorization': 'Bearer $token'
-          });
+          Uri.https(apiHost, '/v1/user/get-all', queryParameters));
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
