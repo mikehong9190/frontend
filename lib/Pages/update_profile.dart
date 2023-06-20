@@ -3,11 +3,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/components/textField.dart';
 import 'package:frontend/helpers/ask_for_settings.dart';
-
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+
 import '../model/responses.dart';
 import '../store.dart';
 import '../constants.dart';
@@ -126,7 +128,21 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       log(error.toString());
     }
   }
-
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text("Failure"),
+        content: const Text("Unable to upload, Please try again"),
+        actions: [
+          CupertinoDialogAction(
+              child: const Text("Okay"),
+              onPressed: () => {Navigator.of(context).pop()}),
+        ],
+      ),
+    );
+  }
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -199,6 +215,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
       // print(response.headers);
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/app");
+      } else {
+        _showAlertDialog(context);
       }
     } catch (error) {
       log(error.toString());
@@ -266,6 +284,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         setState(() {
           isUploadedImage = true;
         });
+      } else {
+        _showAlertDialog(context);
       }
     } catch (error) {
       log(error.toString());

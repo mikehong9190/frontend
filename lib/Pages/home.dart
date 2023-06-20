@@ -40,6 +40,8 @@ class _HomeWidgetState extends State<HomeWidget> {
   late String schoolLocation = "Aspire Public Schools";
   late String description = '';
   var descriptionController = TextEditingController();
+  var schoolDistrictController = TextEditingController();
+  var schoolNameController = TextEditingController();
   late bool isSchoolLoading = false;
   String schoolPicture = "";
   File? _image;
@@ -144,6 +146,8 @@ class _HomeWidgetState extends State<HomeWidget> {
         throw const FormatException('NO token or Id present');
       }
       var payload = {
+        "name": schoolNameController.text,
+        "district": schoolDistrictController.text,
         "description": descriptionController.text,
         "schoolId": widget.schoolId,
         "userId": userId
@@ -223,6 +227,8 @@ class _HomeWidgetState extends State<HomeWidget> {
             schoolLocation = jsonData.data.school.district;
             description = jsonData.data.school.description;
             descriptionController.text = jsonData.data.school.description;
+            schoolDistrictController.text = jsonData.data.school.district;
+            schoolNameController.text = jsonData.data.school.name;
             schoolPicture = jsonData.data.school.image ?? '';
             initiatives = jsonData.data.data;
           });
@@ -397,7 +403,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                     builder: (context) {
                                       return AlertDialog(
                                           title: const Text(
-                                              "Edit School Description"),
+                                              "Edit School Details"),
                                           content: StatefulBuilder(builder:
                                               (context, setInnerState) {
                                             return SizedBox(
@@ -408,6 +414,25 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   children: [
+                                                    const SizedBox(
+                                                      width: double.infinity,
+                                                      child: Align(
+                                                        alignment:
+                                                            AlignmentDirectional
+                                                                .bottomStart,
+                                                        child: Text(
+                                                            "Description",
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500)),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
                                                     SizedBox(
                                                         height: 80,
                                                         width: double.infinity,
@@ -430,6 +455,95 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                 "Description",
                                                           ),
                                                         )),
+                                                         const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: double.infinity,
+                                                      child: Align(
+                                                        alignment:
+                                                            AlignmentDirectional
+                                                                .bottomStart,
+                                                        child: Text(
+                                                            "School District",
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500)),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    SizedBox(
+                                                        height: 50,
+                                                        width: double.infinity,
+                                                        child: TextField(
+                                                          // maxLines: 10,
+                                                          enabled: true,
+                                                          controller:
+                                                              schoolDistrictController,
+                                                          obscureText: false,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                            border: OutlineInputBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .zero,
+                                                                borderSide: BorderSide(
+                                                                    color: Colors
+                                                                        .black)),
+                                                            hintText:
+                                                                "District",
+                                                          ),
+                                                        )),
+                                                         const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: double.infinity,
+                                                      child: Align(
+                                                        alignment:
+                                                            AlignmentDirectional
+                                                                .bottomStart,
+                                                        child: Text(
+                                                            "School Name",
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500)),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    SizedBox(
+                                                        height: 50,
+                                                        width: double.infinity,
+                                                        child: TextField(
+                                                          // maxLines: 10,
+                                                          enabled: true,
+                                                          controller:
+                                                              schoolNameController,
+                                                          obscureText: false,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                            border: OutlineInputBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .zero,
+                                                                borderSide: BorderSide(
+                                                                    color: Colors
+                                                                        .black)),
+                                                            hintText:
+                                                                "School Name",
+                                                          ),
+                                                        )),
+
                                                     ButtonTheme(
                                                         child: SizedBox(
                                                       width: double.infinity,
@@ -462,68 +576,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                                           }));
                                     });
                               },
-                              // onPressed: () {
-                              //   showDialog(
-                              //     context: context,
-                              //     builder: (context) {
-                              //       return AlertDialog(
-                              //         title: const Text("Edit School Details"),
-                              //         content: StatefulBuilder(
-                              //           builder: (context, setInnerState) {
-                              //             return SizedBox(
-                              //               child: Column(
-                              //                 children: [
-                              //                   SizedBox(
-                              //                     height: 40,
-                              //                     width: double.infinity,
-                              //                     child: TextField(
-                              //                       maxLines: 10,
-                              //                       enabled: true,
-                              //                       controller:
-                              //                           descriptionController,
-                              //                       obscureText: false,
-                              //                       decoration:
-                              //                           const InputDecoration(
-                              //                         border: OutlineInputBorder(
-                              //                           borderRadius:
-                              //                               BorderRadius.zero,
-                              //                           borderSide: BorderSide(
-                              //                             color: Colors.black,
-                              //                           ),
-                              //                         ),
-                              //                         hintText: "Description",
-                              //                       ),
-                              //                     ),
-                              //                   ),
-                              //                   ButtonTheme(
-                              //                     child: SizedBox(
-                              //                       width: double.infinity,
-                              //                       child: ElevatedButton(
-                              //                         onPressed: () {
-                              //                           updateSchoolDescription();
-                              //                         },
-                              //                         style: ButtonStyle(
-                              //                           backgroundColor:
-                              //                               MaterialStateProperty
-                              //                                   .all(
-                              //                             Theme.of(context)
-                              //                                 .colorScheme
-                              //                                 .secondary,
-                              //                           ),
-                              //                         ),
-                              //                         child: const Text("Save"),
-                              //                       ),
-                              //                     ),
-                              //                   ),
-                              //                 ],
-                              //               ),
-                              //             );
-                              //           },
-                              //         ),
-                              //       );
-                              //     },
-                              //   );
-                              // },
                               icon: SvgPicture.asset("assets/svg/edit.svg"),
                             ),
                           ],
