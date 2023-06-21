@@ -1,8 +1,10 @@
+// ignore_for_file: library_private_types_in_public_api, avoid_print
+
 import 'dart:convert';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/Pages/gallery.dart';
-import 'package:frontend/Pages/initiative.dart';
+// import 'package:frontend/Pages/initiative.dart';
 import 'package:provider/provider.dart';
 
 import '../store.dart';
@@ -72,7 +74,6 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
 
   void deleteImage(setInnerState) async {
     try {
-      print("abcd");
       var token = context.read<User>().token;
       if (token.isEmpty) {
         throw const FormatException('Token not found.');
@@ -178,7 +179,6 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
                 : const Text("Do you want to delete the selected images?"),
             actions: [
               TextButton(
-                child: const Text('No'),
                 onPressed: isDeleting
                     ? null
                     : () {
@@ -187,9 +187,9 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
                           removeImageKeys = [];
                         });
                       },
+                child: const Text('No'),
               ),
               TextButton(
-                child: const Text("Yes"),
                 onPressed: isDeleting
                     ? null
                     : () {
@@ -198,6 +198,7 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
                         });
                         deleteImage(setInnerState);
                       },
+                child: const Text("Yes"),
               ),
             ],
           );

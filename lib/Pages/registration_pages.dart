@@ -17,11 +17,9 @@ import '../model/responses.dart';
 import '../store.dart';
 import '../constants.dart';
 
-
-  Future<void> _launchInBrowser(String url) async {
-     await FlutterWebBrowser.openWebPage(
-  url: url);
-  }
+Future<void> _launchInBrowser(String url) async {
+  await FlutterWebBrowser.openWebPage(url: url);
+}
 
 class FirstPageWidget extends StatelessWidget {
   final dynamic controller;
@@ -272,7 +270,7 @@ class SecondPageWidget extends StatelessWidget {
                 child: const Text("Terms of use ",
                     style: TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
-                  var url = Uri.parse(termsPage);
+                  // var url = Uri.parse(termsPage);
                   _launchInBrowser(termsPage);
                 },
               ),
@@ -284,7 +282,7 @@ class SecondPageWidget extends StatelessWidget {
                 child: const Text("Privacy Policy",
                     style: TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
-                   var url = Uri.parse(privacyPage);
+                  // var url = Uri.parse(privacyPage);
                   _launchInBrowser(privacyPage);
                 },
               ),
