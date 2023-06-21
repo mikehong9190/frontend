@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/Pages/initiative.dart';
-
+import 'package:flutter/cupertino.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -51,7 +51,21 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
     // }
     // put your logic from initState here
   }
-
+   void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text("Failure"),
+        content: const Text("Unable to Retrieve Data, Please try again"),
+        actions: [
+          CupertinoDialogAction(
+              child: const Text("Okay"),
+              onPressed: () => {Navigator.of(context).pop()}),
+        ],
+      ),
+    );
+  }
   void getUserDetails(id) async {
     try {
       setState(() {
@@ -78,7 +92,9 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
         context.read<User>().clearUserDetails();
         Navigator.pushNamed(context, '/login');
       }
-    } catch (error, stackTrace) {
+    } 
+    catch (error, stackTrace) {
+      _showAlertDialog(context);
       log(stackTrace.toString());
       log(error.toString());
     } finally {
