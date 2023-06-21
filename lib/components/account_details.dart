@@ -107,6 +107,9 @@ class AccountDetailWidget extends StatelessWidget {
             alignment: Alignment.bottomLeft,
             child: Row(children: [
               SvgPicture.asset("assets/svg/location.svg"),
+              const SizedBox(
+                width: 2,
+              ),
               Text(
                 location,
                 style:
