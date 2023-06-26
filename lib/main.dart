@@ -43,12 +43,14 @@ void main() async {
   }
 
   // String? userId = prefs.getString("userId")!;
-  String initialRoute = isFirstTime
-      ? '/'
-      : isLoggedIn
+  // String initialRoute = isFirstTime
+  //     ? '/'
+  //     : isLoggedIn
+  //         ? '/app'
+  //         : '/login';
+  String initialRoute =  isLoggedIn
           ? '/app'
-          : '/login';
-
+          : '/';
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
