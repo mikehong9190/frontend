@@ -338,8 +338,8 @@ class _GalleryState extends State<Gallery> {
           }
         } else {
           Map<Permission, PermissionStatus> statuses =
-              await [Permission.storage].request();
-          if (statuses[Permission.storage]!.isGranted) {
+              await [Permission.photos].request();
+          if (statuses[Permission.photos]!.isGranted) {
             var pickedfiles = await imgpicker.pickMultiImage();
             // ignore: unnecessary_null_comparison
             if (pickedfiles != null) {
