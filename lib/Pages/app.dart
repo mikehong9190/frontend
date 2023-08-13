@@ -18,10 +18,9 @@ import './home.dart';
 import './account.dart';
 import '../constants.dart';
 
-  Future<void> _launchInWebView(String url) async {
-    await FlutterWebBrowser.openWebPage(
-  url: url);  
-  }
+Future<void> _launchInWebView(String url) async {
+  await FlutterWebBrowser.openWebPage(url: url);
+}
 
 class MyStateFulWidget extends StatefulWidget {
   const MyStateFulWidget({super.key});
@@ -51,7 +50,8 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
     // }
     // put your logic from initState here
   }
-   void _showAlertDialog(BuildContext context) {
+
+  void _showAlertDialog(BuildContext context) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -66,6 +66,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       ),
     );
   }
+
   void getUserDetails(id) async {
     try {
       setState(() {
@@ -80,6 +81,11 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
       if (response.statusCode == 200) {
         final jsonData =
             (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
+        if (jsonData.schoolId.isEmpty ||
+            jsonData.schoolName.isEmpty ||
+            jsonData.schoolDistrict.isEmpty) {
+          Navigator.pushNamed(context, '/google-auth-school');
+        }
         setState(() {
           schoolId = jsonData.schoolId;
           schoolName = jsonData.schoolName;
@@ -92,8 +98,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
         context.read<User>().clearUserDetails();
         Navigator.pushNamed(context, '/login');
       }
-    } 
-    catch (error, stackTrace) {
+    } catch (error, stackTrace) {
       _showAlertDialog(context);
       log(stackTrace.toString());
       log(error.toString());
@@ -126,7 +131,7 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   void changeIndex(index) {
     if (index == 2) {
       // var url = Uri.parse(faqPage);
-      _launchInWebView (faqPage);
+      _launchInWebView(faqPage);
     } else {
       setState(() {
         _currentIndex = index;
