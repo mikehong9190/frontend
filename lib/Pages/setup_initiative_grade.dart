@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:frontend/Pages/gallery.dart';
+import 'package:frontend/pages/gallery.dart';
 
 class SetupInitiativeGrade extends StatefulWidget {
   final String initiativeTypeId;
