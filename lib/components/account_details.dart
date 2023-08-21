@@ -86,7 +86,7 @@ class AccountDetailWidget extends StatelessWidget {
                   Text(goalsMets.toString(),
                       style: const TextStyle(
                           fontWeight: FontWeight.w700, fontSize: 18)),
-                  const Text('Goals Mets',
+                  const Text('Goals Met',
                       style: TextStyle(
                           fontSize: 12,
                           color: Color.fromRGBO(183, 183, 183, 1)))

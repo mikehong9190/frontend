@@ -136,7 +136,7 @@ class _InitiativeState extends State<SetupInitiative> {
                 child: TextField(
                   enabled: true,
                   decoration: const InputDecoration(
-                    hintText: 'Enter your customized type',
+                    hintText: 'Enter your customized Initiative',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.zero,
                       borderSide:
