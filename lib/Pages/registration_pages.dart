@@ -2,10 +2,6 @@
 
 import 'dart:developer';
 import 'dart:convert';
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:textfield_search/textfield_search.dart';
-// import 'package:url_launcher/url_launcher.dart';
 
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -52,124 +48,122 @@ class FirstPageWidget extends StatelessWidget {
   @override
   build(context) {
     return Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-          const Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "Enter your email address",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-            ),
+      child:
+          Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        const Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            "Enter your email address",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
           ),
-          const SizedBox(
-            height: 20,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const SizedBox(
+          width: double.infinity,
+          child: Text(
+            "Sign in with our email. If you don’t have a swiirl account yet, we’ll get one set up.",
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Color.fromRGBO(132, 143, 172, 1)),
           ),
-          const SizedBox(
-            width: double.infinity,
-            child: Text(
-              "Sign in with our email. If you don’t have a swiirl account yet, we’ll get one set up.",
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(132, 143, 172, 1)),
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          textFieldWidget("Your Email", controller, false, null, !isOtpSend),
-          const SizedBox(
-            height: 10,
-          ),
-          if (isOtpSend)
-            textFieldWidget("OTP", otpController, false, null, true),
-          const SizedBox(
-            height: 10,
-          ),
-          if (statusCode != 0)
-            SizedBox(
-                height: 20,
-                child: Text(
-                  message,
-                  style: TextStyle(
-                      color: statusCode == 200 ? Colors.green : Colors.red),
-                )),
-          const SizedBox(
-            height: 20,
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: ButtonTheme(
-              child: SizedBox(
-                  height: 50,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Theme.of(context).colorScheme.secondary),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(50.0)))),
-                    onPressed: isValidEmail(controller.text)
-                        ? () {
-                            onNext();
-                          }
-                        : null,
-                    child: !isLoading
-                        ? const Text("Next")
-                        : const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          ),
-                  )),
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Align(
-              alignment: Alignment.topCenter,
-              child: SizedBox(
-                height: 30,
-                child: Text('OR'),
-              )),
-          const OAuthButtonWidget(
-              content: "Continue with Google", iconUrl: "Google"),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Already have an account ?"),
-              TextButton(
-                  onPressed: goToLogin,
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w700),
-                  ))
-            ],
-          ),
-          // OAuthButtonWidget("Continue with Facebook", "Facebook"),
-          // OAuthButtonWidget("Continue with Apple", "Apple"),
-          const SizedBox(
-            height: 30,
-          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        textFieldWidget("Your Email", controller, false, null, !isOtpSend),
+        const SizedBox(
+          height: 10,
+        ),
+        if (isOtpSend) textFieldWidget("OTP", otpController, false, null, true),
+        const SizedBox(
+          height: 10,
+        ),
+        if (statusCode != 0)
           SizedBox(
-            width: double.infinity,
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: Image.asset("assets/images/swiirl-S-Mark-Aqua-Dot 4.png"),
+              height: 20,
+              child: Text(
+                message,
+                style: TextStyle(
+                    color: statusCode == 200 ? Colors.green : Colors.red),
+              )),
+        const SizedBox(
+          height: 20,
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: ButtonTheme(
+            child: SizedBox(
+              height: 50,
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).colorScheme.secondary),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0)))),
+                onPressed: isValidEmail(controller.text)
+                    ? () {
+                        onNext();
+                      }
+                    : null,
+                child: !isLoading
+                    ? const Text("Next")
+                    : const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      ),
+              ),
             ),
-          )
-        ]));
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const Align(
+          alignment: Alignment.topCenter,
+          child: SizedBox(
+            height: 30,
+            child: Text('OR'),
+          ),
+        ),
+        const OAuthButtonWidget(
+            content: "Continue with Google", iconUrl: "Google"),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("Already have an account ?"),
+            TextButton(
+              onPressed: goToLogin,
+              child: const Text(
+                'Login',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+              ),
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        SizedBox(
+          width: double.infinity,
+          child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Image.asset("assets/images/swiirl-S-Mark-Aqua-Dot 4.png"),
+          ),
+        )
+      ]),
+    );
   }
 }
 
@@ -255,10 +249,6 @@ class SecondPageWidget extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          // const SizedBox(
-          //   height: 30,
-          //   child: Text("Please agree to swiirl’s"),
-          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -270,7 +260,6 @@ class SecondPageWidget extends StatelessWidget {
                 child: const Text("Terms of use ",
                     style: TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
-                  // var url = Uri.parse(termsPage);
                   _launchInBrowser(termsPage);
                 },
               ),
@@ -282,7 +271,6 @@ class SecondPageWidget extends StatelessWidget {
                 child: const Text("Privacy Policy",
                     style: TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
-                  // var url = Uri.parse(privacyPage);
                   _launchInBrowser(privacyPage);
                 },
               ),
@@ -306,24 +294,23 @@ class SecondPageWidget extends StatelessWidget {
           ),
           ButtonTheme(
             child: SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          Theme.of(context).colorScheme.secondary),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)))),
-                  onPressed: isPasswordValid && arePasswordsEqual && isAgreed
-                      ? () {
-                          onNext();
-                          // log(controller1.text);
-                          // log(controller2.text);
-                        }
-                      : null,
-                  child: const Text("Next"),
-                )),
+              height: 50,
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).colorScheme.secondary),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0)))),
+                onPressed: isPasswordValid && arePasswordsEqual && isAgreed
+                    ? () {
+                        onNext();
+                      }
+                    : null,
+                child: const Text("Next"),
+              ),
+            ),
           ),
           const SizedBox(
             height: 20,
@@ -407,38 +394,36 @@ class ThirdPageWidget extends StatelessWidget {
               false, null, getDistricts, clickOnSuggestion),
           schoolSearchFieldWidget("School Name", schoolNameController, false,
               null, getSchools, clickOnSchool),
-          // textFieldWidget(
-          //     "School District", schoolDistrictController, false, null, true),
-          // textFieldWidget("School Name", schoolNameController, false, null, true),
           const SizedBox(
             height: 60,
           ),
           ButtonTheme(
             child: SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          Theme.of(context).colorScheme.secondary),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)))),
-                  onPressed: isRegisterButtonEnabled
-                      ? () {
-                          onNext();
-                        }
-                      : null,
-                  child: isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        )
-                      : const Text("Next"),
-                )),
+              height: 50,
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).colorScheme.secondary),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0)))),
+                onPressed: isRegisterButtonEnabled
+                    ? () {
+                        onNext();
+                      }
+                    : null,
+                child: isLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Text("Next"),
+              ),
+            ),
           ),
         ],
       ),
@@ -459,17 +444,6 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
   late var schoolId = '';
   late var isRegisterButtonEnabled = false;
   bool isLoading = false;
-  // late var userId;
-
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   // final UserId = (ModalRoute.of(context)?.settings.arguments ??
-  //   //     <String, dynamic>{}) as Map;
-  //   // setState(() {
-  //   //   userId = UserId["id"];
-  //   // });
-  //   // put your logic from initState here
-  // }
 
   @override
   void initState() {
@@ -538,7 +512,6 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
 
   void createUser() async {
     try {
-      // log("Hello");
       setState(() {
         isLoading = true;
       });
@@ -553,16 +526,13 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
       } else {
         payload["schoolId"] = schoolId;
       }
-      // log(payload);
+
       final response = await put(
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/auth/update-school-details'),
           body: jsonEncode(payload));
-      // log(response.body);
+
       if (response.statusCode == 200) Navigator.pushNamed(context, '/app');
-      // Navigator.pushNamed(context, '/app',
-      //     arguments: {"UserId": userId, "message": "Google Sign in"});
-      // log(jsonDecode(response.body));
     } catch (error) {
       log(error.toString());
     } finally {
@@ -576,44 +546,41 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 30),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Align(
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "School Details",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                )),
+            const SizedBox(
+              height: 20,
+            ),
+            const Align(
               alignment: Alignment.center,
-              child: Text(
-                "School Details",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-              )),
-          const SizedBox(
-            height: 20,
-          ),
-          const Align(
-            alignment: Alignment.center,
-            child: Text("This is used to build your profile on swiirl",
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromRGBO(132, 143, 172, 1))),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          searchTextFieldWidget("School District", schoolDistrictController,
-              false, null, getDistricts, clickOnSuggestion),
-          schoolSearchFieldWidget("School Name", schoolNameController, false,
-              null, getSchools, clickOnSchool),
-          // textFieldWidget(
-          //     "School District", schoolDistrictController, false, null, true),
-          // textFieldWidget("School Name", schoolNameController, false, null, true),
-          const SizedBox(
-            height: 60,
-          ),
-          ButtonTheme(
-            child: SizedBox(
+              child: Text("This is used to build your profile on swiirl",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromRGBO(132, 143, 172, 1))),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            searchTextFieldWidget("School District", schoolDistrictController,
+                false, null, getDistricts, clickOnSuggestion),
+            schoolSearchFieldWidget("School Name", schoolNameController, false,
+                null, getSchools, clickOnSchool),
+            const SizedBox(
+              height: 60,
+            ),
+            ButtonTheme(
+              child: SizedBox(
                 height: 50,
                 width: double.infinity,
                 child: ElevatedButton(
@@ -637,10 +604,12 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
                           ),
                         )
                       : const Text("Next"),
-                )),
-          ),
-        ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

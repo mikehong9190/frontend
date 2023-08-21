@@ -202,14 +202,6 @@ class RegisteredUserData {
       };
 }
 
-// class UserId {
-//   String userId;
-
-//   UserId ({required this.userId});
-
-//   factory UserID.fromJson
-// }
-
 class UserIdData {
   String userId;
 

@@ -4,21 +4,16 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-// import './home.dart';
 import '../store.dart';
 import '../model/responses.dart';
 import '../constants.dart';
 import '../components/collectibles.dart';
 import '../components/account_details.dart';
-// import 'package:cached_network_image/cached_network_image.dart';
 
 class AccountWidget extends StatefulWidget {
   const AccountWidget({
@@ -43,19 +38,13 @@ class _AccountWidgetState extends State<AccountWidget> {
   @override
   void initState() {
     super.initState();
-    // context.watch<User>().userId;
-    // log ('By Counter ::::: ${context.watch<User>().userId}');
-    // getUserDetails(widget.UserId);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     String userId = context.watch<User>().userId;
-    log("From Inside $userId");
     if (userId.isNotEmpty) getUserDetails(context.watch<User>().userId);
-    // }
-    // put your logic from initState here
   }
 
   void getUserDetails(id) async {
@@ -100,8 +89,6 @@ class _AccountWidgetState extends State<AccountWidget> {
 
   @override
   Widget build(context) {
-    // String profilePicture = context.read<User>().profilePicture;
-    // log( 'IMAGE $profilePicture');
     return isLoading
         ? Align(
             alignment: Alignment.center,

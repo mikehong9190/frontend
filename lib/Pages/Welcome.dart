@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:developer';
+
 class WelcomeWidget extends StatelessWidget {
   const WelcomeWidget({super.key});
 
@@ -12,10 +13,12 @@ class WelcomeWidget extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-                child: Opacity(
-                    opacity: 1,
-                    child: Image.asset("assets/images/cover.png",
-                        fit: BoxFit.cover))),
+              child: Opacity(
+                opacity: 1,
+                child:
+                    Image.asset("assets/images/cover.png", fit: BoxFit.cover),
+              ),
+            ),
             Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -30,15 +33,16 @@ class WelcomeWidget extends StatelessWidget {
                       height: 120,
                       width: 120,
                       child: IconButton(
-                          onPressed: () {
-                            log("Working");
-                            Navigator.pushNamed(context, "/getStarted");
-                          },
-                          icon: SizedBox(
-                            height: 100,
-                            width: 100,
-                            child: SvgPicture.asset("assets/svg/Next.svg"),
-                          )),
+                        onPressed: () {
+                          log("Working");
+                          Navigator.pushNamed(context, "/getStarted");
+                        },
+                        icon: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: SvgPicture.asset("assets/svg/Next.svg"),
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 30,

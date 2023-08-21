@@ -3,16 +3,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'dart:developer';
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:frontend/Pages/RegistrationPages.dart';
-// import 'package:frontend/Pages/login.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:im_stepper/main.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
-
-// import '../model/responses.dart';
 import 'package:http/http.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/components/textField.dart';
 import 'package:provider/provider.dart';
 
@@ -56,7 +47,6 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
       );
     });
     newPasswordController.addListener(() {
-      // log("newPasswordController.text");
       setState(
         () {
           if (newPasswordController.text.length >= 8 &&
@@ -103,7 +93,6 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
       "emailId": context.read<User>().emailId,
       "userId": context.read<User>().userId
     };
-// <<<<<<< login-integration
     setState(() {
       isLoading = true;
     });
@@ -114,25 +103,13 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
           body: jsonEncode(payload));
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/app");
-        // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reseted"});
       }
-      // log(response.statusCode);
       log(response.body);
     } catch (error) {
       log(error.toString());
     } finally {
       setState(() {
         isLoading = false;
-// =======
-//     final response = await post(
-//         Uri.parse(
-//             'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/user/reset-password'),
-//         body: jsonEncode(payload));
-//     if (response.statusCode == 200) {
-//       Navigator.pushNamed(context, "/app", arguments: {
-//         "UserId": userId,
-//         "message": "Password updated successfully"
-// >>>>>>> dev
       });
     }
   }
@@ -148,7 +125,6 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
         "otp": otp
       };
 
-      // log(payload);
       final response = await post(
           Uri.parse(
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/auth/verify-otp'),
@@ -183,74 +159,74 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
   @override
   build(context) {
     return Scaffold(
-        body: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 30),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Align(
-            alignment: Alignment.center,
-            child: Text(
-              "Reset Password",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Reset Password",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Align(
-            alignment: Alignment.center,
-            child: Text("An OTP has been sent to your email.",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          textFieldWidget("OTP", otpController, false, null, true),
-          TextButton(
-            onPressed: isVerified
-                ? null
-                : () {
-                    verifyOtpForPasswordReset(otpController.text);
-                  },
-            child: isVerifyingOtp
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      color: Colors.black,
+            const SizedBox(
+              height: 20,
+            ),
+            const Align(
+              alignment: Alignment.center,
+              child: Text("An OTP has been sent to your email.",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            textFieldWidget("OTP", otpController, false, null, true),
+            TextButton(
+              onPressed: isVerified
+                  ? null
+                  : () {
+                      verifyOtpForPasswordReset(otpController.text);
+                    },
+              child: isVerifyingOtp
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
+                    )
+                  : Text(
+                      "Verify OTP",
+                      style: TextStyle(
+                          color: !isVerified
+                              ? Theme.of(context).colorScheme.secondary
+                              : Colors.blueGrey),
                     ),
-                  )
-                : Text(
-                    "Verify OTP",
-                    style: TextStyle(
-                        color: !isVerified
-                            ? Theme.of(context).colorScheme.secondary
-                            : Colors.blueGrey),
-                  ),
-          ),
-          if (isVerified)
-            passwordFieldWidget(
-                "New Password",
-                newPasswordController,
-                isNewPasswordHidden,
-                isNewPasswordValid,
-                true,
-                checkPasswordVisibility),
-          if (isVerified)
-            passwordFieldWidget(
-                "Confirm New Password",
-                confirmNewPasswordController,
-                isConfirmNewPasswordHidden,
-                arePasswordSame,
-                true,
-                checkConfirmPasswordVisibility),
-          const SizedBox(
-            height: 60,
-          ),
-          ButtonTheme(
-            child: SizedBox(
+            ),
+            if (isVerified)
+              passwordFieldWidget(
+                  "New Password",
+                  newPasswordController,
+                  isNewPasswordHidden,
+                  isNewPasswordValid,
+                  true,
+                  checkPasswordVisibility),
+            if (isVerified)
+              passwordFieldWidget(
+                  "Confirm New Password",
+                  confirmNewPasswordController,
+                  isConfirmNewPasswordHidden,
+                  arePasswordSame,
+                  true,
+                  checkConfirmPasswordVisibility),
+            const SizedBox(
+              height: 60,
+            ),
+            ButtonTheme(
+              child: SizedBox(
                 height: 50,
                 width: double.infinity,
                 child: ElevatedButton(
@@ -274,10 +250,12 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                           ),
                         )
                       : const Text("Next"),
-                )),
-          ),
-        ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:textfield_search/textfield_search.dart';
 import '../model/responses.dart';
 
 Widget textFieldWidget(
@@ -12,8 +10,6 @@ Widget textFieldWidget(
   isValid,
   isEnabled,
 ) {
-  // final String label;
-  // textFieldWidget ({super.key,required this.label,});
   return Column(
     children: [
       SizedBox(
@@ -68,8 +64,6 @@ Widget textFieldWidget(
 
 Widget searchTextFieldWidget(
     label, controller, isPassword, isValid, getDistricts, clickOnSuggestion) {
-  // final String label;
-  // textFieldWidget ({super.key,required this.label,});
   return Column(
     children: [
       SizedBox(
@@ -120,8 +114,6 @@ Widget searchTextFieldWidget(
 
 Widget schoolSearchFieldWidget(
     label, controller, isPassword, isValid, getSchools, clickOnSchool) {
-  // final String label;
-  // textFieldWidget ({super.key,required this.label,});
   return Column(
     children: [
       SizedBox(
@@ -173,50 +165,49 @@ Widget schoolSearchFieldWidget(
 
 Widget passwordFieldWidget(
     label, controller, isPassword, isValid, isEnabled, changeVisibility) {
-  // final String label;
-  // textFieldWidget ({super.key,required this.label,});
   return Column(
     children: [
       SizedBox(
         height: 30,
         width: double.infinity,
         child: Align(
-            alignment: AlignmentDirectional.bottomStart,
-            child: Text(label,
-                textAlign: TextAlign.left,
-                style: const TextStyle(fontWeight: FontWeight.w500))),
+          alignment: AlignmentDirectional.bottomStart,
+          child: Text(label,
+              textAlign: TextAlign.left,
+              style: const TextStyle(fontWeight: FontWeight.w500)),
+        ),
       ),
       const SizedBox(
         height: 10,
       ),
       SizedBox(
-          height: 50,
-          width: double.infinity,
-          child: TextField(
-            enabled: isEnabled,
-            controller: controller,
-            obscureText: isPassword,
-            decoration: InputDecoration(
-              suffixIcon: Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween, // added line
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    isValid
-                        ? SvgPicture.asset("assets/svg/check.svg")
-                        : Container(),
-                    IconButton(
-                        onPressed: () {
-                          changeVisibility();
-                        },
-                        icon: SvgPicture.asset("assets/svg/Eye.svg"))
-                  ]),
-              border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.zero,
-                  borderSide: BorderSide(color: Colors.black)),
-              hintText: !isPassword ? label : "**********",
-            ),
-          )),
+        height: 50,
+        width: double.infinity,
+        child: TextField(
+          enabled: isEnabled,
+          controller: controller,
+          obscureText: isPassword,
+          decoration: InputDecoration(
+            suffixIcon: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, // added line
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  isValid
+                      ? SvgPicture.asset("assets/svg/check.svg")
+                      : Container(),
+                  IconButton(
+                      onPressed: () {
+                        changeVisibility();
+                      },
+                      icon: SvgPicture.asset("assets/svg/Eye.svg"))
+                ]),
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.zero,
+                borderSide: BorderSide(color: Colors.black)),
+            hintText: !isPassword ? label : "**********",
+          ),
+        ),
+      ),
     ],
   );
 }

@@ -57,9 +57,11 @@ class AccountDetailWidget extends StatelessWidget {
               ),
               Column(
                 children: [
-                  Text(collectiblesLength.toString(),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 18)),
+                  Text(
+                    collectiblesLength.toString(),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w700, fontSize: 18),
+                  ),
                   const Text(
                     "Collectibles",
                     style: TextStyle(
@@ -83,13 +85,16 @@ class AccountDetailWidget extends StatelessWidget {
               ),
               Column(
                 children: [
-                  Text(goalsMets.toString(),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 18)),
-                  const Text('Goal Met',
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Color.fromRGBO(183, 183, 183, 1)))
+                  Text(
+                    goalsMets.toString(),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w700, fontSize: 18),
+                  ),
+                  const Text(
+                    'Goal Met',
+                    style: TextStyle(
+                        fontSize: 12, color: Color.fromRGBO(183, 183, 183, 1)),
+                  )
                 ],
               ),
             ],

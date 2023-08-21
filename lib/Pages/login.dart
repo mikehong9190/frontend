@@ -2,14 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'dart:developer';
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
 import '../components/button.dart';
 import '../components/textField.dart';
-// import '../components/Button.dart';
 import '../store.dart';
 import '../constants.dart';
 
@@ -55,7 +52,6 @@ class _LoginWidgetState extends State<LoginWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // put your logic from initState here
   }
 
   bool buttonDisability() {
@@ -76,7 +72,6 @@ class _LoginWidgetState extends State<LoginWidget> {
           }));
       if (response.statusCode == 200) {
         final jsonData = LoginResponse.fromJson(jsonDecode(response.body));
-        // print (jsonData.data.token);
         context.read<User>().setUserDetails(
             userId: jsonData.data.id,
             token: jsonData.data.token,
@@ -84,10 +79,6 @@ class _LoginWidgetState extends State<LoginWidget> {
             message: jsonData.message);
         Navigator.pushNamedAndRemoveUntil(
             context, '/app', (Route<dynamic> route) => false);
-        // Navigator.pushNamed(context, "/app", arguments: {
-        //   "UserId": jsonData.data.id,
-        //   "message": jsonData.message
-        // });
       } else {
         setState(() {
           message = 'Either Email or Password is incorrect';
@@ -132,70 +123,75 @@ class _LoginWidgetState extends State<LoginWidget> {
   @override
   Widget build(context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   // backgroundColor: Colors.white,
-        //   elevation: 0,
-        // ),
-        body: Container(
-      padding: const EdgeInsets.only(top: 100),
-      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-      child: Column(
-        children: [
-          Column(
-            children: const [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Text("Login to Swiirl",
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-            ],
-          ),
-          textFieldWidget("Your Email", emailController, false, null, true),
-          passwordFieldWidget("Password", passwordController, isPasswordHidden,
-              isPasswordValid, true, changePasswordVisibility),
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: SizedBox(
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, "/forget-password");
-                      },
-                      child: Text(
-                        'Forgot Password ?',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary),
-                      ))),
+      body: Container(
+        padding: const EdgeInsets.only(top: 100),
+        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        child: Column(
+          children: [
+            Column(
+              children: const [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text("Login to Swiirl",
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+              ],
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          SizedBox(
+            textFieldWidget("Your Email", emailController, false, null, true),
+            passwordFieldWidget(
+                "Password",
+                passwordController,
+                isPasswordHidden,
+                isPasswordValid,
+                true,
+                changePasswordVisibility),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: SizedBox(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/forget-password");
+                    },
+                    child: Text(
+                      'Forgot Password ?',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
               height: 20,
               child: Text(
                 message,
                 style: const TextStyle(color: Colors.red),
-              )),
-          const SizedBox(
-            height: 10,
-          ),
-          ButtonTheme(
-            child: SizedBox(
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            ButtonTheme(
+              child: SizedBox(
                 height: 50,
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          Theme.of(context).colorScheme.secondary),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)))),
+                    backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).colorScheme.secondary),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0))),
+                  ),
                   onPressed: buttonDisability()
                       ? () {
                           login();
@@ -210,45 +206,49 @@ class _LoginWidgetState extends State<LoginWidget> {
                           ),
                         )
                       : const Text("Next"),
-                )),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Align(
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Align(
               alignment: Alignment.topCenter,
               child: SizedBox(
                 height: 30,
                 child: Text('OR'),
-              )),
-          const OAuthButtonWidget(
-              content: "Continue with Google", iconUrl: "Google"),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Don't have an account ?"),
-              TextButton(
-                onPressed: goToRegistration,
-                child: const Text(
-                  'Signup',
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.w700),
-                ),
               ),
-            ],
-          ),
-          const Expanded(
-            child: SizedBox(),
-          ),
-          Padding(
+            ),
+            const OAuthButtonWidget(
+                content: "Continue with Google", iconUrl: "Google"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Don't have an account ?"),
+                TextButton(
+                  onPressed: goToRegistration,
+                  child: const Text(
+                    'Signup',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ],
+            ),
+            const Expanded(
+              child: SizedBox(),
+            ),
+            Padding(
               padding: const EdgeInsets.only(left: 0, bottom: 20),
               child: Align(
                 alignment: Alignment.bottomLeft,
                 child:
                     Image.asset("assets/images/swiirl-S-Mark-Aqua-Dot 4.png"),
-              )),
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
