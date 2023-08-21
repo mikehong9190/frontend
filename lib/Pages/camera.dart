@@ -4,11 +4,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:camera/camera.dart';
-import 'package:frontend/Pages/preview_image.dart';
+import 'package:frontend/pages/preview_image.dart';
 import 'package:provider/provider.dart';
 
 import '../store.dart';
-import 'package:frontend/Pages/gallery.dart';
+import 'package:frontend/pages/gallery.dart';
 
 class ICamera extends StatefulWidget {
   final String initiativeTypeId;

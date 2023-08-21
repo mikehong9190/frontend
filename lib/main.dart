@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Pages/app.dart';
-import 'package:frontend/Pages/privacy_policy.dart';
-import 'Pages/forget_password.dart';
-import 'package:frontend/Pages/login.dart';
+import 'package:frontend/pages/app.dart';
+import 'package:frontend/pages/privacy_policy.dart';
+import 'pages/forget_password.dart';
+import 'package:frontend/pages/login.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'store.dart';
-import 'Pages/welcome.dart';
-import 'Pages/get_started.dart';
-import 'Pages/registration.dart';
-import 'Pages/update_profile.dart';
-import 'Pages/registration_pages.dart';
-import 'Pages/reset_password.dart';
-import 'Pages/terms_and_condition.dart';
+import 'pages/welcome.dart';
+import 'pages/get_started.dart';
+import 'pages/registration.dart';
+import 'pages/update_profile.dart';
+import 'pages/registration_pages.dart';
+import 'pages/reset_password.dart';
+import 'pages/terms_and_condition.dart';
 
 class CustomNavigatorObserver extends NavigatorObserver {
   @override

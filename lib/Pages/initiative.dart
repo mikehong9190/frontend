@@ -4,14 +4,14 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:frontend/Pages/setup_initiative.dart';
+import 'package:frontend/pages/setup_initiative.dart';
 import 'package:provider/provider.dart';
 
 import '../store.dart';
 import '../constants.dart';
 import 'package:http/http.dart';
 import '../components/initiatives_for_initiatives.dart';
-import 'package:frontend/Pages/initiative_details.dart';
+import 'package:frontend/pages/initiative_details.dart';
 
 class Welcome {
   String message;

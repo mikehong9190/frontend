@@ -8,7 +8,7 @@ import '../model/responses.dart';
 import 'dart:developer';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:frontend/Pages/registration_pages.dart';
+import 'package:frontend/pages/registration_pages.dart';
 import 'package:http/http.dart';
 import '../components/radio_button.dart';
 

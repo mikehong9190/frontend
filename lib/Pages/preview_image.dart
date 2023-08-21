@@ -3,7 +3,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:frontend/Pages/gallery.dart';
+import 'package:frontend/pages/gallery.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
 

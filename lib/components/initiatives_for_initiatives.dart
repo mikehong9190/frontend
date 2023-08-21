@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'collectibles.dart';
-import 'package:frontend/Pages/initiative_details.dart';
+import 'package:frontend/pages/initiative_details.dart';
 
 class InitiativesForInitiativeWidget extends StatelessWidget {
   final String id;

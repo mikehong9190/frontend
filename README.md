@@ -1,43 +1,56 @@
 # Frontend
 
-# How to Use 
+# How to Use
 
-## Step 1 : 
+## Step 1 :
+
 Download or clone this repo by using the link below:
+
 ```
 https://github.com/mikehong9190/frontend.git
 ```
 
-## Step 2 : 
+## Step 2 :
+
 Go to project root and execute the following command in console to get the required dependencies:
+
 ```
-flutter pub get 
+flutter pub get
 ```
+
 ## Step 3 :
+
 Execute the following command in console to start the app:
+
 ```
-flutter run 
+flutter run
 ```
+
 ## Step 4 :
+
 To build an apk files, execute the following command:
+
 ```
 flutter build apk
 ```
+
 The build apk file can be found in andriod/build/app/outputs/flutter-apk/app-release.apk
 
 # Features
+
 - Login
 - Google Authentication
-- Reset Password 
+- Reset Password
 - Update Profile
-- Home 
-- Routing 
+- Home
+- Routing
 - Provider(State Management)
-- Database 
+- Database
 
-# Libraries & Tools Used 
+# Libraries & Tools Used
+
 - [http](https://pub.dev/packages/http)
-- [Image Picker](https://pub.dev/packages/image_picker) 
+- [Image Picker](https://pub.dev/packages/image_picker)
 - [shared preference](https://pub.dev/packages/shared_preferences)
 - [provider](https://pub.dev/packages/provider)
 - [Permisson Handler](https://pub.dev/packages/permission_handler)
@@ -46,25 +59,24 @@ The build apk file can be found in andriod/build/app/outputs/flutter-apk/app-rel
 - [Flutter TypeAhead](https://pub.dev/packages/flutter_typeahead)
 - [Google Font](https://pub.dev/packages/google_fonts)
 
-# Application Structure 
+# Application Structure
+
 ## The application follows the project as follows :
-- lib/ : Contains the Dart Code for the Application. 
-- lib/Pages/ : Contains the pages.
+
+- lib/ : Contains the Dart Code for the Application.
+- lib/pages/ : Contains the pages.
 - assets/images/ : Contains static image assets.
 - assets/svg/ : Contains static svg assets.
 
-# Routes 
+# Routes
+
 This file contains all the routes for your application
+
 - '/' - Welcome Page
 - '/getStarted' - Getting Started Page
 - '/registration' - Registration Page
 - '/app' - main app
 - '/update-profile' - update Profile Page
 - '/reset-password' - reset password Page
-- '/forget-password' - forget password Page 
+- '/forget-password' - forget password Page
 - '/login' - login Page
-
-
-
-
-

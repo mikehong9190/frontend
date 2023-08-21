@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
-import 'package:frontend/Pages/initiative_details.dart';
+import 'package:frontend/pages/initiative_details.dart';
 import 'package:frontend/helpers/ask_for_settings.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:frontend/Pages/camera.dart';
+import 'package:frontend/pages/camera.dart';
 import '../store.dart';
 
 class Gallery extends StatefulWidget {

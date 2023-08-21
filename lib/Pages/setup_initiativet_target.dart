@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:frontend/Pages/setup_initiative_grade.dart';
+import 'package:frontend/pages/setup_initiative_grade.dart';
 
 class SetupInitiativeTarget extends StatefulWidget {
   final String id;
@@ -135,7 +135,7 @@ class _InitiativeTargetState extends State<SetupInitiativeTarget> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                           Theme.of(context).colorScheme.secondary),
+                          Theme.of(context).colorScheme.secondary),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)))),

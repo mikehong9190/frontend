@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:frontend/Pages/gallery.dart';
+import 'package:frontend/pages/gallery.dart';
 import 'package:provider/provider.dart';
 
 import '../store.dart';
