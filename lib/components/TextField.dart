@@ -161,7 +161,7 @@ Widget schoolSearchFieldWidget(
               hideOnEmpty: true,
               noItemsFoundBuilder: (context) => const SizedBox(
                     height: 100,
-                    child: Center(child: Text("add new School")),
+                    child: Center(child: Text("Add New School")),
                   ),
               onSuggestionSelected: (school) {
                 final schoolData = school!;
