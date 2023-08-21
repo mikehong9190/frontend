@@ -119,7 +119,6 @@ class _GalleryState extends State<Gallery> {
   //upload images to s3 bucket using pre-signed urls
   void uploadImages(context, List<dynamic> urls, List<XFile> images) async {
     try {
-      // print("Upload");
       for (var i = 0; i < urls.length; i++) {
         String contentType = getContentType(images[i]);
         Uri uri = Uri.parse(urls[i]);
@@ -128,14 +127,10 @@ class _GalleryState extends State<Gallery> {
           body: await images[i].readAsBytes(),
           headers: {"Content-Type": contentType},
         );
-        // print(response.statusCode);
         if (response.statusCode != 200) {
-          // print(response.reasonPhrase.toString());
           throw Exception('Failed to upload image at index $i');
         }
       }
-      log("Step 2 --------- done");
-      log("Images uploaded successfully");
       createInitiative(context);
     } catch (error) {
       log('Error while uploading images: $error');
@@ -170,7 +165,6 @@ class _GalleryState extends State<Gallery> {
         final res = jsonDecode(response.body);
         initiativeId = updateInitiativeId ?? res['id'];
         imageKeys = res['keys'];
-        log("Step 1---------done");
         uploadImages(context, res['urls'], images);
       } else {
         log(response.toString());
@@ -216,11 +210,9 @@ class _GalleryState extends State<Gallery> {
             headers: {'Authorization': 'Bearer $token'});
       }
       if (response.statusCode == 200) {
-        log("Step 3---------done");
         _showSuccessDialog(context);
         imageModel.clearImages();
         imageModel.clearFinalImages();
-        log('Initiative uploaded successfully');
         setState(() {
           isLoading = false;
         });
@@ -290,7 +282,6 @@ class _GalleryState extends State<Gallery> {
           DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
           AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
           String version = androidInfo.version.release;
-          // print("hello");
           if (version == '13') {
             Map<Permission, PermissionStatus> statuses =
                 await [Permission.photos].request();

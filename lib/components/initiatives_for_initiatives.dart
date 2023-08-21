@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'collectibles.dart';
-// import 'package:frontend/Pages/gallery.dart';
 import 'package:frontend/Pages/initiative_details.dart';
 
 class InitiativesForInitiativeWidget extends StatelessWidget {
@@ -30,20 +29,6 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
           collectibleImage: images.isNotEmpty ? images[0] : '',
           dimension: 120,
         ),
-        // CachedNetworkImage(
-        //     width: 140,
-        //     height: 140,
-        //     fit: BoxFit.cover,
-        //     imageUrl: images[0],
-        //     progressIndicatorBuilder: (context, url, downloadProgress) =>
-        //         SizedBox(
-        //           height: 100,
-        //           width: 100,
-        //           child: CircularProgressIndicator(
-        //               valueColor: const AlwaysStoppedAnimation<Color>(
-        //                   Theme.of(context).colorScheme.secondary),
-        //               value: downloadProgress.progress),
-        //         )),
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Column(
@@ -60,36 +45,10 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(grade),
               ),
-              // Row(
-              //   children: [
-              //     const Text("Amount Raised"),
-              //     Padding(
-              //         padding: const EdgeInsets.only(left: 50),
-              //         child: Text(
-              //           target.toString(),
-              //           style: const TextStyle(fontWeight: FontWeight.w700),
-              //         )),
-              //   ],
-              // ),
               ButtonTheme(
                 child: SizedBox(
                   width: 200,
                   child: ElevatedButton(
-                      // onPressed: () {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (_) => Gallery(
-                      //           isUpdate: true,
-                      //           updateInitiativeId: id,
-                      //           initiativeTypeId: initiativeTypeId,
-                      //           initiativeType: name,
-                      //           target: target,
-                      //           grade: grade,
-                      //           noOfStudents: numberOfStudents),
-                      //     ),
-                      //   );
-                      // },
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -99,13 +58,13 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                         );
                       },
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.black),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0)))),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0))),
+                      ),
                       child: const Text("View")),
                 ),
               ),

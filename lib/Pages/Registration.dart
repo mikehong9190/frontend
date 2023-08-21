@@ -11,11 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:frontend/Pages/registration_pages.dart';
 import 'package:http/http.dart';
 import '../components/radio_button.dart';
-// import 'package:frontend/Pages/Initiative.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:frontend/Pages/login.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:im_stepper/main.dart';
 
 import '../store.dart';
 
@@ -95,13 +90,10 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     });
   }
 
-// <<<<<<< ui-changes
-// =======
   void goToLogin() {
     Navigator.pushNamed(context, "/login");
   }
 
-// >>>>>>> dev
   void checkConfirmPasswordVisibility() async {
     setState(() {
       isConfirmPasswordHidden = !isConfirmPasswordHidden;
@@ -219,14 +211,12 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         message = 'Password not matching';
       });
     }
-    // Navigator.popAndPushNamed(context, "/registration", arguments: "forward");
     setState(() {
       currentStep += 1;
     });
   }
 
   googleLogin() async {
-    log("googleLogin method Called");
     final googleSignIn = GoogleSignIn(
       scopes: [
         'email',
@@ -237,10 +227,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     try {
       final result = await googleSignIn.signIn();
       final ggAuth = await result?.authentication;
-      log('ID TOKEN');
       var token = ggAuth?.idToken;
-      // log(ggAuth?.idToken);
-      // log(ggAuth?.accessToken);
+
       while (token!.isNotEmpty) {
         int initLength = (token.length >= 500 ? 500 : token.length);
         log(token.substring(0, initLength));
@@ -254,7 +242,6 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
   void registerUser() async {
     try {
-      log("Hello");
       setState(() {
         isLoading = true;
       });
@@ -274,7 +261,6 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       }
       final response = await post(Uri.https(apiHost, '/v1/auth/signup'),
           body: jsonEncode(payload));
-      // print(response.statusCode);
       if (response.statusCode == 200) {
         final jsonData =
             RegisteredUserResponse.fromJson(jsonDecode(response.body));
@@ -285,15 +271,9 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
             message: jsonData.message);
         Navigator.pushNamedAndRemoveUntil(
             context, '/app', (Route<dynamic> route) => false);
-        // Navigator.pushNamed(context, '/app', arguments: {
-        //   "UserId": jsonData.data.id,
-        //   "message": jsonData.message
-        // });
       }
-      log(jsonDecode(response.body));
     } catch (error, stackTrace) {
       log(stackTrace.toString());
-
       log(error.toString());
     } finally {
       setState(() {
@@ -329,15 +309,6 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                 isOtpSend: isOtpSend,
                 goToLogin: goToLogin,
                 termsPopup: openTermsPopup),
-            // FirstPageWidget(
-            //     emailController,
-            //     checkEmailAndChangeStep,
-            //     message,
-            //     statusCode,
-            //     otpController,
-            //     isLoading,
-            //     isOtpSend,
-            //     goToLogin),
             isActive: currentStep >= 0),
         Step(
             title: const Text(''),
@@ -371,22 +342,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                 clickOnSuggestion: clickOnSuggestion,
                 clickOnSchool: clickOnSchool,
                 isRegisterButtonEnabled: isRegisterButtonEnabled),
-            // thirdPageWidget(
-            //     firstNameController,
-            //     lastNameController,
-            //     schoolDistrictController,
-            //     schoolNameController,
-            //     registerUser,
-            //     isLoading,
-            //     getDistrict,
-            //     getSchools,
-            //     clickOnSuggestion,
-            //     clickOnSchool,
-            //     isRegisterButtonEnabled),
             isActive: currentStep >= 2),
-        // Step(
-        //     title: const Text(''),
-        //     content: SetupInitiativeWidget(_initiativeTypeEnum, changeState)),
       ];
 
   @override
@@ -485,48 +441,49 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              content: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text("Privacy Policy",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 20)),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                        "Swiirl built the Swiirl app as a Free app. This SERVICE is provided by Swiirl at no cost and is intended for use as is."),
+            content: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("Privacy Policy",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20)),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                        "This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service."),
+                  SizedBox(
+                    height: 30,
                   ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                        "If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy."),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                          "Swiirl built the Swiirl app as a Free app. This SERVICE is provided by Swiirl at no cost and is intended for use as is."),
+                    ),
                   ),
-                ),
-              ],
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                          "This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service."),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                          "If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy."),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ));
+          );
         });
   }
 
@@ -601,29 +558,24 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
   @override
   Widget build(context) {
-    // var args = ModalRoute.of(context)!.settings.arguments;
-    // print(args);
-    // if (args == true) {
-    //   args = false;
-    //   setState(() {
-    //     currentStep = 1;
-    //   });
-    // }
     return Scaffold(
-        body: Theme(
-            data: ThemeData(
-                primarySwatch: Colors.blue,
-                colorScheme: const ColorScheme.light(primary: Colors.black)),
-            child: Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Stepper(
-                  controlsBuilder: (context, details) {
-                    return Container();
-                  },
-                  type: StepperType.horizontal,
-                  elevation: 0,
-                  steps: getSteps(),
-                  currentStep: currentStep,
-                ))));
+      body: Theme(
+        data: ThemeData(
+            primarySwatch: Colors.blue,
+            colorScheme: const ColorScheme.light(primary: Colors.black)),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Stepper(
+            controlsBuilder: (context, details) {
+              return Container();
+            },
+            type: StepperType.horizontal,
+            elevation: 0,
+            steps: getSteps(),
+            currentStep: currentStep,
+          ),
+        ),
+      ),
+    );
   }
 }

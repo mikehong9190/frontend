@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/Pages/gallery.dart';
-// import 'package:frontend/Pages/initiative.dart';
 import 'package:provider/provider.dart';
 
 import '../store.dart';
@@ -315,15 +314,16 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
                                   );
                                 },
                                 style: ButtonStyle(
-                                    padding: const MaterialStatePropertyAll(
-                                        EdgeInsets.only(top: 15, bottom: 15)),
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.black),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0)))),
+                                  padding: const MaterialStatePropertyAll(
+                                      EdgeInsets.only(top: 15, bottom: 15)),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.black),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0))),
+                                ),
                                 child: const Text("Add more art")),
                           ),
                         ),

@@ -1,13 +1,3 @@
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:frontend/Pages/RegistrationPages.dart';
-// import 'package:frontend/Pages/login.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:im_stepper/main.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
-// import '../model/responses.dart';
-// import '../store.dart';
-// import 'package:provider/provider.dart';
-
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
@@ -29,8 +19,6 @@ class ForgetPasswordWidget extends StatefulWidget {
 class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
   late var isVerified = false;
   late var isLoading = false;
-  // late var emailId = '';
-  // late var userId = '';
   late String message = '';
   late int statusCode = 0;
   late var sendingOtp = false;
@@ -142,7 +130,6 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       log(response.body);
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, "/login");
-        // Navigator.pushNamed(context, "/app", arguments: {"UserId": userId,"message" : "Password Reset"});
       } else {
         setState(() {
           statusCode = response.statusCode;
@@ -212,64 +199,34 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
   build(context) {
     return SafeArea(
       child: Scaffold(
-          body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Reset Password",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+        body: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Reset Password",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            // const Align(
-            //   alignment: Alignment.center,
-            //   child: Text("This is used to build your profile on swiirl",
-            //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-            // ),
-            const SizedBox(
-              height: 10,
-            ),
-            textFieldWidget(
-                "Your Email", emailController, false, null, !isOtpSend),
-            TextButton(
-              onPressed: isOtpSend
-                  ? null
-                  : () {
-                      sendOTP();
-                    },
-              child: sendingOtp
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.black,
-                      ),
-                    )
-                  : Text(
-                      "Send OTP",
-                      style: TextStyle(
-                          color: !isVerified
-                              ? Theme.of(context).colorScheme.secondary
-                              : Colors.blueGrey),
-                    ),
-            ),
-            if (isOtpSend)
-              textFieldWidget("OTP", otpController, false, null, true),
-            if (isOtpSend)
+              const SizedBox(
+                height: 30,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              textFieldWidget(
+                  "Your Email", emailController, false, null, !isOtpSend),
               TextButton(
-                onPressed: isVerified
+                onPressed: isOtpSend
                     ? null
                     : () {
-                        verifyOtpForPasswordReset(otpController.text);
+                        sendOTP();
                       },
-                child: isVerifyingOtp
+                child: sendingOtp
                     ? const SizedBox(
                         width: 20,
                         height: 20,
@@ -278,42 +235,67 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                         ),
                       )
                     : Text(
-                        "Verify OTP",
+                        "Send OTP",
                         style: TextStyle(
                             color: !isVerified
                                 ? Theme.of(context).colorScheme.secondary
                                 : Colors.blueGrey),
                       ),
               ),
-            if (statusCode != 0)
-              SizedBox(
-                  height: 20,
-                  child: Text(
-                    message,
-                    style: TextStyle(
-                        color: statusCode == 200 ? Colors.green : Colors.red),
-                  )),
-            if (isVerified)
-              passwordFieldWidget(
-                  "New Password",
-                  newPasswordController,
-                  isNewPasswordHidden,
-                  isNewPasswordValid,
-                  true,
-                  checkPasswordVisibility),
-            if (isVerified)
-              passwordFieldWidget(
-                  "Confirm New Password",
-                  confirmNewPasswordController,
-                  isConfirmNewPasswordHidden,
-                  arePasswordSame,
-                  true,
-                  checkConfirmPasswordVisibility),
-            const SizedBox(
-              height: 60,
-            ),
-            ButtonTheme(
-              child: SizedBox(
+              if (isOtpSend)
+                textFieldWidget("OTP", otpController, false, null, true),
+              if (isOtpSend)
+                TextButton(
+                  onPressed: isVerified
+                      ? null
+                      : () {
+                          verifyOtpForPasswordReset(otpController.text);
+                        },
+                  child: isVerifyingOtp
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.black,
+                          ),
+                        )
+                      : Text(
+                          "Verify OTP",
+                          style: TextStyle(
+                              color: !isVerified
+                                  ? Theme.of(context).colorScheme.secondary
+                                  : Colors.blueGrey),
+                        ),
+                ),
+              if (statusCode != 0)
+                SizedBox(
+                    height: 20,
+                    child: Text(
+                      message,
+                      style: TextStyle(
+                          color: statusCode == 200 ? Colors.green : Colors.red),
+                    )),
+              if (isVerified)
+                passwordFieldWidget(
+                    "New Password",
+                    newPasswordController,
+                    isNewPasswordHidden,
+                    isNewPasswordValid,
+                    true,
+                    checkPasswordVisibility),
+              if (isVerified)
+                passwordFieldWidget(
+                    "Confirm New Password",
+                    confirmNewPasswordController,
+                    isConfirmNewPasswordHidden,
+                    arePasswordSame,
+                    true,
+                    checkConfirmPasswordVisibility),
+              const SizedBox(
+                height: 60,
+              ),
+              ButtonTheme(
+                child: SizedBox(
                   height: 50,
                   width: double.infinity,
                   child: ElevatedButton(
@@ -339,11 +321,13 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                             ),
                           )
                         : const Text("Next"),
-                  )),
-            ),
-          ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }

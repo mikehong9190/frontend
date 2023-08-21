@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/Pages/initiative.dart';
 import 'package:flutter/cupertino.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -236,10 +235,6 @@ class _MyStateWidgetState extends State<MyStateFulWidget> {
   }
 }
 
-//HOME WIDGET
-
-//ACCOUNT WIDGET
-
 class InitiativeWidget extends StatefulWidget {
   const InitiativeWidget({super.key});
 
@@ -275,11 +270,12 @@ class QuestionWidget extends StatelessWidget {
       ...answers
           .map(
             (e) => Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10, left: 0),
-                  child: Text(e),
-                )),
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 10, left: 0),
+                child: Text(e),
+              ),
+            ),
           )
           .toList()
     ]);

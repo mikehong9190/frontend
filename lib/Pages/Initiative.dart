@@ -86,19 +86,13 @@ class _InitiativeState extends State<Initiative> {
   @override
   void initState() {
     super.initState();
-    // context.watch<User>().userId;
-    // log ('By Counter ::::: ${context.watch<User>().userId}');
-    // getUserDetails(widget.UserId);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     String userId = context.read<User>().userId;
-    log("From Inside $userId");
     if (userId.isNotEmpty) getInitiatives(userId);
-    // }
-    // put your logic from initState here
   }
 
   void getInitiatives(userId) async {
@@ -134,97 +128,99 @@ class _InitiativeState extends State<Initiative> {
             alignment: Alignment.center,
             child: CircularProgressIndicator(
               color: Theme.of(context).colorScheme.secondary,
-            ))
+            ),
+          )
         : Center(
             child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // const Spacer(),
-                    const Text(
-                      'Update Initiatives',
-                      style: TextStyle(
-                        fontSize: 23,
-                        fontWeight: FontWeight.w700,
-                      ),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Update Initiatives',
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.w700,
                     ),
-                    const SizedBox(height: 20),
-                    initiatives.isEmpty
-                        ? const Expanded(
-                            child: Center(
-                              child: Text(
-                                'No initiatives added yet',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Color.fromARGB(255, 196, 196, 196)),
-                              ),
+                  ),
+                  const SizedBox(height: 20),
+                  initiatives.isEmpty
+                      ? const Expanded(
+                          child: Center(
+                            child: Text(
+                              'No initiatives added yet',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Color.fromARGB(255, 196, 196, 196)),
                             ),
-                          )
-                        : Expanded(
-                            child: ListView.builder(
-                                itemCount: initiatives.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 5, vertical: 10),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (_) =>
-                                                  InitiativesDetailsWidget(
-                                                      id: initiatives[index]
-                                                          .id),
-                                            ),
-                                          );
-                                        },
-                                        child: InitiativesForInitiativeWidget(
-                                            images: initiatives[index].images,
-                                            target: initiatives[index].target,
-                                            id: initiatives[index].id,
-                                            initiativeTypeId: initiatives[index]
-                                                .initiativeTypeId,
-                                            numberOfStudents: initiatives[index]
-                                                .numberOfStudents,
-                                            grade: initiatives[index].grade,
-                                            name: initiatives[index].name),
-                                      ));
-                                }),
                           ),
-                    // Image.asset("assets/images/swiirl-black.png"),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    ButtonTheme(
-                      child: SizedBox(
-                        height: 70,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  const Color.fromRGBO(0, 0, 0, 1)),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                              itemCount: initiatives.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) =>
+                                              InitiativesDetailsWidget(
+                                                  id: initiatives[index].id),
+                                        ),
+                                      );
+                                    },
+                                    child: InitiativesForInitiativeWidget(
+                                        images: initiatives[index].images,
+                                        target: initiatives[index].target,
+                                        id: initiatives[index].id,
+                                        initiativeTypeId:
+                                            initiatives[index].initiativeTypeId,
+                                        numberOfStudents:
+                                            initiatives[index].numberOfStudents,
+                                        grade: initiatives[index].grade,
+                                        name: initiatives[index].name),
+                                  ),
+                                );
+                              }),
+                        ),
+                  // Image.asset("assets/images/swiirl-black.png"),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  ButtonTheme(
+                    child: SizedBox(
+                      height: 70,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color.fromRGBO(0, 0, 0, 1)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius:
-                                          BorderRadius.circular(20.0)))),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const SetupInitiative(),
-                              ),
-                            );
-                          },
-                          child: const Text("Start a new Initiative !"),
+                                          BorderRadius.circular(20.0))),
                         ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const SetupInitiative(),
+                            ),
+                          );
+                        },
+                        child: const Text("Start a new Initiative !"),
                       ),
                     ),
-                  ],
-                )));
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 }

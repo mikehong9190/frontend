@@ -69,13 +69,15 @@ class _InitiativeGradeState extends State<SetupInitiativeGrade> {
                   decoration: const InputDecoration(
                     hintText: '4th Grade',
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.zero,
-                        borderSide: BorderSide(
-                            color: Color.fromRGBO(231, 231, 231, 1))),
+                      borderRadius: BorderRadius.zero,
+                      borderSide:
+                          BorderSide(color: Color.fromRGBO(231, 231, 231, 1)),
+                    ),
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.zero,
-                        borderSide: BorderSide(
-                            color: Color.fromRGBO(231, 231, 231, 1))),
+                      borderRadius: BorderRadius.zero,
+                      borderSide:
+                          BorderSide(color: Color.fromRGBO(231, 231, 231, 1)),
+                    ),
                   ),
                   onChanged: (value) {
                     setState(() {
@@ -96,13 +98,15 @@ class _InitiativeGradeState extends State<SetupInitiativeGrade> {
                   decoration: const InputDecoration(
                     hintText: '68',
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.zero,
-                        borderSide: BorderSide(
-                            color: Color.fromRGBO(231, 231, 231, 1))),
+                      borderRadius: BorderRadius.zero,
+                      borderSide:
+                          BorderSide(color: Color.fromRGBO(231, 231, 231, 1)),
+                    ),
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.zero,
-                        borderSide: BorderSide(
-                            color: Color.fromRGBO(231, 231, 231, 1))),
+                      borderRadius: BorderRadius.zero,
+                      borderSide:
+                          BorderSide(color: Color.fromRGBO(231, 231, 231, 1)),
+                    ),
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
@@ -131,7 +135,6 @@ class _InitiativeGradeState extends State<SetupInitiativeGrade> {
                   ),
                   onPressed: grade.isNotEmpty && noOfStudents != 0
                       ? () {
-                          // log('$id $name $target $grade $noOfStudents');
                           Navigator.push(
                             context,
                             MaterialPageRoute(
