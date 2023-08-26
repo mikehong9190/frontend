@@ -45,6 +45,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   late var isRegisterButtonEnabled = false;
   late var message = '';
   InitiativeTypeEnum? _initiativeTypeEnum;
+  String? errorMessage;
 
   @override
   void didChangeDependencies() {
@@ -271,6 +272,11 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
             message: jsonData.message);
         Navigator.pushNamedAndRemoveUntil(
             context, '/app', (Route<dynamic> route) => false);
+      } else if (response.statusCode == 400) {
+        final responseBody = jsonDecode(response.body);
+        setState(() {
+          errorMessage = responseBody['message'];
+        });
       }
     } catch (error, stackTrace) {
       log(stackTrace.toString());
@@ -341,7 +347,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                 getSchools: getSchools,
                 clickOnSuggestion: clickOnSuggestion,
                 clickOnSchool: clickOnSchool,
-                isRegisterButtonEnabled: isRegisterButtonEnabled),
+                isRegisterButtonEnabled: isRegisterButtonEnabled,
+                errorMessage: errorMessage),
             isActive: currentStep >= 2),
       ];
 

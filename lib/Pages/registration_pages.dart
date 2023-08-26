@@ -343,6 +343,7 @@ class ThirdPageWidget extends StatelessWidget {
   final dynamic clickOnSuggestion;
   final dynamic clickOnSchool;
   final dynamic isRegisterButtonEnabled;
+  final dynamic errorMessage;
 
   const ThirdPageWidget({
     super.key,
@@ -357,6 +358,7 @@ class ThirdPageWidget extends StatelessWidget {
     required this.clickOnSuggestion,
     required this.clickOnSchool,
     required this.isRegisterButtonEnabled,
+    required this.errorMessage,
   });
 
   @override
@@ -394,6 +396,17 @@ class ThirdPageWidget extends StatelessWidget {
               false, null, getDistricts, clickOnSuggestion),
           schoolSearchFieldWidget("School Name", schoolNameController, false,
               null, getSchools, clickOnSchool),
+          if (errorMessage != null)
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+              child: Text(
+                errorMessage!,
+                style: const TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
           const SizedBox(
             height: 60,
           ),
@@ -442,6 +455,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
   final schoolNameController = TextEditingController();
   final schoolDistrictController = TextEditingController();
   late var schoolId = '';
+  String? errorMessage;
   late var isRegisterButtonEnabled = false;
   bool isLoading = false;
 
@@ -510,7 +524,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
     });
   }
 
-  void createUser() async {
+  void createSchool() async {
     try {
       setState(() {
         isLoading = true;
@@ -532,7 +546,14 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
               'https://ddxiecjzr8.execute-api.us-east-1.amazonaws.com/v1/auth/update-school-details'),
           body: jsonEncode(payload));
 
-      if (response.statusCode == 200) Navigator.pushNamed(context, '/app');
+      if (response.statusCode == 200) {
+        Navigator.pushNamed(context, '/app');
+      } else if (response.statusCode == 400) {
+        final responseBody = jsonDecode(response.body);
+        setState(() {
+          errorMessage = responseBody['message'];
+        });
+      }
     } catch (error) {
       log(error.toString());
     } finally {
@@ -576,6 +597,17 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
                 false, null, getDistricts, clickOnSuggestion),
             schoolSearchFieldWidget("School Name", schoolNameController, false,
                 null, getSchools, clickOnSchool),
+            if (errorMessage != null)
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                child: Text(
+                  errorMessage!,
+                  style: const TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              ),
             const SizedBox(
               height: 60,
             ),
@@ -592,7 +624,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
                               borderRadius: BorderRadius.circular(30.0)))),
                   onPressed: isRegisterButtonEnabled
                       ? () {
-                          createUser();
+                          createSchool();
                         }
                       : null,
                   child: isLoading
