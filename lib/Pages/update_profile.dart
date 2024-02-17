@@ -462,7 +462,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                       color: Colors.white,
                                     ),
                                   )
-                                : const Text('Update Profile'),
+                                : const Text('Update Profile',style: TextStyle(color: Colors.white)),
                           ),
                         ),
                       ),

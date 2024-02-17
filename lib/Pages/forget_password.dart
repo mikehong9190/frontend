@@ -320,7 +320,7 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
                               color: Colors.white,
                             ),
                           )
-                        : const Text("Next"),
+                        : const Text("Next",style: TextStyle(color: Colors.white),),
                   ),
                 ),
               ),
