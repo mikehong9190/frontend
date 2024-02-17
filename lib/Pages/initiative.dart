@@ -214,7 +214,7 @@ class _InitiativeState extends State<Initiative> {
                             ),
                           );
                         },
-                        child: const Text("Start a new Initiative !"),
+                        child: const Text("Start a new Initiative !",style: TextStyle(color: Colors.white)),
                       ),
                     ),
                   ),

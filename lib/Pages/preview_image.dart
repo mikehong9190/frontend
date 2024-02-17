@@ -209,7 +209,7 @@ class _ImagePreviewState extends State<ImagePreview> {
                   onPressed: () async {
                     await _cropImage(currentPicture);
                   },
-                  child: const Text("Crop Image"),
+                  child: const Text("Crop Image",style: TextStyle(color: Colors.white)),
                 ),
               ),
             ),

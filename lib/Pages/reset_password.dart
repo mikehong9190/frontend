@@ -249,7 +249,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                             color: Colors.white,
                           ),
                         )
-                      : const Text("Next"),
+                      : const Text("Next",style: TextStyle(color: Colors.white)),
                 ),
               ),
             ),

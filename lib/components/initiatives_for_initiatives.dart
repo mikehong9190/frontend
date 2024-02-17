@@ -65,7 +65,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30.0))),
                       ),
-                      child: const Text("View")),
+                      child: const Text("View",style: TextStyle(color: Colors.white))),
                 ),
               ),
             ],

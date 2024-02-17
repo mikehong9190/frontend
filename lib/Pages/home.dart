@@ -314,7 +314,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                 .colorScheme
                                                                 .secondary)),
                                                 child: const Text(
-                                                    "Choose from Gallery"),
+                                                    "Choose from Gallery",style: TextStyle(color: Colors.white)),
                                               ),
                                             )),
                                             _image != null
@@ -343,7 +343,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                     .white,
                                                               ),
                                                             )
-                                                          : const Text("Save"),
+                                                          : const Text("Save",style: TextStyle(color: Colors.white)),
                                                     ),
                                                   ))
                                                 : Container()
@@ -535,7 +535,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                   Colors.white,
                                                             ),
                                                           )
-                                                        : const Text("Save"),
+                                                        : const Text("Save",style: TextStyle(color: Colors.white)),
                                                   ),
                                                 ),
                                               )

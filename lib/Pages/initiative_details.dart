@@ -324,7 +324,7 @@ class _InitiativesDetailsWidgetState extends State<InitiativesDetailsWidget> {
                                           borderRadius:
                                               BorderRadius.circular(10.0))),
                                 ),
-                                child: const Text("Add more art")),
+                                child: const Text("Add more art",style: TextStyle(color: Colors.white))),
                           ),
                         ),
                       ],

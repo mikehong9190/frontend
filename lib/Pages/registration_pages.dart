@@ -114,7 +114,7 @@ class FirstPageWidget extends StatelessWidget {
                       }
                     : null,
                 child: !isLoading
-                    ? const Text("Next")
+                    ? const Text("Next",style: TextStyle(color: Colors.white))
                     : const SizedBox(
                         width: 20,
                         height: 20,
@@ -308,7 +308,7 @@ class SecondPageWidget extends StatelessWidget {
                         onNext();
                       }
                     : null,
-                child: const Text("Next"),
+                child: const Text("Next",style: TextStyle(color: Colors.white)),
               ),
             ),
           ),
@@ -434,7 +434,7 @@ class ThirdPageWidget extends StatelessWidget {
                           color: Colors.white,
                         ),
                       )
-                    : const Text("Next"),
+                    : const Text("Next",style: TextStyle(color: Colors.white)),
               ),
             ),
           ),
@@ -635,7 +635,7 @@ class _GoogleAuthWidgetState extends State<GoogleAuthWidget> {
                             color: Colors.white,
                           ),
                         )
-                      : const Text("Next"),
+                      : const Text("Next",style: TextStyle(color: Colors.white)),
                 ),
               ),
             ),
