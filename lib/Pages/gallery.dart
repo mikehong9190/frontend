@@ -549,6 +549,7 @@ class _GalleryState extends State<Gallery> {
               Positioned(
                 bottom: 16.0,
                 left: 0,
+                right : 0,
                 child: SizedBox(
                   // width: 80,
                   height: 55,
