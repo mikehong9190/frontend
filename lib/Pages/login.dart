@@ -122,14 +122,15 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   Widget build(context) {
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.only(top: 100),
         margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
           children: [
-            Column(
-              children: const [
+            const Column(
+              children: [
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text("Login to Swiirl",
@@ -210,7 +211,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
             const Align(
               alignment: Alignment.topCenter,
@@ -238,7 +239,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             const Expanded(
               child: SizedBox(),
             ),
-            Padding(
+            if (width > 360) Padding(
               padding: const EdgeInsets.only(left: 0, bottom: 20),
               child: Align(
                 alignment: Alignment.bottomLeft,

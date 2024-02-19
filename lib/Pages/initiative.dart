@@ -162,7 +162,7 @@ class _InitiativeState extends State<Initiative> {
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 10),
+                                      horizontal: 0, vertical: 10),
                                   child: GestureDetector(
                                     onTap: () {
                                       Navigator.push(
