@@ -6,7 +6,6 @@ class GettingStartedWidget extends StatelessWidget {
   @override
   Widget build(context) {
     final width = MediaQuery.of(context).size.width;
-    print(width);
     return Scaffold(
       body: SizedBox(
         child: 
