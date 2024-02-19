@@ -395,7 +395,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                       textFieldWidget(
                           "First Name", firstNameController, false, null, true),
                       const SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       textFieldWidget(
                           "Last Name", lastNameController, false, null, true),
@@ -414,8 +414,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                           const SizedBox(
                             height: 10,
                           ),
+                          
                           SizedBox(
-                              height: 80,
+                              height: 60,
                               width: double.infinity,
                               child: TextField(
                                 maxLines: 10,
@@ -431,16 +432,13 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                 ),
                               )),
                         ],
-                      ),
+                      ),        
                       const SizedBox(
-                        height: 10,
-                      ),
-                      const SizedBox(
-                        height: 40,
+                        height: 20,
                       ),
                       ButtonTheme(
                         child: SizedBox(
-                          height: 50,
+                          height: 40,
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
@@ -467,11 +465,12 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 80),
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
                         child: Align(
                           alignment: Alignment.center,
                           child: context.watch<User>().isManuallySignedIn
                               ? Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     if (context
                                         .watch<User>()

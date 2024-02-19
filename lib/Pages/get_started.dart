@@ -5,14 +5,19 @@ class GettingStartedWidget extends StatelessWidget {
 
   @override
   Widget build(context) {
+    final width = MediaQuery.of(context).size.width;
+    print(width);
     return Scaffold(
       body: SizedBox(
-        child: Stack(children: [
+        child: 
+        // Stack(
+          // children: [
           Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  height: 450,
+                  height: width <= 360 ? 350 : 450,
                   child: ClipRect(
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 30),
@@ -31,9 +36,10 @@ class GettingStartedWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 40,
-                ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                const Spacer(),
                 const Align(
                   alignment: Alignment.center,
                   child: SizedBox(
@@ -52,19 +58,20 @@ class GettingStartedWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 25,
-                ),
+                // const SizedBox(
+                //   height: 15,
+                // ),
                 const Text(
                   "Art to Digital Collectibles in a single click",
                   style: TextStyle(fontSize: 16),
                 ),
-                const SizedBox(
-                  height: 50,
-                ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                const Spacer(),
                 SizedBox(
-                  height: 120,
-                  width: 120,
+                  height: 100,
+                  width: 100,
                   child: Material(
                     elevation: 8,
                     shadowColor: Colors.black.withOpacity(0.5),
@@ -89,8 +96,9 @@ class GettingStartedWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                Expanded(child: Container()),
-                SizedBox(
+                // Expanded(child: Container()),
+                const Spacer(),
+                if (width > 360) SizedBox(
                   child: Container(
                     margin: const EdgeInsets.symmetric(
                         horizontal: 30, vertical: 30),
@@ -98,12 +106,13 @@ class GettingStartedWidget extends StatelessWidget {
                     child: Image.asset(
                         "assets/images/swiirl-S-Mark-Aqua-Dot 4.png"),
                   ),
-                )
+                ),
               ],
             ),
           )
-        ]),
-      ),
-    );
+        // ]
+        ),
+      );
+    // );
   }
 }
