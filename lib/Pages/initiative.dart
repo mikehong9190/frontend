@@ -132,7 +132,7 @@ class _InitiativeState extends State<Initiative> {
           )
         : Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,9 +160,11 @@ class _InitiativeState extends State<Initiative> {
                           child: ListView.builder(
                               itemCount: initiatives.length,
                               itemBuilder: (context, index) {
-                                return Padding(
+                                return Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 0, vertical: 10),
+                                  // margin: const EdgeInsets.symmetric(
+                                  //     horizontal: 10),
                                   child: GestureDetector(
                                     onTap: () {
                                       Navigator.push(
@@ -214,7 +216,8 @@ class _InitiativeState extends State<Initiative> {
                             ),
                           );
                         },
-                        child: const Text("Start a new Initiative !",style: TextStyle(color: Colors.white)),
+                        child: const Text("Start a new Initiative !",
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ),
                   ),

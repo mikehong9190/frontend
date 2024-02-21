@@ -62,40 +62,81 @@ class _InitiativeTargetState extends State<SetupInitiativeTarget> {
               ),
             ),
             const SizedBox(height: 10),
-            for (var tgt in targets)
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedItem = tgt;
-                    if (tgt != 'Enter Custom Amount') {
-                      target = tgt;
-                    }
-                  });
-                },
-                child: ListTile(
-                  title: Row(
-                    children: [
-                      Expanded(
-                          child: Text(tgt == 'Enter Custom Amount'
-                              ? '$tgt'
-                              : '\$ $tgt')),
-                      Radio(
-                        value: tgt,
-                        groupValue: selectedItem,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedItem = tgt;
-                            if (tgt != 'Enter Custom Amount') {
-                              target = tgt;
-                            }
-                          });
-                        },
-                        activeColor: Colors.black,
+            Expanded(
+              child: ListView.builder(
+                  itemCount: targets.length,
+                  itemBuilder: (context, index) {
+                    final tgt = targets[index];
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedItem = tgt;
+                          if (tgt != 'Enter Custom Amount') {
+                            target = tgt;
+                          }
+                        });
+                      },
+                      child: ListTile(
+                        title: Row(
+                          children: [
+                            Expanded(
+                                child: Text(tgt == 'Enter Custom Amount'
+                                    ? '$tgt'
+                                    : '\$ $tgt')),
+                            Radio(
+                              value: tgt,
+                              groupValue: selectedItem,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedItem = tgt;
+                                  if (tgt != 'Enter Custom Amount') {
+                                    target = tgt;
+                                  }
+                                });
+                              },
+                              activeColor: Colors.black,
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    );
+                  }),
+            ),
+            // for (var tgt in targets)
+            //   GestureDetector(
+            //     onTap: () {
+            //       setState(() {
+            //         selectedItem = tgt;
+            //         if (tgt != 'Enter Custom Amount') {
+            //           target = tgt;
+            //         }
+            //       });
+            //     },
+            //     child: ListTile(
+            //       title: Row(
+            //         children: [
+            //           Expanded(
+            //               child: Text(tgt == 'Enter Custom Amount'
+            //                   ? '$tgt'
+            //                   : '\$ $tgt')),
+            //           Radio(
+            //             value: tgt,
+            //             groupValue: selectedItem,
+            //             onChanged: (value) {
+            //               setState(() {
+            //                 selectedItem = tgt;
+            //                 if (tgt != 'Enter Custom Amount') {
+            //                   target = tgt;
+            //                 }
+            //               });
+            //             },
+            //             activeColor: Colors.black,
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            if(selectedItem != 'Enter Custom Amount') const SizedBox (),
             if (selectedItem == 'Enter Custom Amount')
               Container(
                 alignment: Alignment.center,
@@ -127,7 +168,8 @@ class _InitiativeTargetState extends State<SetupInitiativeTarget> {
                   ),
                 ),
               ),
-            const Spacer(),
+            // const Spacer(),
+            const SizedBox(height: 10),
             ButtonTheme(
               child: SizedBox(
                 height: 50,
