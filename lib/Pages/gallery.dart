@@ -418,6 +418,7 @@ class _GalleryState extends State<Gallery> {
         children: [
           const Spacer (),
           FloatingActionButton.extended(
+            heroTag: "upload",
             label: Text(
               "Click to Upload",
               style: TextStyle(
@@ -435,6 +436,7 @@ class _GalleryState extends State<Gallery> {
           ),
           const Spacer (),
           FloatingActionButton(
+            heroTag: "add",
             backgroundColor: Theme.of(context).colorScheme.secondary,
             onPressed: () {
               showModalBottomSheet(
