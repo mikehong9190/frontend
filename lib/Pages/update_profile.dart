@@ -234,7 +234,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           headers: {'Authorization': 'Bearer $token'});
       if (response.statusCode == 200) {
         final jsonData =
-            (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
+            (UserDetailsResponse.fromJson(jsonDecode(utf8.decode (response.bodyBytes))).data);
         setState(() {
           profilePicture = jsonData.profilePicture;
           firstNameController.text = jsonData.firstName;

@@ -413,30 +413,93 @@ class _GalleryState extends State<Gallery> {
           ),
         ),
       ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          const Spacer (),
+          FloatingActionButton.extended(
+            heroTag: "upload",
+            label: Text(
+              "Click to Upload",
+              style: TextStyle(
+                color: imageModel.finalImages.isNotEmpty
+                    ? Colors.white
+                    : const Color.fromARGB(255, 212, 211, 211),
+              ),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            onPressed: imageModel.finalImages.isNotEmpty
+                ? () {
+                    getPresignedUrls(context, imageModel.finalImages);
+                  }
+                : null,
+          ),
+          const Spacer (),
+          FloatingActionButton(
+            heroTag: "add",
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16.0),
+                    topRight: Radius.circular(16.0),
+                  ),
+                ),
+                builder: (BuildContext context) {
+                  return Container(
+                    height: 150,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16.0),
+                        topRight: Radius.circular(16.0),
+                      ),
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTile(
+                            leading: const Icon(Icons.photo_library),
+                            title: const Text("Choose From Gallery"),
+                            onTap: openImages,
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.camera_alt),
+                            title: const Text("Take a Photo"),
+                            onTap: openCamera,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+          )
+        ],
+      ),
       body: WillPopScope(
         onWillPop: onWillPop,
         child: Container(
           margin: const EdgeInsets.only(top: 20, right: 30, left: 30),
-          child: Stack(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Positioned(
-                top: 0,
-                left: 0,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "$name",
-                      style: const TextStyle(
-                          fontSize: 22, fontWeight: FontWeight.w800),
-                    ),
-                    Text(
-                      "$grade",
-                      style: const TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.w400),
-                    )
-                  ],
-                ),
+              Text(
+                "$name",
+                style:
+                    const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+              ),
+              Text(
+                "$grade",
+                style:
+                    const TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
               ),
               isLoading
                   ? Column(children: [
@@ -448,185 +511,190 @@ class _GalleryState extends State<Gallery> {
                         ),
                       ),
                     ])
-                  : Container(
-                      margin: const EdgeInsets.only(top: 50),
-                      width: double.infinity,
-                      child: imageModel.images.isNotEmpty
-                          ? GridView.count(
-                              padding: const EdgeInsets.only(top: 10),
-                              primary: false,
-                              crossAxisSpacing: 15,
-                              mainAxisSpacing: 15,
-                              crossAxisCount: 2,
-                              children: <Widget>[
-                                ...imageModel.images.map(
-                                  (image) => GestureDetector(
-                                    onTap: () {
-                                      imageModel.toggleImage(image);
-                                    },
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Container(
-                                          padding: const EdgeInsets.only(
-                                            top: 35,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(10),
-                                                    bottomLeft:
-                                                        Radius.circular(10),
-                                                    bottomRight:
-                                                        Radius.circular(10)),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.5),
-                                                spreadRadius: 1,
-                                                blurRadius: 3,
-                                                offset: const Offset(0, 2),
-                                              ),
-                                            ],
-                                          ),
-                                          child: Stack(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                                child: Image.file(
-                                                  File(image.path),
-                                                  fit: BoxFit.cover,
-                                                  width: double.infinity,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.15,
+                  : Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        width: double.infinity,
+                        child: imageModel.images.isNotEmpty
+                            ? GridView.count(
+                                padding: const EdgeInsets.symmetric(horizontal: 5),
+                                primary: false,
+                                crossAxisSpacing: 15,
+                                mainAxisSpacing: 15,
+                                crossAxisCount: 2,
+                                children: <Widget>[
+                                  ...imageModel.images.map(
+                                    (image) => GestureDetector(
+                                      onTap: () {
+                                        imageModel.toggleImage(image);
+                                      },
+                                      child: Stack(
+                                        children: <Widget>[
+                                          Container(
+                                            padding: const EdgeInsets.only(
+                                              top: 35,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(10),
+                                                      bottomLeft:
+                                                          Radius.circular(10),
+                                                      bottomRight:
+                                                          Radius.circular(10)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.5),
+                                                  spreadRadius: 1,
+                                                  blurRadius: 3,
+                                                  offset: const Offset(0, 2),
                                                 ),
-                                              ),
-                                              if (imageModel
-                                                  .isImageExists(image))
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.black
-                                                        .withOpacity(0.5),
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                      Radius.circular(10),
-                                                    ),
+                                              ],
+                                            ),
+                                            child: Stack(
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                  child: Image.file(
+                                                    File(image.path),
+                                                    fit: BoxFit.cover,
+                                                    width: double.infinity,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.15,
                                                   ),
                                                 ),
-                                            ],
-                                          ),
-                                        ),
-                                        if (imageModel.isImageExists(image))
-                                          Positioned(
-                                            top: 0,
-                                            right: 0,
-                                            child: Image.asset(
-                                              "assets/images/select.png",
-                                              // width: 30,
-                                              // height: 150,
-                                              // fit: BoxFit.cover,
+                                                if (imageModel
+                                                    .isImageExists(image))
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black
+                                                          .withOpacity(0.5),
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .all(
+                                                        Radius.circular(10),
+                                                      ),
+                                                    ),
+                                                  ),
+                                              ],
                                             ),
                                           ),
-                                      ],
+                                          if (imageModel.isImageExists(image))
+                                            Positioned(
+                                              top: 0,
+                                              right: 0,
+                                              child: Image.asset(
+                                                "assets/images/select.png",
+                                                // width: 30,
+                                                // height: 150,
+                                                // fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                        ],
+                                      ),
                                     ),
                                   ),
+                                ],
+                              )
+                            : Center(
+                                child: Text(
+                                  isUpdate
+                                      ? "Add more artworks"
+                                      : "No artworks added yet",
+                                  style: const TextStyle(fontSize: 16),
                                 ),
-                              ],
-                            )
-                          : Center(
-                              child: Text(
-                                isUpdate
-                                    ? "Add more artworks"
-                                    : "No artworks added yet",
-                                style: const TextStyle(fontSize: 16),
                               ),
-                            ),
-                    ),
-              Positioned(
-                bottom: 16.0,
-                left: 0,
-                right : 0,
-                child: SizedBox(
-                  // width: 80,
-                  height: 55,
-                  width: 370,
-                  child: FittedBox(
-                    child: FloatingActionButton.extended(
-                      label: Text(
-                        "Click to Upload",
-                        style: TextStyle(
-                          color: imageModel.finalImages.isNotEmpty
-                              ? Colors.white
-                              : const Color.fromARGB(255, 212, 211, 211),
-                        ),
                       ),
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                      onPressed: imageModel.finalImages.isNotEmpty
-                          ? () {
-                              getPresignedUrls(context, imageModel.finalImages);
-                            }
-                          : null,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 16.0,
-                right: 0,
-                child: FloatingActionButton(
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(16.0),
-                          topRight: Radius.circular(16.0),
-                        ),
-                      ),
-                      builder: (BuildContext context) {
-                        return Container(
-                          height: 150,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(16.0),
-                              topRight: Radius.circular(16.0),
-                            ),
-                          ),
-                          child: Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ListTile(
-                                  leading: const Icon(Icons.photo_library),
-                                  title: const Text("Choose From Gallery"),
-                                  onTap: openImages,
-                                ),
-                                ListTile(
-                                  leading: const Icon(Icons.camera_alt),
-                                  title: const Text("Take a Photo"),
-                                  onTap: openCamera,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+                    )
             ],
           ),
         ),
+        // Positioned(
+        //   bottom: 16.0,
+        //   left: 0,
+        //   right: 0,
+        //   child: SizedBox(
+        //     // width: 80,
+        //     height: 55,
+        //     width: 370,
+        //     child: FittedBox(
+        //       child: FloatingActionButton.extended(
+        //         label: Text(
+        //           "Click to Upload",
+        //           style: TextStyle(
+        //             color: imageModel.finalImages.isNotEmpty
+        //                 ? Colors.white
+        //                 : const Color.fromARGB(255, 212, 211, 211),
+        //           ),
+        //         ),
+        //         backgroundColor: Theme.of(context).colorScheme.secondary,
+        //         onPressed: imageModel.finalImages.isNotEmpty
+        //             ? () {
+        //                 getPresignedUrls(context, imageModel.finalImages);
+        //               }
+        //             : null,
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        // Positioned(
+        //   bottom: 16.0,
+        //   right: 0,
+        //   child: FloatingActionButton(
+        //     backgroundColor: Theme.of(context).colorScheme.secondary,
+        //     onPressed: () {
+        //       showModalBottomSheet(
+        //         context: context,
+        //         shape: const RoundedRectangleBorder(
+        //           borderRadius: BorderRadius.only(
+        //             topLeft: Radius.circular(16.0),
+        //             topRight: Radius.circular(16.0),
+        //           ),
+        //         ),
+        //         builder: (BuildContext context) {
+        //           return Container(
+        //             height: 150,
+        //             decoration: const BoxDecoration(
+        //               borderRadius: BorderRadius.only(
+        //                 topLeft: Radius.circular(16.0),
+        //                 topRight: Radius.circular(16.0),
+        //               ),
+        //             ),
+        //             child: Center(
+        //               child: Column(
+        //                 mainAxisSize: MainAxisSize.min,
+        //                 children: [
+        //                   ListTile(
+        //                     leading: const Icon(Icons.photo_library),
+        //                     title: const Text("Choose From Gallery"),
+        //                     onTap: openImages,
+        //                   ),
+        //                   ListTile(
+        //                     leading: const Icon(Icons.camera_alt),
+        //                     title: const Text("Take a Photo"),
+        //                     onTap: openCamera,
+        //                   ),
+        //                 ],
+        //               ),
+        //             ),
+        //           );
+        //         },
+        //       );
+        //     },
+        //     child: const Icon(
+        //       Icons.add,
+        //       color: Colors.white,
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }

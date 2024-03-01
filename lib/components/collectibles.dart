@@ -34,9 +34,9 @@ class CollectiblesWidget extends StatelessWidget {
           //         ))
           : Image.asset(
               "assets/images/defaultImage.png",
-              width: dimension,
-              height: dimension,
-              fit: BoxFit.cover,
+              // width: dimension,
+              // height: dimension,
+              // fit: BoxFit.cover,
             ),
     );
   }

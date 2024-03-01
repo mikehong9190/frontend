@@ -60,8 +60,8 @@ class _AccountWidgetState extends State<AccountWidget> {
           headers: {'Authorization': 'Bearer $token'});
       if (response.statusCode == 200) {
         final jsonData =
-            (UserDetailsResponse.fromJson(jsonDecode(response.body)).data);
-
+            (UserDetailsResponse.fromJson(jsonDecode(utf8.decode (response.bodyBytes))).data);
+            
         setState(() {
           profilePicture = jsonData.profilePicture;
           collectibles = jsonData.collectibles ?? [];

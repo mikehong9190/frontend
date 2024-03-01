@@ -76,15 +76,17 @@ class _InitiativeState extends State<SetupInitiative> {
           ),
           const SizedBox(height: 10),
           isLoading
-              ? Column(children: [
-                  const SizedBox(height: 30),
-                  Align(
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.secondary,
+              ? Expanded(
+                child: Column(children: [
+                    const SizedBox(height: 30),
+                    Align(
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                     ),
-                  ),
-                ])
+                  ]),
+              )
               : Expanded(
                   child: ListView.builder(
                     itemCount: initiativeTypes.length,
@@ -155,7 +157,7 @@ class _InitiativeState extends State<SetupInitiative> {
                 ),
               ),
             ),
-          const Spacer(),
+          const SizedBox(height: 10),
           ButtonTheme(
             child: SizedBox(
               height: 50,

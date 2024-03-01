@@ -23,6 +23,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
 
   @override
   Widget build(context) {
+    final width = MediaQuery.of(context).size.width;
     return Row(
       children: [
         CollectiblesWidget(
@@ -39,7 +40,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
                 name.length > 25 ? '${name.substring(0, 25)}...' : name,
                 overflow: TextOverflow.ellipsis,
                 style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                    TextStyle(fontSize: width <= 351 ? 15 :18, fontWeight: FontWeight.w700),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
@@ -47,7 +48,7 @@ class InitiativesForInitiativeWidget extends StatelessWidget {
               ),
               ButtonTheme(
                 child: SizedBox(
-                  width: 200,
+                  width: width <= 351 ? 160 : 200,
                   child: ElevatedButton(
                       onPressed: () {
                         Navigator.push(

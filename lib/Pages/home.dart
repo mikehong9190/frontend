@@ -220,7 +220,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       // print(response.statusCode);
       if (response.statusCode == 200) {
         final jsonData =
-            SchoolDetailResponse.fromJson(jsonDecode(response.body));
+            SchoolDetailResponse.fromJson(jsonDecode(utf8.decode (response.bodyBytes)));
         if (mounted) {
           setState(() {
             schoolName = jsonData.data.school.name;
