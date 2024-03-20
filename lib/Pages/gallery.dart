@@ -282,7 +282,6 @@ class _GalleryState extends State<Gallery> {
           DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
           AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
           String version = androidInfo.version.release;
-          print(double.parse(version));
           if (double.parse(version) >= 13) {
             Map<Permission, PermissionStatus> statuses =
                 await [Permission.photos].request();
