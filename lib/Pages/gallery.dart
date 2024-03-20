@@ -282,7 +282,7 @@ class _GalleryState extends State<Gallery> {
           DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
           AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
           String version = androidInfo.version.release;
-          if (version == '13') {
+          if (double.parse(version) >= 13) {
             Map<Permission, PermissionStatus> statuses =
                 await [Permission.photos].request();
             if (statuses[Permission.photos]!.isGranted) {
@@ -416,7 +416,7 @@ class _GalleryState extends State<Gallery> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          const Spacer (),
+          const Spacer(),
           FloatingActionButton.extended(
             heroTag: "upload",
             label: Text(
@@ -434,7 +434,7 @@ class _GalleryState extends State<Gallery> {
                   }
                 : null,
           ),
-          const Spacer (),
+          const Spacer(),
           FloatingActionButton(
             heroTag: "add",
             backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -517,7 +517,8 @@ class _GalleryState extends State<Gallery> {
                         width: double.infinity,
                         child: imageModel.images.isNotEmpty
                             ? GridView.count(
-                                padding: const EdgeInsets.symmetric(horizontal: 5),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
                                 primary: false,
                                 crossAxisSpacing: 15,
                                 mainAxisSpacing: 15,

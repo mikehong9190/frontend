@@ -63,7 +63,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
         AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
         String version = androidInfo.version.release;
-        if (version == '13') {
+        if (double.parse(version) >= 13) {
           Map<Permission, PermissionStatus> statuses =
               await [Permission.photos].request();
 

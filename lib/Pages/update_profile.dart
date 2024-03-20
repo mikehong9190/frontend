@@ -58,8 +58,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
         DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
         AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
         String version = androidInfo.version.release;
-
-        if (version == '13') {
+        if (double.parse(version) >= 13) {
           Map<Permission, PermissionStatus> statuses =
               await [Permission.photos].request();
           if (statuses[Permission.photos]!.isGranted) {
@@ -233,8 +232,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           Uri.https(apiHost, '/v1/user/get-all', queryParameters),
           headers: {'Authorization': 'Bearer $token'});
       if (response.statusCode == 200) {
-        final jsonData =
-            (UserDetailsResponse.fromJson(jsonDecode(utf8.decode (response.bodyBytes))).data);
+        final jsonData = (UserDetailsResponse.fromJson(
+                jsonDecode(utf8.decode(response.bodyBytes)))
+            .data);
         setState(() {
           profilePicture = jsonData.profilePicture;
           firstNameController.text = jsonData.firstName;
@@ -414,7 +414,6 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                           const SizedBox(
                             height: 10,
                           ),
-                          
                           SizedBox(
                               height: 60,
                               width: double.infinity,
@@ -432,7 +431,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                 ),
                               )),
                         ],
-                      ),        
+                      ),
                       const SizedBox(
                         height: 20,
                       ),
@@ -460,7 +459,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                       color: Colors.white,
                                     ),
                                   )
-                                : const Text('Update Profile',style: TextStyle(color: Colors.white)),
+                                : const Text('Update Profile',
+                                    style: TextStyle(color: Colors.white)),
                           ),
                         ),
                       ),
@@ -470,7 +470,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                           alignment: Alignment.center,
                           child: context.watch<User>().isManuallySignedIn
                               ? Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     if (context
                                         .watch<User>()
